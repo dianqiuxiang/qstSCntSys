@@ -26,14 +26,14 @@ public class LoginAction{
 		this.userList = userList;
 	}
 	@Resource
-	private UserInfoService userService;
+	private UserInfoService userInfoService;
 	
 	public UserInfoService getUserService() {
-		return userService;
+		return userInfoService;
 	}
 
-	public void setUserService(UserInfoService userService) {
-		this.userService = userService;
+	public void setUserService(UserInfoService userInfoService) {
+		this.userInfoService = userInfoService;
 	}
 	
 	@RequestMapping(value="/select.do")
@@ -43,7 +43,7 @@ public class LoginAction{
 		System.out.println(123);
 		//调用存储过程，获取列表
 		//this.userService.get(1);
-		System.out.println(this.userService.selectPK(91).getUserName());
+		System.out.println(this.userInfoService.selectPK(1).getUserName());
 		return gson.toJson("123");
 	}
 	 public String execute() {

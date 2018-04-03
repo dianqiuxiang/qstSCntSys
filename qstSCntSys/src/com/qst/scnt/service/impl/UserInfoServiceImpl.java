@@ -12,15 +12,15 @@ import com.qst.scnt.model.UserInfo;
 import com.qst.scnt.service.UserInfoService;
 
 
-@Service("userService")
+@Service("userInfoService")
 public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo> implements UserInfoService {
 	
 	@Resource    
-    private UserInfoDao userDao;  
+    private UserInfoDao userInfoDao;  
       
     @Override  
     public BaseDao<UserInfo> getBaseDao() {  
-        return userDao;  
+        return userInfoDao;  
     }
     
     @Override
@@ -33,7 +33,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo> implements Us
 	    a1.setPwd("321");
 	   
 	    System.out.println("aaaaaaaaaaaaaaaaaa1");
-	    int aa=userDao.update(a1);
+	    int aa=userInfoDao.update(a1);
 	    System.out.println("aaaaaaaaaaaaaaaaaa2");
 	    UserInfo a2=new UserInfo();
 	    a2.setId(2);
@@ -42,7 +42,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo> implements Us
 	    
 	    int i = 1 / 0; // 抛出运行时异常，事务回滚
 	    System.out.println("aaaaaaaaaaaaaaaaaa3");
-	    int ab=userDao.update(a2);
+	    int ab=userInfoDao.update(a2);
 	    System.out.println("aaaaaaaaaaaaaaaaaa4");
 	    if (aa == 1 && ab == 1) {  
             return 1;  

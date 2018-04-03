@@ -10,7 +10,7 @@
 		        insert into orderProductInfo (orderID, productID, 
 			      amount, price, totalMoney, 
 			      isDelete)
-			    values (#{orderID,jdbcType=INTEGER}, #{productID,jdbcType=Integer}, 
+			    values (#{orderID,jdbcType=INTEGER}, #{productID,jdbcType=INTEGER}, 
 			      #{amount,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{totalMoney,jdbcType=DECIMAL}, 
 			      #{isDelete,jdbcType=INTEGER})
 		   </insert>  		    
@@ -23,7 +23,7 @@
 			    values
 		        <!-- collection可以是List对于list,数组对于array,Map对应ids -->  
 		        <foreach collection="list" item="item"  index="index" separator="union all"> 
-		          #{item.orderID,jdbcType=INTEGER}, #{item.productID,jdbcType=Integer}, 
+		          #{item.orderID,jdbcType=INTEGER}, #{item.productID,jdbcType=INTEGER}, 
 			      #{item.amount,jdbcType=DECIMAL}, #{item.price,jdbcType=DECIMAL}, 
 			      #{item.totalMoney,jdbcType=DECIMAL},#{item.isDelete,jdbcType=INTEGER}
 		        </foreach>  
@@ -37,7 +37,7 @@
 				        orderID = #{orderID,jdbcType=INTEGER},
 				      </if>
 				      <if test="productID != null" >
-				        productID = #{productID,jdbcType=Integer},
+				        productID = #{productID,jdbcType=INTEGER},
 				      </if>
 				      <if test="amount != null" >
 				        amount = #{amount,jdbcType=DECIMAL},
@@ -174,12 +174,12 @@
 		  </select>
 		  
 		  <!-- 查询 -->  
-		   <select id="select" parameterType="Integer" resultType="orderProductInfo">  
+		   <select id="select" parameterType="INTEGER" resultType="orderProductInfo">  
 		        select * from orderProductInfo
 		   </select>
 		  
 		   <!-- 查询（参数） -->  
-		   <select id="selectPk" parameterType="Integer" resultType="orderProductInfo">  
+		   <select id="selectPk" parameterType="INTEGER" resultType="orderProductInfo">  
 		        select * from orderProductInfo   where id = #{id} 
 		   </select>  
 		    
