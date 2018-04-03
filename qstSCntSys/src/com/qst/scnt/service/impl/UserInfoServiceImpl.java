@@ -1,6 +1,8 @@
 package com.qst.scnt.service.impl;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,5 +51,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo> implements Us
         }  
         return 0;
     }
+    
+   
 }
 

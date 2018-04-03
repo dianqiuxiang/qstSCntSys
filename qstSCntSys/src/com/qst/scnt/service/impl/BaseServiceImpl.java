@@ -4,13 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qst.scnt.dao.BaseDao;
+import com.qst.scnt.model.UserInfo;
 import com.qst.scnt.service.BaseService;
+import com.qst.scnt.service.UserInfoService;
 
 public abstract class BaseServiceImpl<T> implements BaseService<T> {
 
@@ -114,6 +119,5 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 		PageInfo<T> pageInfo=new PageInfo<T>(list);
 		return pageInfo;
 	}
-
-
+	
 }

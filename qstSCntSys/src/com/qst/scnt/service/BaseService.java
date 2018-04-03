@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.pagehelper.PageInfo;
+import com.qst.scnt.model.UserInfo;
 
 public interface BaseService<T> {
 
@@ -109,6 +110,13 @@ public interface BaseService<T> {
      * @return PaginationResult对象，包括（符合条件的）总记录数、页实体对象List等  
      */    
     public abstract PageInfo<T> selectPagination(Map param,int pageNum,int pageSize);
+
+    /**  
+     * 获取当前用户  
+     * @param   
+     * @return 
+     */ 
+    //public UserInfo getCurrentUser();
        
         
       
