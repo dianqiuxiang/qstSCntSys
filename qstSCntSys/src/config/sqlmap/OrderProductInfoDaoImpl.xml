@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+-->
+    <mapper namespace="com.qst.scnt.dao.impl.OrderProductInfoDaoImpl">
+		      
+		   <!-- 新增orderProductInfo实体类 -->  
+		    <insert id="insert" parameterType="orderProductInfo">  
+		        insert into orderProductInfo (orderID, productID, 
+			      amount, price, totalMoney, 
+			      isDelete)
+			    values (#{orderID,jdbcType=INTEGER}, #{productID,jdbcType=Integer}, 
+			      #{amount,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{totalMoney,jdbcType=DECIMAL}, 
+			      #{isDelete,jdbcType=INTEGER})
+		   </insert>  		    
+		     
+		   <!-- 批量插入 -->  
+		   <insert id="insertBatch" parameterType="arraylist">  
+		       insert into orderProductInfo (id, orderID, productID, 
+			      amount, price, totalMoney, 
+			      isDelete)
+			    values
+		        <!-- collection可以是List对于list,数组对于array,Map对应ids -->  
+		        <foreach collection="list" item="item"  index="index" separator="union all"> 
+		          #{item.orderID,jdbcType=INTEGER}, #{item.productID,jdbcType=Integer}, 
+			      #{item.amount,jdbcType=DECIMAL}, #{item.price,jdbcType=DECIMAL}, 
+			      #{item.totalMoney,jdbcType=DECIMAL},#{item.isDelete,jdbcType=INTEGER}
+		        </foreach>  
+		   </insert>
+		     
+		   <!-- 更新对象 -->  
+		   <update id="update" parameterType="orderProductInfo">  
+		      	update orderProductInfo
+				    <set >
+				      <if test="orderID != null" >
+				        orderID = #{orderID,jdbcType=INTEGER},
+				      </if>
+				      <if test="productID != null" >
+				        productID = #{productID,jdbcType=Integer},
+				      </if>
+				      <if test="amount != null" >
+				        amount = #{amount,jdbcType=DECIMAL},
+				      </if>
+				      <if test="price != null" >
+				        price = #{price,jdbcType=DECIMAL},
+				      </if>
+				      <if test="totalMoney != null" >
+				        totalMoney = #{totalMoney,jdbcType=DECIMAL},
+				      </if>
+				      <if test="isDelete != null" >
+				        isDelete = #{isDelete,jdbcType=INTEGER},
+				      </if>
+				    </set>
+				    where id = #{id,jdbcType=INTEGER}
+		   </update>		   
+		     
+		   <!-- 更新对象（自定义范围） -->  
+		    <update id="updateFields" parameterType="java.util.Map">  
+		      update orderProductInfo   
+		      <set>  
+			    <foreach collection="fields.entrySet()" index="key" item="value" separator=","> 			  
+			        ${key} = #{value}  
+			    </foreach>  
+			  </set>  
+			  <where>
+			  	<foreach collection="where.entrySet()" index="key" item="value" separator="and">
+			        ${key} = #{value} 
+			    </foreach> 
+              </where>  
+		   </update>  
+		     
+		    <!-- 批量更新 -->  
+		   <update id="updateBatch" parameterType="java.util.List">  
+		        <!-- collection可以是List对于list,数组对于array,Map对应ids -->
+		        update orderProductInfo
+			        <trim prefix="set" suffixOverrides=",">
+			            <trim prefix="orderID = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.orderID != null" >
+							        when id=#{item.id} then #{item.orderID,jdbcType=INTEGER}
+							      </if>
+			                 </foreach>
+			            </trim>
+			            
+			            <trim prefix="productID = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.productID != null" >
+							        when id=#{item.id} then #{item.productID,jdbcType=INTEGER}
+							      </if>
+			                 </foreach>
+			            </trim>
+			            
+			            <trim prefix="amount = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.amount != null" >
+							        when id=#{item.id} then #{item.amount,jdbcType=DECIMAL}
+							      </if>
+			                 </foreach>
+			            </trim>
+			            
+			            <trim prefix="price = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.price != null" >
+							        when id=#{item.id} then #{item.price,jdbcType=DECIMAL}
+							      </if>
+			                 </foreach>
+			            </trim>
+			            
+			            <trim prefix="totalMoney = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.totalMoney != null" >
+							        when id=#{item.id} then #{item.totalMoney,jdbcType=DECIMAL}
+							      </if>
+			                 </foreach>
+			            </trim>
+			            
+			            <trim prefix="isDelete = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.isDelete != null" >
+							        when id=#{item.id} then #{item.isDelete,jdbcType=INTEGER}
+							      </if>
+			                 </foreach>
+			            </trim>
+			            
+			        </trim>			        
+			        where id in
+			        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+			            #{item.id,jdbcType=INTEGER}
+			        </foreach>  
+		   </update>  
+		     
+		   <!-- 根据主键删除 -->  
+		   <delete id="deletePK" parameterType="int">  
+		        delete from orderProductInfo where id = #{id}  
+		   </delete>  
+		     
+		   <!-- 根据参数删除 -->  
+		   <delete id="deleteParam" parameterType="java.util.Map">  
+		        delete from orderProductInfo  
+				  <where>
+				  	<foreach collection="where.entrySet()" index="key" item="value" separator="and">
+				        ${key} = #{value} 
+				    </foreach> 
+	              </where>   
+		   </delete>  
+		     
+		   <!-- 批量删除 -->  
+		   <delete id="deleteBatch">  
+		        delete from orderProductInfo where id in   
+		        <trim prefix="(" suffix=")" suffixOverrides=",">  
+		            <foreach collection="list" item="pk" separator=",">  
+		                #{pk}  
+		            </foreach>  
+		        </trim>  
+		   </delete>  
+		   
+		   <!-- 整表内容删除 -->  
+		   <delete id="truncate">  
+		        delete from orderProductInfo 
+		   </delete>  
+		     
+		   <!-- count -->  
+		   <select id="count" resultType="int">  
+		        select count(*) from orderProductInfo e   
+		  </select>  
+		  <select id="countParam" parameterType="java.util.Map" resultType="int">  
+		        select count(*) from orderProductInfo e   
+		        <where>
+				  	<foreach collection="where.entrySet()" index="key" item="value" separator="and">
+				        ${key} = #{value} 
+				    </foreach> 
+	              </where> 
+		  </select>
+		  
+		  <!-- 查询 -->  
+		   <select id="select" parameterType="Integer" resultType="orderProductInfo">  
+		        select * from orderProductInfo
+		   </select>
+		  
+		   <!-- 查询（参数） -->  
+		   <select id="selectPk" parameterType="Integer" resultType="orderProductInfo">  
+		        select * from orderProductInfo   where id = #{id} 
+		   </select>  
+		    
+		   <!-- 查询（参数） -->  
+		   <select id="selectParam" parameterType="java.util.Map" resultType="orderProductInfo">  
+		        select * from orderProductInfo   
+		       <where>
+				  	<foreach collection="where.entrySet()" index="key" item="value" separator="and">
+				        ${key} = #{value} 
+				    </foreach> 
+	              </where> 
+		   </select>
+    </mapper>

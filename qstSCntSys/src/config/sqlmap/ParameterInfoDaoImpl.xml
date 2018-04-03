@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+-->
+    <mapper namespace="com.qst.scnt.dao.impl.ParameterInfoDaoImpl">
+		
+		   <!-- 新增parameterInfo实体类 -->  
+		    <insert id="insert" parameterType="parameterInfo">  
+		        insert into parameterInfo (ParameterName, value
+			      )
+			    values 
+			    (
+			    	#{parameterName,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}
+			      )
+		   </insert>  		    
+		     
+		   <!-- 批量插入 -->  
+		   <insert id="insertBatch" parameterType="arraylist">  
+		         insert into parameterInfo (ParameterName, value
+			      )
+			    values
+		        <!-- collection可以是List对于list,数组对于array,Map对应ids -->  
+		        <foreach collection="list" item="item"  index="index" separator="union all"> 
+		        	#{item.parameterName,jdbcType=VARCHAR}, #{item.value,jdbcType=VARCHAR} 
+		        </foreach>  
+		   </insert>
+		     
+		   <!-- 更新对象 -->  
+		   <update id="update" parameterType="parameterInfo">  
+		      	update parameterInfo
+				    <set >
+				      <if test="parameterName != null" >
+				        parameterName = #{parameterName,jdbcType=VARCHAR},
+				      </if>
+				      <if test="value != null" >
+				        value = #{value,jdbcType=VARCHAR},
+				      </if>
+				    </set>
+				    where id = #{id,jdbcType=INTEGER}
+		   </update>		   
+		     
+		   <!-- 更新对象（自定义范围） -->  
+		    <update id="updateFields" parameterType="java.util.Map">  
+		      update parameterInfo   
+		      <set>  
+			    <foreach collection="fields.entrySet()" index="key" item="value" separator=","> 			  
+			        ${key} = #{value}  
+			    </foreach>  
+			  </set>  
+			  <where>
+			  	<foreach collection="where.entrySet()" index="key" item="value" separator="and">
+			        ${key} = #{value} 
+			    </foreach> 
+              </where>  
+		   </update>  
+		     
+		    <!-- 批量更新 -->  
+		   <update id="updateBatch" parameterType="java.util.List">  
+		        <!-- collection可以是List对于list,数组对于array,Map对应ids -->
+		        update parameterInfo
+			        <trim prefix="set" suffixOverrides=",">
+						<trim prefix="parameterName = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.parameterName != null" >
+							        when id=#{item.id} then #{item.parameterName,jdbcType=VARCHAR}
+							      </if>
+			                 </foreach>
+			            </trim>
+			            
+			            <trim prefix="value = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.value != null" >
+							        when id=#{item.id} then #{item.value,jdbcType=VARCHAR}
+							      </if>
+			                 </foreach>
+			            </trim>
+			            
+			        </trim>			        
+			        where id in
+			        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+			            #{item.id,jdbcType=INTEGER}
+			        </foreach>  
+		   </update>  
+		     
+		   <!-- 根据主键删除 -->  
+		   <delete id="deletePK" parameterType="int">  
+		        delete from parameterInfo where id = #{id}  
+		   </delete>  
+		     
+		   <!-- 根据参数删除 -->  
+		   <delete id="deleteParam" parameterType="java.util.Map">  
+		        delete from parameterInfo  
+				  <where>
+				  	<foreach collection="where.entrySet()" index="key" item="value" separator="and">
+				        ${key} = #{value} 
+				    </foreach> 
+	              </where>   
+		   </delete>  
+		     
+		   <!-- 批量删除 -->  
+		   <delete id="deleteBatch">  
+		        delete from parameterInfo where id in   
+		        <trim prefix="(" suffix=")" suffixOverrides=",">  
+		            <foreach collection="list" item="pk" separator=",">  
+		                #{pk}  
+		            </foreach>  
+		        </trim>  
+		   </delete>  
+		   
+		   <!-- 整表内容删除 -->  
+		   <delete id="truncate">  
+		        delete from parameterInfo 
+		   </delete>  
+		     
+		   <!-- count -->  
+		   <select id="count" resultType="int">  
+		        select count(*) from parameterInfo e   
+		  </select>  
+		  <select id="countParam" parameterType="java.util.Map" resultType="int">  
+		        select count(*) from parameterInfo e   
+		        <where>
+				  	<foreach collection="where.entrySet()" index="key" item="value" separator="and">
+				        ${key} = #{value} 
+				    </foreach> 
+	              </where> 
+		  </select>
+		  
+		  <!-- 查询 -->  
+		   <select id="select" parameterType="Integer" resultType="parameterInfo">  
+		        select * from parameterInfo
+		   </select>
+		  
+		   <!-- 查询（参数） -->  
+		   <select id="selectPk" parameterType="Integer" resultType="parameterInfo">  
+		        select * from parameterInfo   where id = #{id} 
+		   </select>  
+		    
+		   <!-- 查询（参数） -->  
+		   <select id="selectParam" parameterType="java.util.Map" resultType="parameterInfo">  
+		        select * from parameterInfo   
+		       <where>
+				  	<foreach collection="where.entrySet()" index="key" item="value" separator="and">
+				        ${key} = #{value} 
+				    </foreach> 
+	              </where> 
+		   </select>
+    </mapper>
