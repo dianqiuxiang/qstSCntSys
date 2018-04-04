@@ -192,7 +192,7 @@ CREATE TABLE `orderinfo` (
   `customerType` varchar(255) DEFAULT NULL COMMENT '会员类型',
   `customerPhone` varchar(255) DEFAULT NULL COMMENT '顾客联系电话',
   `customerName` varchar(255) DEFAULT NULL COMMENT '顾客姓名',
-  `customerAddress` decimal(10,2) DEFAULT NULL COMMENT '顾客住址',
+  `customerAddress` varchar(255) DEFAULT NULL COMMENT '顾客住址',
   `orderDate` date DEFAULT NULL COMMENT '订单时间',
   `orderAmount` decimal(10,2) DEFAULT NULL COMMENT '订单金额',
   `healthMember` varchar(255) DEFAULT NULL COMMENT '健康代表',
@@ -222,7 +222,7 @@ DROP TABLE IF EXISTS `orderproductinfo`;
 CREATE TABLE `orderproductinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增）',
   `orderID` int(11) DEFAULT NULL COMMENT '订单ID（外键）',
-  `productID` varchar(255) DEFAULT NULL COMMENT '产品ID（外键）',
+  `productID` int(11) DEFAULT NULL COMMENT '产品ID（外键）',
   `amount` decimal(10,0) DEFAULT NULL COMMENT '购买数量',
   `price` decimal(10,0) DEFAULT NULL COMMENT '购买单价',
   `totalMoney` decimal(10,0) DEFAULT NULL COMMENT '购买总价',
@@ -362,7 +362,7 @@ CREATE TABLE `userinfo` (
   `salesDepartmentID` int(11) DEFAULT NULL COMMENT '部门编号（外键）',
   `isDelete` int(11) DEFAULT NULL COMMENT '是否删除：0 没删除，1 删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='用户信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='用户信息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,6 +371,7 @@ CREATE TABLE `userinfo` (
 
 LOCK TABLES `userinfo` WRITE;
 /*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
+INSERT INTO `userinfo` VALUES (1,'123','123','123','123',123,0);
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -383,4 +384,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-02 16:01:10
+-- Dump completed on 2018-04-04 10:41:45
