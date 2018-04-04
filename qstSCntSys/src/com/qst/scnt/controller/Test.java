@@ -13,7 +13,7 @@ import com.qst.scnt.service.UserInfoService;
 
 @Controller
 @RequestMapping(value="/test")
-public class test extends BaseController {
+public class Test extends BaseController {
 
 	@Resource
 	private UserInfoService userInfoService;	
