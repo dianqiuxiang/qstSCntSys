@@ -1,4 +1,4 @@
-package com.qst.scnt.controller;
+package com.qst.scnt.action;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ import com.qst.scnt.service.UserInfoService;
 
 @Controller
 @RequestMapping(value="/test")
-public class Test extends BaseController {
+public class Test extends BaseAction {
 
 	@Resource
 	private UserInfoService userInfoService;	

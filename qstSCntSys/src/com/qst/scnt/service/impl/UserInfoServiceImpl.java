@@ -51,7 +51,5 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo> implements Us
         }  
         return 0;
     }
-    
-   
 }
 

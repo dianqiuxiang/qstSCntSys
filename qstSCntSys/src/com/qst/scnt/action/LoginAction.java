@@ -1,4 +1,4 @@
-package com.qst.scnt.controller;
+package com.qst.scnt.action;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +20,7 @@ import com.qst.scnt.service.UserInfoService;
 
 @Controller
 @RequestMapping(value="/login")
-public class LoginController extends BaseController {
+public class LoginAction extends BaseAction {
 	
 	@Resource
 	private UserInfoService userInfoService;
