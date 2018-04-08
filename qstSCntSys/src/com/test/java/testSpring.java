@@ -120,6 +120,7 @@ public class testSpring {
 //	    System.out.println(k1);
 //	    System.out.println("deletePK.end");
 	    
+	    
 //	    System.out.println("deleteParam.start");
 //	    Map<String, Object> whereMap = new HashMap();
 //	    whereMap.put("studentid", 4);	 
@@ -131,6 +132,7 @@ public class testSpring {
 //	    System.out.println(k1);
 //	    System.out.println("deleteParam.end");
 	    
+	    
 //	    System.out.println("deleteBatch.start");
 //	    List<Integer> list = new ArrayList();
 //	    list.add(3);
@@ -140,20 +142,24 @@ public class testSpring {
 //	    System.out.println(k1);
 //	    System.out.println("deleteBatch.end");
 	    
+	    
 //	    System.out.println("truncate.start");	    
 //	    int k1=userService.truncate();	
 //	    System.out.println(k1);
 //	    System.out.println("truncate.end");
-//	    
+
+	    
 //	    System.out.println("truncate.start");	    
 //	    int k1=userService.truncate();	
 //	    System.out.println(k1);
 //	    System.out.println("truncate.end");
-//	    
+
+	    
 //	    System.out.println("count.start");	    
 //	    int k1=userService.count();	
 //	    System.out.println(k1);
 //	    System.out.println("count.end");
+
 	    
 //	    System.out.println("countparams.start");
 //	    Map<String, Object> whereMap = new HashMap();
@@ -165,11 +171,13 @@ public class testSpring {
 //	    int k1=userService.count(params);	
 //	    System.out.println(k1);
 //	    System.out.println("countparams.end");
+
 	    
 //	    System.out.println("select.start");	    
 //	    List<Tbl_user> list=userService.select();	
 //	    System.out.println(list.size());
 //	    System.out.println("select.end");
+
 	    
 //	    System.out.println("selectParam.start");
 //	    Map<String, Object> whereMap = new HashMap();
@@ -181,6 +189,7 @@ public class testSpring {
 //	    List<Tbl_user> list=userService.selectParam(params);	
 //	    System.out.println(list.size());
 //	    System.out.println("selectParam.end");
+
 	    
 //	    System.out.println("selectPagination.start");
 //	    Map<String, Object> whereMap = new HashMap();
@@ -199,6 +208,7 @@ public class testSpring {
 //	    }
 //	    
 //	    System.out.println("selectPagination.end");
+
 	    
 //	    System.out.println("insertBatch.start");
 //	    Tbl_user a1=new Tbl_user();
