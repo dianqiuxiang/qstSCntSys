@@ -1,4 +1,4 @@
-package com.qst.scnt.action;
+package com.qst.scnt.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.qst.scnt.model.UserInfo;
 
-public class BaseAction   {
+public class BaseController   {
 
 	private UserInfo CurrentUser;	
 

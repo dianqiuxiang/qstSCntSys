@@ -1,4 +1,4 @@
-package com.qst.scnt.action;
+package com.qst.scnt.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +18,7 @@ import com.qst.scnt.utils.EUDataGridResult;
 
 @Controller
 @RequestMapping(value="/customer")
-public class CustomerAction extends BaseAction {
+public class CustomerController extends BaseController {
 	
 	@Resource
 	private CustomerInfoService customerInfoService;
