@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.github.pagehelper.PageInfo;
 import com.qst.scnt.model.UserInfo;
+import com.qst.scnt.utils.EUDataGridResult;
 
 public interface BaseService<T> {
 
@@ -109,7 +110,7 @@ public interface BaseService<T> {
      * @param param 查询条件参数， 查询条件封装的entity
      * @return 符合条件记录的实体对象的List  
      */
-    public abstract List<T> selectParamFlexible(T entity);
+    public abstract EUDataGridResult<T> selectParamFlexible(T entity,int pageNum,int pageSize);
         
     /**  
      * 按条件查询记录，并处理成分页结果  

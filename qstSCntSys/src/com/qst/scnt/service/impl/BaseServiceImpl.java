@@ -16,6 +16,7 @@ import com.qst.scnt.dao.BaseDao;
 import com.qst.scnt.model.UserInfo;
 import com.qst.scnt.service.BaseService;
 import com.qst.scnt.service.UserInfoService;
+import com.qst.scnt.utils.EUDataGridResult;
 
 public abstract class BaseServiceImpl<T> implements BaseService<T> {
 
@@ -112,9 +113,19 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 	}
 
 	@Override
-	public List<T> selectParamFlexible(T entity) {
-		// TODO Auto-generated method stub
-		return getBaseDao().selectParamFlexible(entity);
+	public EUDataGridResult<T> selectParamFlexible(T entity,int pageNum,int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+//		List<T> list=getBaseDao().selectParamFlexible(entity); 
+//		PageInfo<T> pageInfo=new PageInfo<T>(list);
+		
+		List<T> list = getBaseDao().selectParamFlexible(entity);
+        //创建一个返回值对象
+        EUDataGridResult result = new EUDataGridResult();
+        result.setRows(list);
+        //取记录总条数
+        PageInfo<T> pageInfo = new PageInfo<>(list);
+        result.setTotal(pageInfo.getTotal());
+        return result;
 	}
 	
 	@Override

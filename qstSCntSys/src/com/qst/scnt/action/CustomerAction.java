@@ -10,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.qst.scnt.model.CustomerInfo;
 import com.qst.scnt.service.CustomerInfoService;
+import com.qst.scnt.utils.EUDataGridResult;
 
 @Controller
 @RequestMapping(value="/customer")
@@ -33,14 +35,15 @@ public class CustomerAction extends BaseAction {
 	
 	@RequestMapping(value="/selectByCNameAndCPhone.do")
 	@ResponseBody
-	public Object selectByCNameAndCPhone(String customerName,String customerPhone) {
+	public Object selectByCNameAndCPhone(String customerName,String customerPhone,int page,int rows) {
 		
 		Gson gson = new Gson();		
 		CustomerInfo customerInfo=new CustomerInfo();
 		customerInfo.setCustomerName(customerName);
 		customerInfo.setCustomerPhone(customerPhone);
 		customerInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
-		List<CustomerInfo> list=customerInfoService.selectParamFlexible(customerInfo);
+		
+		EUDataGridResult<CustomerInfo> list=customerInfoService.selectParamFlexible(customerInfo,page,rows);
 		System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
