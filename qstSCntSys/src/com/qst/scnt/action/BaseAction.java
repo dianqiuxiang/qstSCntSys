@@ -24,19 +24,20 @@ public class BaseAction   {
     	String testPwd="123";
     	String testUserPhone="123";
     	String testUserEmail="123";
-    	int testSalesDepartmentID=1;
+    	int testSalesDepartmentID=3;
     	int isDelete=0;
-    	CurrentUser.setUserName(testUserName);
-    	CurrentUser.setPwd(testPwd);
-    	CurrentUser.setUserPhone(testUserPhone);
-    	CurrentUser.setUserEmail(testUserEmail);
-    	CurrentUser.setSalesDepartmentID(testSalesDepartmentID);
-    	CurrentUser.setIsDelete(isDelete);
+    	UserInfo testCurrentUser=new UserInfo();
+    	testCurrentUser.setUserName(testUserName);
+    	testCurrentUser.setPwd(testPwd);
+    	testCurrentUser.setUserPhone(testUserPhone);
+    	testCurrentUser.setUserEmail(testUserEmail);
+    	testCurrentUser.setSalesDepartmentID(testSalesDepartmentID);
+    	testCurrentUser.setIsDelete(isDelete);
     	
     	
 	    //System.out.println((UserInfo)session.getAttribute("currentUser"));
 	    //UserInfo CurrentUser=(UserInfo) session.getAttribute("currentUser");
-		return CurrentUser;
+		return testCurrentUser;
 	}
     public void setCurrentUser(UserInfo currentUser) {
 		CurrentUser = currentUser;

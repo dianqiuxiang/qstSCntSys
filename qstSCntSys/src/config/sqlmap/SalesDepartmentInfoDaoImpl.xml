@@ -8,10 +8,10 @@
 		   <!-- 新增salesDepartmentInfo实体类 -->  
 		    <insert id="insert" parameterType="salesDepartmentInfo">  
 		        insert into salesDepartmentInfo (salesDepartmentName, salesDepartmentAddress, 
-			      salesDepartmentPhone, parentID, isDelete
+			      salesDepartmentPhone, parentID,level, isDelete
 			      )
 			    values (#{salesDepartmentName,jdbcType=VARCHAR}, #{salesDepartmentAddress,jdbcType=VARCHAR}, 
-			      #{salesDepartmentPhone,jdbcType=VARCHAR}, #{parentID,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
+			      #{salesDepartmentPhone,jdbcType=VARCHAR}, #{parentID,jdbcType=INTEGER},#{level,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
 			      )
 		   </insert>  		    
 		     
@@ -27,6 +27,7 @@
 		         	#{item.salesDepartmentAddress,jdbcType=VARCHAR}, 
 			      	#{item.salesDepartmentPhone,jdbcType=VARCHAR}, 
 			      	#{item.parentID,jdbcType=INTEGER}, 
+			      	#{item.level,jdbcType=INTEGER},
 			      	#{item.isDelete,jdbcType=INTEGER}
 			       
 		        </foreach>  
@@ -47,6 +48,9 @@
 				      </if>
 				      <if test="parentID != null" >
 				        parentID = #{parentID,jdbcType=INTEGER},
+				      </if>
+				      <if test="level != null" >
+				        level = #{level,jdbcType=INTEGER},
 				      </if>
 				      <if test="isDelete != null" >
 				        isDelete = #{isDelete,jdbcType=INTEGER},
@@ -106,6 +110,14 @@
 							      </if>
 			                 </foreach>
 			            </trim>
+			            
+			            <trim prefix="level = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.level != null" >
+							        when id=#{item.id} then #{item.level,jdbcType=INTEGER}
+							      </if>
+			                 </foreach>
+			            </trim>		
 			            
 			             <trim prefix="isDelete = case" suffix="end,">
 			                 <foreach collection="list" item="item" index="index">
