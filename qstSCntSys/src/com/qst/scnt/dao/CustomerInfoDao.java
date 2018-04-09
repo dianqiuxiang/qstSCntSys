@@ -1,5 +1,7 @@
 package com.qst.scnt.dao;
 
+import java.util.List;
+
 import com.qst.scnt.model.CustomerInfo;
 
 /**
@@ -9,4 +11,5 @@ import com.qst.scnt.model.CustomerInfo;
 
 public interface CustomerInfoDao  extends BaseDao<CustomerInfo> {
 
+	public List selectByCNameAndCPhone(String cName,String cPhone);
 }

@@ -48,7 +48,8 @@ public class BaseDaoImpl<T> extends
     public static final String SQLID_SELECT_PK = "selectPk";  
     public static final String SQLID_SELECT_PARAM = "selectParam";
     public static final String SQLID_COUNT = "count";  
-    public static final String SQLID_COUNT_PARAM = "countParam";  
+    public static final String SQLID_COUNT_PARAM = "countParam";
+    public static final String SQLID_PARAM_FLEXIBLE = "selectParamFlexible";
   
     @Resource(name = "sqlSessionTemplate")  
     public void setSuperSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {  
@@ -215,6 +216,16 @@ public class BaseDaoImpl<T> extends
     public List<T> selectParam(Map param) {  
         try {  
             return this.getSqlSession().selectList(namespace + "." + SQLID_SELECT_PARAM,param);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+    } 
+    
+    @Override  
+    public List<T> selectParamFlexible(T entity) {  
+        try {  
+            return this.getSqlSession().selectList(namespace + "." + SQLID_PARAM_FLEXIBLE,entity);  
         } catch (Exception e) {  
             e.printStackTrace();  
             return null;  

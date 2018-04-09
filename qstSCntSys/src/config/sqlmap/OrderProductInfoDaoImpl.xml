@@ -162,7 +162,7 @@
 		     
 		   <!-- count -->  
 		   <select id="count" resultType="int">  
-		        select count(*) from orderProductInfo e   
+		        select count(*) from orderProductInfo e where isDelete=0 
 		  </select>  
 		  <select id="countParam" parameterType="java.util.Map" resultType="int">  
 		        select count(*) from orderProductInfo e   
@@ -171,16 +171,17 @@
 				        ${key} = #{value} 
 				    </foreach> 
 	              </where> 
+	              and isDelete=0
 		  </select>
 		  
 		  <!-- 查询 -->  
 		   <select id="select" parameterType="INTEGER" resultType="orderProductInfo">  
-		        select * from orderProductInfo
+		        select * from orderProductInfo where isDelete=0
 		   </select>
 		  
 		   <!-- 查询（参数） -->  
 		   <select id="selectPk" parameterType="INTEGER" resultType="orderProductInfo">  
-		        select * from orderProductInfo   where id = #{id} 
+		        select * from orderProductInfo   where id = #{id} and isDelete=0
 		   </select>  
 		    
 		   <!-- 查询（参数） -->  
@@ -191,5 +192,29 @@
 				        ${key} = #{value} 
 				    </foreach> 
 	              </where> 
+	              and isDelete=0
+		   </select>
+		   
+		   <!-- 查询（模糊查询，参数） -->  
+		   <select id="selectParamFlexible" parameterType="orderProductInfo" resultType="orderProductInfo">  
+		        select * from orderProductInfo   
+		       <where>		       
+		       		<if test="orderID != null" >
+				        orderID = #{orderID}
+				      </if>
+				      <if test="productID != null" >
+				        and productID = #{productID}
+				      </if>
+				      <if test="amount != null" >
+				        and amount = #{amount}
+				      </if>
+				      <if test="price != null" >
+				        and price = #{price}
+				      </if>
+				      <if test="totalMoney != null" >
+				        and totalMoney = #{totalMoney}
+				      </if>
+	           </where> 
+	           and isDelete=0
 		   </select>
     </mapper>

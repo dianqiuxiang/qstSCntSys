@@ -8,8 +8,12 @@ import com.qst.scnt.model.UserInfo;
 @Repository("userInfoDao")
 public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo> implements UserInfoDao {
 
+	// mapper.xmlÖÐµÄnamespace  
+    private String namespace;
+    
 	public UserInfoDaoImpl(){
-		super.setNamespace("com.qst.scnt.dao.impl.UserInfoDaoImpl");		
+		super.setNamespace("com.qst.scnt.dao.impl.UserInfoDaoImpl");
+		namespace="com.qst.scnt.dao.impl.UserInfoDaoImpl";
 	}
 	
 }

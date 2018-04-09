@@ -1,4 +1,4 @@
-ï»¿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
@@ -10,7 +10,7 @@
             <property name="suppressAllComments" value="false"/>
         </commentGenerator>
 
-        <!-- 1.JDBC è¿žæŽ¥ä¿¡æ¯ -->
+        <!-- 1.JDBC Á¬½ÓÐÅÏ¢ -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/infomanagesys" userId="root"
                         password="123456">
@@ -20,26 +20,26 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <!-- 2.å¯¼å‡ºçš„ model æ–‡ä»¶ä½ç½® -->
+        <!-- 2.µ¼³öµÄ model ÎÄ¼þÎ»ÖÃ -->
         <javaModelGenerator targetPackage="com.qst.scnt.model"
                             targetProject="../resources">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <!-- 3.ç”Ÿæˆçš„ SQLProvider æ–‡ä»¶åœ°å€-->
+        <!-- 3.Éú³ÉµÄ SQLProvider ÎÄ¼þµØÖ·-->
         <sqlMapGenerator targetPackage="com.qst.scnt.model"
                          targetProject="../resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <!-- 4.å¯¼å‡ºçš„mapperæ–‡ä»¶ä½ç½® -->
+        <!-- 4.µ¼³öµÄmapperÎÄ¼þÎ»ÖÃ -->
         <javaClientGenerator type="XMLMAPPER"
                              targetPackage="com.qst.scnt.model" targetProject="../resources">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <!-- 5.è®¾ç½®è¦ç”Ÿæˆmodelçš„è¡¨ï¼Œä¸€ä¸ªè¡¨å¯¹åº”ä¸€ä¸ªtableå…ƒç´  -->
+        <!-- 5.ÉèÖÃÒªÉú³ÉmodelµÄ±í£¬Ò»¸ö±í¶ÔÓ¦Ò»¸ötableÔªËØ -->
         <table tableName="cost" domainObjectName="cost" enableCountByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false">

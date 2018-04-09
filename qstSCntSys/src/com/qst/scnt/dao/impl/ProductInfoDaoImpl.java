@@ -10,8 +10,13 @@ import com.qst.scnt.model.ProductInfo;
 
 @Repository("productInfoDao")
 public class ProductInfoDaoImpl extends BaseDaoImpl<ProductInfo> implements ProductInfoDao {
+
+	// mapper.xmlÖÐµÄnamespace  
+    private String namespace;
+    
 	public ProductInfoDaoImpl(){
-		super.setNamespace("com.qst.scnt.dao.impl.ProductInfoDaoImpl");		
+		super.setNamespace("com.qst.scnt.dao.impl.ProductInfoDaoImpl");	
+		namespace="com.qst.scnt.dao.impl.ProductInfoDaoImpl";
 	}
 }
 

@@ -164,7 +164,7 @@
 		     
 		   <!-- count -->  
 		   <select id="count" resultType="int">  
-		        select count(*) from userInfo e   
+		        select count(*) from userInfo e  where isDelete=0 
 		  </select>  
 		  <select id="countParam" parameterType="java.util.Map" resultType="int">  
 		        select count(*) from userInfo e   
@@ -173,16 +173,17 @@
 				        ${key} = #{value} 
 				    </foreach> 
 	              </where> 
+	              and isDelete=0
 		  </select>
 		  
 		  <!-- 查询 -->  
 		   <select id="select" parameterType="Integer" resultType="userInfo">  
-		        select * from userInfo
+		        select * from userInfo where isDelete=0
 		   </select>
 		  
 		   <!-- 查询（参数） -->  
 		   <select id="selectPk" parameterType="Integer" resultType="userInfo">  
-		        select * from userInfo   where id = #{id} 
+		        select * from userInfo   where id = #{id} and isDelete=0
 		   </select>  
 		    
 		   <!-- 查询（参数） -->  
@@ -192,8 +193,31 @@
 				  	<foreach collection="where.entrySet()" index="key" item="value" separator="and">
 				        ${key} = #{value} 
 				    </foreach> 
-	              </where> 
+	           </where> 
+	           and isDelete=0
 		   </select>
 		   
+		   <!-- 查询（模糊查询，参数） -->  
+		   <select id="selectParamFlexible" parameterType="userInfo" resultType="userInfo">  
+		        select * from userInfo   
+		       <where>		       
+		       		<if test="userName != null" >
+			        userName like "%"#{userName}"%"
+			      </if>
+			      <if test="pwd != null" >
+			        and pwd = #{pwd}
+			      </if>
+			      <if test="userPhone != null" >
+			        and userPhone like "%"#{userPhone}"%"
+			      </if>
+			      <if test="userEmail != null" >
+			        and userEmail like "%"#{userEmail}"%"
+			      </if>
+			      <if test="salesDepartmentID != null" >
+			        and salesDepartmentID = #{salesDepartmentID}
+			      </if>
+	           </where> 
+	           and isDelete=0
+		   </select>
 	    
     </mapper>

@@ -152,7 +152,7 @@
 		     
 		   <!-- count -->  
 		   <select id="count" resultType="int">  
-		        select count(*) from customerInfo e   
+		        select count(*) from customerInfo e   where isDelete=0
 		  </select>  
 		  <select id="countParam" parameterType="java.util.Map" resultType="int">  
 		        select count(*) from customerInfo e   
@@ -161,16 +161,17 @@
 				        ${key} = #{value} 
 				    </foreach> 
 	              </where> 
+	              and isDelete=0
 		  </select>
 		  
 		  <!-- 查询 -->  
 		   <select id="select" parameterType="Integer" resultType="customerInfo">  
-		        select * from customerInfo
+		        select * from customerInfo where isDelete=0
 		   </select>
 		  
 		   <!-- 查询（参数） -->  
 		   <select id="selectPk" parameterType="Integer" resultType="customerInfo">  
-		        select * from customerInfo   where id = #{id} 
+		        select * from customerInfo   where id = #{id} and isDelete=0
 		   </select>  
 		    
 		   <!-- 查询（参数） -->  
@@ -178,8 +179,30 @@
 		        select * from customerInfo   
 		       <where>
 				  	<foreach collection="where.entrySet()" index="key" item="value" separator="and">
-				        ${key} = #{value} 
+				       	${key} = #{value}
 				    </foreach> 
 	           </where> 
+	           and isDelete=0
 		   </select>
+		   
+		   <!-- 查询（模糊查询，参数） -->  
+		   <select id="selectParamFlexible" parameterType="customerInfo" resultType="customerInfo">  
+		        select * from customerInfo   
+		       <where>
+				  	 <if test="customerPhone != null" >
+				        customerPhone like "%"#{customerPhone}"%" 
+				      </if>
+				      <if test="customerName != null" >
+				        and customerName like "%"#{customerName}"%"
+				      </if>
+				      <if test="customerAddress != null" >
+				        and customerAddress like "%"#{customerAddress}"%"
+				      </if>
+				      <if test="salesDepartmentID != null" >
+				        and salesDepartmentID = #{salesDepartmentID}
+				      </if>
+	           </where> 
+	           and isDelete=0
+		   </select>
+		   
     </mapper>

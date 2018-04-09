@@ -8,8 +8,12 @@ import com.qst.scnt.model.ReceiptInfo;
 @Repository("peceiptInfoDao")
 public class ReceiptInfoDaoImpl extends BaseDaoImpl<ReceiptInfo> implements ReceiptInfoDao {
 
+	// mapper.xmlÖÐµÄnamespace  
+    private String namespace;
+    
 	public ReceiptInfoDaoImpl(){
 		super.setNamespace("com.qst.scnt.dao.impl.ReceiptInfoDaoImpl");		
+		namespace="com.qst.scnt.dao.impl.ReceiptInfoDaoImpl";
 	}
 	
 }

@@ -1,7 +1,6 @@
 package com.qst.scnt.action;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -17,7 +16,6 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.google.gson.Gson;
 import com.qst.scnt.model.UserInfo;
 import com.qst.scnt.service.UserInfoService;
-
 @Controller
 @RequestMapping(value="/login")
 public class LoginAction extends BaseAction {

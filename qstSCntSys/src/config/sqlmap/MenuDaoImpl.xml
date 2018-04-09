@@ -136,7 +136,7 @@
 		     
 		   <!-- count -->  
 		   <select id="count" resultType="int">  
-		        select count(*) from menu e   
+		        select count(*) from menu e 
 		  </select>  
 		  <select id="countParam" parameterType="java.util.Map" resultType="int">  
 		        select count(*) from menu e   
@@ -154,7 +154,7 @@
 		  
 		   <!-- 查询（参数） -->  
 		   <select id="selectPk" parameterType="Integer" resultType="menu">  
-		        select * from menu   where id = #{id} 
+		        select * from menu   where id = #{id}
 		   </select>  
 		    
 		   <!-- 查询（参数） -->  
@@ -165,5 +165,25 @@
 				        ${key} = #{value} 
 				    </foreach> 
 	              </where> 
+		   </select>
+		   
+		   <!-- 查询（模糊查询，参数） -->  
+		   <select id="selectParamFlexible" parameterType="menu" resultType="menu">  
+		        select * from menu   
+		       <where>	
+		       
+		       		<if test="menuName != null" >
+				        menuName like "%"#{menuName}"%"
+				      </if>
+				      <if test="icon != null" >
+				        and icon like "%"#{icon}"%"
+				      </if>
+				      <if test="menuUrl != null" >
+				        and menuUrl like "%"#{menuUrl}"%"
+				      </if>
+				      <if test="parentID != null" >
+				        and parentID = #{parentID}
+				      </if>
+	           </where> 
 		   </select>
     </mapper>

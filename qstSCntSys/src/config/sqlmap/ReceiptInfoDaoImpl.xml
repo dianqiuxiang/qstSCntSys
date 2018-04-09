@@ -175,7 +175,7 @@
 		     
 		   <!-- count -->  
 		   <select id="count" resultType="int">  
-		        select count(*) from receiptInfo e   
+		        select count(*) from receiptInfo e where isDelete=0   
 		  </select>  
 		  <select id="countParam" parameterType="java.util.Map" resultType="int">  
 		        select count(*) from receiptInfo e   
@@ -184,16 +184,17 @@
 				        ${key} = #{value} 
 				    </foreach> 
 	              </where> 
+	              and isDelete=0
 		  </select>
 		  
 		  <!-- 查询 -->  
 		   <select id="select" parameterType="Integer" resultType="receiptInfo">  
-		        select * from receiptInfo
+		        select * from receiptInfo where isDelete=0
 		   </select>
 		  
 		   <!-- 查询（参数） -->  
 		   <select id="selectPk" parameterType="Integer" resultType="receiptInfo">  
-		        select * from receiptInfo   where id = #{id} 
+		        select * from receiptInfo   where id = #{id} and isDelete=0
 		   </select>  
 		    
 		   <!-- 查询（参数） -->  
@@ -204,5 +205,33 @@
 				        ${key} = #{value} 
 				    </foreach> 
 	              </where> 
+	              and isDelete=0
 		   </select>
+		   
+		   <!-- 查询（模糊查询，参数） -->  
+		   <select id="selectParamFlexible" parameterType="receiptInfo" resultType="receiptInfo">  
+		        select * from receiptInfo   
+		       <where>		       
+		       		<if test="orderID != null" >
+				        orderID = #{orderID}
+				      </if>
+				      <if test="receiptDate != null" >
+				        and receiptDate = #{receiptDate}
+				      </if>
+				      <if test="receiptAmount != null" >
+				        and receiptAmount = #{receiptAmount}
+				      </if>
+				      <if test="receiptMenber != null" >
+				        and receiptMenber like "%"#{receiptMenber}"%"
+				      </if>
+				      <if test="salesDepartmentID != null" >
+				        and salesDepartmentID = #{salesDepartmentID}
+				      </if>
+				      <if test="remark != null" >
+				        and remark like "%"#{remark}
+				      </if>
+	           </where> 
+	           and isDelete=0
+		   </select>
+		   
     </mapper>

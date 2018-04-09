@@ -102,7 +102,14 @@ public interface BaseService<T> {
      * @param param 查询条件参数，包括WHERE条件、分页条件、排序条件  
      * @return 符合条件记录的实体对象的List  
      */    
-    public abstract List<T> selectParam(Map param);    
+    public abstract List<T> selectParam(Map param);   
+    
+    /**  
+     * 按条件查询记录（模糊查询）  
+     * @param param 查询条件参数， 查询条件封装的entity
+     * @return 符合条件记录的实体对象的List  
+     */
+    public abstract List<T> selectParamFlexible(T entity);
         
     /**  
      * 按条件查询记录，并处理成分页结果  

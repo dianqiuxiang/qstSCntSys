@@ -112,6 +112,12 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 	}
 
 	@Override
+	public List<T> selectParamFlexible(T entity) {
+		// TODO Auto-generated method stub
+		return getBaseDao().selectParamFlexible(entity);
+	}
+	
+	@Override
 	public PageInfo<T> selectPagination(Map param,int pageNum,int pageSize) {
 		// TODO Auto-generated method stub
 		PageHelper.startPage(pageNum, pageSize);

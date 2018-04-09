@@ -8,8 +8,12 @@ import com.qst.scnt.model.OrderProductInfo;
 @Repository("orderProductInfoDao")
 public class OrderProductInfoDaoImpl extends BaseDaoImpl<OrderProductInfo> implements OrderProductInfoDao{
 
+	// mapper.xmlÖÐµÄnamespace  
+    private String namespace;
+    
 	public OrderProductInfoDaoImpl(){
-		super.setNamespace("com.qst.scnt.dao.impl.OrderProductInfoDaoImpl");		
+		super.setNamespace("com.qst.scnt.dao.impl.OrderProductInfoDaoImpl");
+		namespace="com.qst.scnt.dao.impl.OrderProductInfoDaoImpl";
 	}
 
 }
