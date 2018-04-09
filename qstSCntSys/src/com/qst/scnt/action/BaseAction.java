@@ -19,8 +19,23 @@ public class BaseAction   {
     
     public UserInfo getCurrentUser() {
 		//HttpSession httpSession= request.getSession();
-	    System.out.println((UserInfo)session.getAttribute("currentUser"));
-	    UserInfo CurrentUser=(UserInfo) session.getAttribute("currentUser");
+    	
+    	String testUserName="123";
+    	String testPwd="123";
+    	String testUserPhone="123";
+    	String testUserEmail="123";
+    	int testSalesDepartmentID=1;
+    	int isDelete=0;
+    	CurrentUser.setUserName(testUserName);
+    	CurrentUser.setPwd(testPwd);
+    	CurrentUser.setUserPhone(testUserPhone);
+    	CurrentUser.setUserEmail(testUserEmail);
+    	CurrentUser.setSalesDepartmentID(testSalesDepartmentID);
+    	CurrentUser.setIsDelete(isDelete);
+    	
+    	
+	    //System.out.println((UserInfo)session.getAttribute("currentUser"));
+	    //UserInfo CurrentUser=(UserInfo) session.getAttribute("currentUser");
 		return CurrentUser;
 	}
     public void setCurrentUser(UserInfo currentUser) {

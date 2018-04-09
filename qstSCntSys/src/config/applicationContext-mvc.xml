@@ -18,13 +18,20 @@ http://www.springframework.org/schema/mvc
 http://www.springframework.org/schema/mvc/spring-mvc.xsd
 "
 >  
- <mvc:annotation-driven />
-    <mvc:default-servlet-handler />
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">  
+			<!-- 解决@ResponseBody中文乱码 -->  
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">  
+				<property name="supportedMediaTypes" value = "text/plain;charset=UTF-8" />  
+			</bean>  
+		</mvc:message-converters>  
+	</mvc:annotation-driven>
+	
+	<mvc:default-servlet-handler />
+	
     <!-- 启用spring mvc 注解 -->
     <context:annotation-config />
 
     <!-- 设置使用注解的类所在的jar包 -->
     <context:component-scan base-package="com.qst.scnt.action"></context:component-scan>
-<mvc:annotation-driven />
-    <mvc:default-servlet-handler />
-    </beans>
+</beans>
