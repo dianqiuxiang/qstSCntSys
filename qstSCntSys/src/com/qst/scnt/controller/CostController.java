@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.qst.scnt.model.Cost;
-import com.qst.scnt.model.CustomerInfo;
+import com.qst.scnt.model.ExpenseItem;
 import com.qst.scnt.service.CostService;
+import com.qst.scnt.service.ExpenseItemService;
 import com.qst.scnt.utils.EUDataGridResult;
 
 @Controller
@@ -24,6 +25,19 @@ public class CostController extends BaseController {
 	@Resource
 	private CostService costService;
 	
+	@Resource
+	private ExpenseItemService expenseItemService;
+	
+	@RequestMapping(value="/getExpenseItem.do")
+	@ResponseBody
+	public Object getExpenseItem() {		
+		Gson gson = new Gson();
+
+		List<ExpenseItem> list=expenseItemService.select();
+		System.out.println(gson.toJson(list));
+		return gson.toJson(list);
+	}
+		
 	@RequestMapping(value="/getInfo.do")
 	@ResponseBody
 	public Object getInfo() {		
@@ -36,7 +50,7 @@ public class CostController extends BaseController {
 	
 	@RequestMapping(value="/selectByEItemIDAndEDate.do")
 	@ResponseBody
-	public Object selectByEItemIDAndEDate(int expenseItemID,Date expenseDate,int page,int rows) {
+	public Object selectByEItemIDAndEDate(int expenseItemID,String expenseDate,int page,int rows) {
 		
 		Gson gson = new Gson();		
 		Cost cost=new Cost();
@@ -51,15 +65,16 @@ public class CostController extends BaseController {
 	
 	@RequestMapping(value="/addCostInfo.do")
 	@ResponseBody
-	public Object addCostInfo(int expenseItemID,long expenseAmount,Date expenseDate) {	
-		Map<String, Object> whereMap = new HashMap<String, Object>();
-		whereMap.put("expenseItemID",expenseItemID);//指定查询范围,此处默认查询本部门下的顾客信息	 
-		
-		Map<String, Object> params = new HashMap<String, Object>();  
-		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
-		List<Cost> list=costService.selectParam(params);
+	public Object addCostInfo(int expenseItemID,long expenseAmount,String expenseDate) {	
+//		/**********费用可以重复（ZL修改）**********/
+//		Map<String, Object> whereMap = new HashMap<String, Object>();
+//		whereMap.put("expenseItemID",expenseItemID);//指定查询范围,此处默认查询本部门下的顾客信息	 
+//		
+//		Map<String, Object> params = new HashMap<String, Object>();  
+//		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+//		List<Cost> list=costService.selectParam(params);
 		String resultStr="";	
-		if(list.size()==0) {				
+//		if(list.size()==0) {				
 			Cost cost=new Cost();
 			cost.setExpenseItemID(expenseItemID);
 			cost.setExpenseAmount(expenseAmount);
@@ -75,12 +90,10 @@ public class CostController extends BaseController {
 			{
 				resultStr="[{\"result\":\"Failed\"}]";
 			}
-		}else 
-		{
-			resultStr="[{\"result\":\"isExist\"}]";
-		}
-		
-		
+//		}else 
+//		{
+//			resultStr="[{\"result\":\"isExist\"}]";
+//		}
 		return resultStr;
 	}
 	
@@ -95,19 +108,19 @@ public class CostController extends BaseController {
 	
 	@RequestMapping(value="/updateCostInfo.do")
 	@ResponseBody
-	public Object updateCostInfo(int ID,int expenseItemID,long expenseAmount,Date expenseDate) {
-
-		Cost old_costInfo=costService.selectPK(ID);
-		
-		Map<String, Object> whereMap = new HashMap<String, Object>();
-		whereMap.put("expenseItemID",expenseItemID);//指定查询范围,此处默认查询本部门下的顾客信息	 
-		
-		Map<String, Object> params = new HashMap<String, Object>();  
-		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
-		List<Cost> list=costService.selectParam(params);
+	public Object updateCostInfo(int ID,int expenseItemID,long expenseAmount,String expenseDate) {
+//		/**********费用可以重复（ZL修改）**********/
+//		Cost old_costInfo=costService.selectPK(ID);
+//		
+//		Map<String, Object> whereMap = new HashMap<String, Object>();
+//		whereMap.put("expenseItemID",expenseItemID);//指定查询范围,此处默认查询本部门下的顾客信息	 
+//		
+//		Map<String, Object> params = new HashMap<String, Object>();  
+//		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+//		List<Cost> list=costService.selectParam(params);
 		
 		String resultStr="";
-		if(list.size()==0||old_costInfo.getExpenseItemID().equals(expenseItemID)){
+//		if(list.size()==0||old_costInfo.getExpenseItemID().equals(expenseItemID)){
 			Cost costinfo=new Cost();
 			costinfo.setId(ID);
 			costinfo.setExpenseItemID(expenseItemID);
@@ -124,12 +137,12 @@ public class CostController extends BaseController {
 			{
 				resultStr="[{\"result\":\"Failed\"}]";
 			}
-		}
-		else
-		{
-			resultStr="[{\"result\":\"isExist\"}]";
-		}
-		return resultStr;
+//		}
+//		else
+//		{
+//			resultStr="[{\"result\":\"isExist\"}]";
+//		}
+		return resultStr;			
 	}
 	
 	

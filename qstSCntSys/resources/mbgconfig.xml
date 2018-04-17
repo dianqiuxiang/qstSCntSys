@@ -117,6 +117,18 @@
                enableUpdateByExample="false">
             <property name="useActualColumnNames" value="true"/>
         </table>
+
+	<table tableName="expenseitem" domainObjectName="expenseitem" enableCountByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+
+	<table tableName="parameterinfo" domainObjectName="parameterinfo" enableCountByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false">
+            <property name="useActualColumnNames" value="true"/>
+        </table>
         
     </context>
 </generatorConfiguration>  

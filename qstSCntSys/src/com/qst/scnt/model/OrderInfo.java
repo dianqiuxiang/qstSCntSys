@@ -1,7 +1,6 @@
 package com.qst.scnt.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class OrderInfo {
     /**
@@ -37,7 +36,7 @@ public class OrderInfo {
     /**
      *订单时间
      */
-    private Date orderDate;
+    private String orderDate;
 
     /**
      *订单金额
@@ -151,14 +150,14 @@ public class OrderInfo {
     /**
      *订单时间
      */
-    public Date getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
     /**
      *订单时间
      */
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 

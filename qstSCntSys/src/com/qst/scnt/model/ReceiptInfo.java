@@ -17,7 +17,7 @@ public class ReceiptInfo {
     /**
      *收款日期
      */
-    private Date receiptDate;
+    private String receiptDate;
 
     /**
      *收款金额
@@ -75,14 +75,14 @@ public class ReceiptInfo {
     /**
      *收款日期
      */
-    public Date getReceiptDate() {
+    public String getReceiptDate() {
         return receiptDate;
     }
 
     /**
      *收款日期
      */
-    public void setReceiptDate(Date receiptDate) {
+    public void setReceiptDate(String receiptDate) {
         this.receiptDate = receiptDate;
     }
 

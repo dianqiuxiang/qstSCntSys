@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.qst.scnt.model.CustomerInfo;
 import com.qst.scnt.model.OrderInfo;
 import com.qst.scnt.service.OrderInfoService;
 import com.qst.scnt.utils.EUDataGridResult;
@@ -51,7 +50,7 @@ public class OrderController extends BaseController {
 	
 	@RequestMapping(value="/selectByParams.do")
 	@ResponseBody
-	public Object selectByParams(String orderCode,String customerType,Date orderDate,int page,int rows) {
+	public Object selectByParams(String orderCode,String customerType,String orderDate,int page,int rows) {
 		Gson gson = new Gson();		
 		OrderInfo orderInfo=new OrderInfo();
 		orderInfo.setOrderCode(orderCode);
@@ -82,7 +81,7 @@ public class OrderController extends BaseController {
 	@RequestMapping(value="/addOrderInfo.do")
 	@ResponseBody
 	public Object addOrderInfo(String orderCode,String customerType,String customerPhone,String customerName,
-			String customerAddress,Date orderDate,BigDecimal orderAmount,String healthMember,String customerSign,int salesDepartmentID) {
+			String customerAddress,String orderDate,BigDecimal orderAmount,String healthMember,String customerSign,int salesDepartmentID) {
 		Map<String, Object> whereMap = new HashMap<String, Object>();
 		whereMap.put("orderCode",orderCode);//÷∏∂®≤È—Ø∑∂Œß
 		
@@ -140,7 +139,7 @@ public class OrderController extends BaseController {
 	@RequestMapping(value="/updateOrderInfo.do")
 	@ResponseBody
 	public Object updateOrderInfo(int ID,String orderCode,String customerType,String customerPhone,String customerName,
-			String customerAddress,Date orderDate,BigDecimal orderAmount,String healthMember,String customerSign,int salesDepartmentID) {
+			String customerAddress,String orderDate,BigDecimal orderAmount,String healthMember,String customerSign,int salesDepartmentID) {
 		OrderInfo old_orderInfo=orderInfoService.selectPK(ID);
 		Map<String,Object> whereMap=new HashMap<String, Object>();
 		whereMap.put("orderCode", orderCode);

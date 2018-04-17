@@ -1,5 +1,11 @@
 package com.qst.scnt.dao;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.qst.scnt.model.EveryMonthOtherInfo;
 
 /**
@@ -10,5 +16,7 @@ import com.qst.scnt.model.EveryMonthOtherInfo;
 
 public interface EveryMonthOtherInfoDao  extends BaseDao<EveryMonthOtherInfo> {
 	
+	public List<EveryMonthOtherInfo> selectByStartAndEndDate(Map<String, Object> queryDate);
+	public List<EveryMonthOtherInfo> selectByDate(Map<String, Object> infoDate);
 }
 

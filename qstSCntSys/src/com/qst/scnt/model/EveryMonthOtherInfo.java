@@ -1,7 +1,6 @@
 package com.qst.scnt.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class EveryMonthOtherInfo {
     /**
@@ -42,7 +41,7 @@ public class EveryMonthOtherInfo {
     /**
      *月报其他信息时间
      */
-    private Date infoDate;
+    private String infoDate;
 
     /**
      *是否删除：0 没删除，1 删除
@@ -150,14 +149,14 @@ public class EveryMonthOtherInfo {
     /**
      *月报其他信息时间
      */
-    public Date getInfoDate() {
+    public String getInfoDate() {
         return infoDate;
     }
 
     /**
      *月报其他信息时间
      */
-    public void setInfoDate(Date infoDate) {
+    public void setInfoDate(String infoDate) {
         this.infoDate = infoDate;
     }
 

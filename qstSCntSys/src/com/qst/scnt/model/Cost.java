@@ -1,7 +1,5 @@
 package com.qst.scnt.model;
 
-import java.util.Date;
-
 public class Cost {
     /**
      *主键（自增）
@@ -21,7 +19,7 @@ public class Cost {
     /**
      *费用时间
      */
-    private Date expenseDate;
+    private String expenseDate;
 
     /**
      *部门编号（外键）
@@ -78,14 +76,14 @@ public class Cost {
     /**
      *费用时间
      */
-    public Date getExpenseDate() {
+    public String getExpenseDate() {
         return expenseDate;
     }
 
     /**
      *费用时间
      */
-    public void setExpenseDate(Date expenseDate) {
+    public void setExpenseDate(String expenseDate) {
         this.expenseDate = expenseDate;
     }
 

@@ -251,4 +251,32 @@
 	           </where> 
 	           and isDelete=0
 		   </select>
+		   
+		   <!-- 查询（参数,根据起始时间查询） -->  
+		   <select id="selectByStartAndEndDate" parameterType="java.util.Map" resultType="everyMonthOtherInfo">  
+		        select * from everyMonthOtherInfo 
+		        <where>  
+		        	<if test="salesDepartmentID!=null and salesDepartmentID!='' ">  
+			           salesDepartmentID =  #{salesDepartmentID}
+			        </if>
+			        <if test="startDate!=null and startDate!='' ">  
+			          <![CDATA[ and DATE_FORMAT(infoDate, '%Y-%m')>=  DATE_FORMAT(#{startDate}, '%Y-%m')   ]]> 
+			        </if>  
+			        <if test="endDate!=null and endDate!=''">  
+			        <![CDATA[  and DATE_FORMAT(infoDate, '%Y-%m') <= DATE_FORMAT(#{endDate}, '%Y-%m')    ]]>
+			        </if>  
+			     </where> 		       
+	             and isDelete=0
+		   </select>
+		   
+		   <!-- 查询（参数,根据时间查询） -->  
+		   <select id="selectByDate" parameterType="java.util.Map" resultType="everyMonthOtherInfo">  
+		        select * from everyMonthOtherInfo 
+		        where 
+		        <if test="salesDepartmentID!=null and salesDepartmentID!='' ">  
+			           salesDepartmentID =  #{salesDepartmentID}
+			        </if>
+		        <![CDATA[ and DATE_FORMAT(infoDate, '%Y-%m')=  DATE_FORMAT(#{infoDate}, '%Y-%m')   ]]> 		        	       
+	             and isDelete=0
+		   </select>
     </mapper>
