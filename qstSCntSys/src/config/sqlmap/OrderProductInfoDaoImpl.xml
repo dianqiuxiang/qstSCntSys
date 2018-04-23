@@ -217,4 +217,16 @@
 	           </where> 
 	           and isDelete=0
 		   </select>
+		   
+		   <!-- 查询（根据订单编号查询） -->  
+		   <select id="selectOProductByOrderID" parameterType="orderProductInfo" resultType="orderProductInfo">  
+		        select a.*,b.productName from orderProductInfo a,productInfo b  
+		       <where>		       
+		       		<if test="orderID != null" >
+				        a.orderID = #{orderID}
+				      </if>				      				      
+	           </where> 
+	           and a.isDelete=0
+	           and a.productID=b.id
+		   </select>
     </mapper>

@@ -32,20 +32,13 @@ public class EveryMonthOtherInfoServiceImpl  extends  BaseServiceImpl<EveryMonth
 	public EUDataGridResult<EveryMonthOtherInfo> selectByStartAndEndDate(Map<String, Object> queryDate,int pageNum,int pageSize)
 	{
 		PageHelper.startPage(pageNum, pageSize);
-		List<EveryMonthOtherInfo> list = everyMonthOtherInfoDao.selectByStartAndEndDate(queryDate);
-		
-//		for(EveryMonthOtherInfo item : list){
-//			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
-//             String DateString = formatter.format(item.getInfoDate());
-//             item.setInfoDate(DateString);
-//			System.out.println(item.getInfoDate());
-//		}
+		List<EveryMonthOtherInfo> list = everyMonthOtherInfoDao.selectByStartAndEndDate(queryDate);		
 		
         //创建一个返回值对象
         EUDataGridResult<EveryMonthOtherInfo> result = new EUDataGridResult<EveryMonthOtherInfo>();
         result.setRows(list);
         //取记录总条数
-        PageInfo<EveryMonthOtherInfo> pageInfo = new PageInfo<>(list);
+        PageInfo<EveryMonthOtherInfo> pageInfo = new PageInfo<EveryMonthOtherInfo>(list);
         result.setTotal(pageInfo.getTotal());
         return result;
 		

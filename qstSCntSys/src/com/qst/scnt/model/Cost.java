@@ -1,5 +1,7 @@
 package com.qst.scnt.model;
 
+import java.math.BigDecimal;
+
 public class Cost {
     /**
      *主键（自增）
@@ -7,14 +9,19 @@ public class Cost {
     private Integer id;
 
     /**
-     *产品名称（外键）
+     *项目ID（外键）
      */
     private Integer expenseItemID;
+    
+    /**
+     *项目名称（外键）
+     */
+    private String expenseItem;
 
     /**
      *费用金额
      */
-    private Long expenseAmount;
+    private BigDecimal expenseAmount;
 
     /**
      *费用时间
@@ -53,23 +60,34 @@ public class Cost {
     }
 
     /**
-     *产品名称（外键）
+     *项目ID（外键）
      */
     public void setExpenseItemID(Integer expenseItemID) {
         this.expenseItemID = expenseItemID;
     }
 
     /**
+     *项目名称（外键）
+     */    
+    public String getExpenseItem() {
+		return expenseItem;
+	}
+
+	public void setExpenseIteme(String expenseItem) {
+		this.expenseItem = expenseItem;
+	}
+
+	/**
      *费用金额
      */
-    public Long getExpenseAmount() {
+    public BigDecimal getExpenseAmount() {
         return expenseAmount;
     }
 
     /**
      *费用金额
      */
-    public void setExpenseAmount(Long expenseAmount) {
+    public void setExpenseAmount(BigDecimal expenseAmount) {
         this.expenseAmount = expenseAmount;
     }
 

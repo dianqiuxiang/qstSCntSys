@@ -204,4 +204,24 @@
 	           </where> 
 	           and isDelete=0
 		   </select>
+		   
+		  <!-- 查询（参数,根据起始时间查询） -->  
+		   <select id="selectByItemIdAndStartAndEndDate" parameterType="java.util.Map" resultType="cost">  
+		        select c.*,e.expenseItem from cost c,expenseItem e
+		        where
+			        <if test="salesDepartmentID!=null and salesDepartmentID!='' ">  
+			          c.salesDepartmentID =  #{salesDepartmentID}
+			        </if> 
+		         	<if test="startDate!=null and startDate!='' ">  
+			          <![CDATA[and c.expenseDate>= #{startDate}   ]]> 
+			        </if>  
+			        <if test="endDate!=null and endDate!=''">  
+			        <![CDATA[and c.expenseDate <=  #{endDate}    ]]>
+			        </if> 
+		        	<if test="expenseItemID!=null and expenseItemID!='' ">  
+			           and c.expenseItemID =  #{expenseItemID}
+			        </if>			   	       
+	             and c.isDelete=0
+	             and c.expenseItemID=e.id
+		   </select>
     </mapper>

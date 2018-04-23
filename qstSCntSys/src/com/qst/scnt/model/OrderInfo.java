@@ -1,16 +1,18 @@
 package com.qst.scnt.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class OrderInfo {
     /**
      *主键（自增）
      */
+	
     private Integer id;
 
     /**
      *订单编号
-     */
+     */	
     private String orderCode;
 
     /**
@@ -63,6 +65,14 @@ public class OrderInfo {
      */
     private Integer isDelete;
 
+    private List<OrderProductInfo> products;
+    
+    private List<OrderProductInfo> insertProducts;
+    
+    private List<OrderProductInfo> updateProducts;
+    
+    private List<OrderProductInfo> deleteProducts;    
+    
     /**
      *主键（自增）
      */
@@ -230,4 +240,39 @@ public class OrderInfo {
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
+
+	public List<OrderProductInfo> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<OrderProductInfo> products) {
+		this.products = products;
+	}
+
+	public List<OrderProductInfo> getInsertProducts() {
+		return insertProducts;
+	}
+
+	public void setInsertProducts(List<OrderProductInfo> insertProducts) {
+		this.insertProducts = insertProducts;
+	}
+
+	public List<OrderProductInfo> getUpdateProducts() {
+		return updateProducts;
+	}
+
+	public void setUpdateProducts(List<OrderProductInfo> updateProducts) {
+		this.updateProducts = updateProducts;
+	}
+
+	public List<OrderProductInfo> getDeleteProducts() {
+		return deleteProducts;
+	}
+
+	public void setDeleteProducts(List<OrderProductInfo> deleteProducts) {
+		this.deleteProducts = deleteProducts;
+	}
+    
+	
+    
 }

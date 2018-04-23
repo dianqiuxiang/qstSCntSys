@@ -8,24 +8,24 @@
 		   <!-- 新增receiptInfo实体类 -->  
 		    <insert id="insert" parameterType="receiptInfo">  
 		        insert into receiptInfo (orderID, receiptDate, 
-			      receiptAmount, receiptMenber, salesDepartmentID, 
+			      receiptAmount, receiptMember, salesDepartmentID, 
 			      remark, isDelete)
 			    values (#{orderID,jdbcType=INTEGER}, #{receiptDate,jdbcType=DATE}, 
-			      #{receiptAmount,jdbcType=DECIMAL}, #{receiptMenber,jdbcType=VARCHAR}, #{salesDepartmentID,jdbcType=INTEGER}, 
+			      #{receiptAmount,jdbcType=DECIMAL}, #{receiptMember,jdbcType=VARCHAR}, #{salesDepartmentID,jdbcType=INTEGER}, 
 			      #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER})
 		   </insert>  		    
 		     
 		   <!-- 批量插入 -->  
 		   <insert id="insertBatch" parameterType="arraylist">  
 		        insert into receiptInfo ( orderID, receiptDate, 
-			      receiptAmount, receiptMenber, salesDepartmentID, 
+			      receiptAmount, receiptMember, salesDepartmentID, 
 			      remark, isDelete
 			      )
 			    values   
 		        <!-- collection可以是List对于list,数组对于array,Map对应ids -->  
 		        <foreach collection="list" item="item"  index="index" separator="union all">		        
 		        #{item.orderID,jdbcType=INTEGER}, #{item.receiptDate,jdbcType=DATE}, 
-			      #{item.receiptAmount,jdbcType=DECIMAL}, #{item.receiptMenber,jdbcType=VARCHAR}, 
+			      #{item.receiptAmount,jdbcType=DECIMAL}, #{item.receiptMember,jdbcType=VARCHAR}, 
 			      #{item.salesDepartmentID,jdbcType=INTEGER}, 
 			      #{item.remark,jdbcType=VARCHAR}, #{item.isDelete,jdbcType=INTEGER}
 			      </foreach>  
@@ -44,8 +44,8 @@
 				      <if test="receiptAmount != null" >
 				        receiptAmount = #{receiptAmount,jdbcType=DECIMAL},
 				      </if>
-				      <if test="receiptMenber != null" >
-				        receiptMenber = #{receiptMenber,jdbcType=VARCHAR},
+				      <if test="receiptMember != null" >
+				        receiptMember = #{receiptMember,jdbcType=VARCHAR},
 				      </if>
 				      <if test="salesDepartmentID != null" >
 				        salesDepartmentID = #{salesDepartmentID,jdbcType=INTEGER},
@@ -104,10 +104,10 @@
 			                 </foreach>
 			            </trim>
 			            
-			            <trim prefix="receiptMenber = case" suffix="end,">
+			            <trim prefix="receiptMember = case" suffix="end,">
 			                 <foreach collection="list" item="item" index="index">
-			                     <if test="item.receiptMenber != null" >
-							        when id=#{item.id} then #{item.receiptMenber,jdbcType=VARCHAR}
+			                     <if test="item.receiptMember != null" >
+							        when id=#{item.id} then #{item.receiptMember,jdbcType=VARCHAR}
 							      </if>
 			                 </foreach>
 			            </trim>
@@ -209,29 +209,30 @@
 		   </select>
 		   
 		   <!-- 查询（模糊查询，参数） -->  
-		   <select id="selectParamFlexible" parameterType="receiptInfo" resultType="receiptInfo">  
-		        select * from receiptInfo   
-		       <where>		       
-		       		<if test="orderID != null" >
-				        orderID = #{orderID}
-				      </if>
-				      <if test="receiptDate != null" >
-				        and receiptDate = #{receiptDate}
-				      </if>
-				      <if test="receiptAmount != null" >
-				        and receiptAmount = #{receiptAmount}
-				      </if>
-				      <if test="receiptMenber != null" >
-				        and receiptMenber like "%"#{receiptMenber}"%"
-				      </if>
+		   <select id="selectByCodeAndRMemberAndDate" parameterType="java.util.Map" resultType="receiptInfo">  
+		        select a.*,b.orderCode from receiptInfo a,orderInfo b  
+		       <where>		
 				      <if test="salesDepartmentID != null" >
-				        and salesDepartmentID = #{salesDepartmentID}
+				        a.salesDepartmentID = #{salesDepartmentID}
+				      </if>	
+				      <if test="receiptMember != null" >
+				        and a.receiptMember like "%"#{receiptMember}"%"
+				      </if>       
+			       	  <if test="orderCode != null" >
+				        and b.orderCode like "%"#{orderCode}"%"
 				      </if>
-				      <if test="remark != null" >
-				        and remark like "%"#{remark}
-				      </if>
+				      <if test="startDate!=null and startDate!='' ">  
+				          <![CDATA[and a.receiptDate>= #{startDate}   ]]> 
+				       </if>  
+				       <if test="endDate!=null and endDate!=''">  
+				       <![CDATA[and a.receiptDate <=  #{endDate}    ]]>
+				       </if>
 	           </where> 
-	           and isDelete=0
+	           and a.isDelete=0
+	           and a.orderID=b.id
 		   </select>
-		   
+		   <!-- 查询（参数） -->  
+		   <select id="selectByID" parameterType="Integer" resultType="receiptInfo">  
+		        select a.*,b.orderCode from receiptInfo a,orderInfo b where a.id = #{id} and a.isDelete=0 and a.orderID=b.id
+		   </select>
     </mapper>

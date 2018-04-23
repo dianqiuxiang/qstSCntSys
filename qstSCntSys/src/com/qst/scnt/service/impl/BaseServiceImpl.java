@@ -121,7 +121,7 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
         EUDataGridResult result = new EUDataGridResult();
         result.setRows(list);
         //取记录总条数
-        PageInfo<T> pageInfo = new PageInfo<>(list);
+        PageInfo<T> pageInfo = new PageInfo<T>(list);
         result.setTotal(pageInfo.getTotal());
         return result;
 	}

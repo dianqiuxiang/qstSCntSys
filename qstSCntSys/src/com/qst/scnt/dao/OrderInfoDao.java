@@ -1,5 +1,9 @@
 package com.qst.scnt.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import com.qst.scnt.model.Cost;
 import com.qst.scnt.model.OrderInfo;
 
 /**
@@ -9,6 +13,8 @@ import com.qst.scnt.model.OrderInfo;
 
 
 public interface OrderInfoDao  extends BaseDao<OrderInfo> {
+
+	List<Cost> selectByCNameAndCTypeAndDate(Map<String, Object> queryDate);
 	
 }
 

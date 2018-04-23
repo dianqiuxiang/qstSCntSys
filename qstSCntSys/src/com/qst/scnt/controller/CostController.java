@@ -1,5 +1,7 @@
 package com.qst.scnt.controller;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,24 +50,50 @@ public class CostController extends BaseController {
 		return gson.toJson(list);
 	}
 	
-	@RequestMapping(value="/selectByEItemIDAndEDate.do")
+	@RequestMapping(value="/selectByItemIdAndStartAndEndDate.do")
 	@ResponseBody
-	public Object selectByEItemIDAndEDate(int expenseItemID,String expenseDate,int page,int rows) {
+	public Object selectByItemIdAndStartAndEndDate(Integer expenseItemID,String startDate,String endDate,int page,int rows) {
 		
-		Gson gson = new Gson();		
-		Cost cost=new Cost();
-		cost.setExpenseItemID(expenseItemID);
-		cost.setExpenseDate(expenseDate);
-		cost.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
+		Gson gson = new Gson();	
 		
-		EUDataGridResult<Cost> list=costService.selectParamFlexible(cost,page,rows);
+		Map<String, Object> queryDate = new HashMap<String, Object>();
+		
+		queryDate.put("expenseItemID",expenseItemID);
+		
+		if(!startDate.isEmpty())
+		{
+			queryDate.put("startDate",startDate);
+		}
+		else
+		{
+			Date d = new Date();    
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
+	        String dateNowStr = sdf.format(d);  
+			queryDate.put("startDate",dateNowStr);
+		}
+		
+		if(!endDate.isEmpty())
+		{
+			queryDate.put("endDate",endDate);
+		}
+		else
+		{
+			Date d = new Date();    
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
+	        String dateNowStr = sdf.format(d);  
+			queryDate.put("endDate",dateNowStr);
+		}
+		
+		queryDate.put("salesDepartmentID",this.getCurrentUser().getSalesDepartmentID());
+				
+		EUDataGridResult<Cost> list=costService.selectByItemIdAndStartAndEndDate(queryDate,page,rows);
 		System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
 	@RequestMapping(value="/addCostInfo.do")
 	@ResponseBody
-	public Object addCostInfo(int expenseItemID,long expenseAmount,String expenseDate) {	
+	public Object addCostInfo(int expenseItemID,BigDecimal expenseAmount,String expenseDate) {	
 //		/**********费用可以重复（ZL修改）**********/
 //		Map<String, Object> whereMap = new HashMap<String, Object>();
 //		whereMap.put("expenseItemID",expenseItemID);//指定查询范围,此处默认查询本部门下的顾客信息	 
@@ -108,7 +136,7 @@ public class CostController extends BaseController {
 	
 	@RequestMapping(value="/updateCostInfo.do")
 	@ResponseBody
-	public Object updateCostInfo(int ID,int expenseItemID,long expenseAmount,String expenseDate) {
+	public Object updateCostInfo(int ID,int expenseItemID,BigDecimal expenseAmount,String expenseDate) {
 //		/**********费用可以重复（ZL修改）**********/
 //		Cost old_costInfo=costService.selectPK(ID);
 //		

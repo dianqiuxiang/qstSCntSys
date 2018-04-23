@@ -38,7 +38,13 @@ public class OtherInfoController extends BaseController {
 		queryDate.put("startDate",startDate);
 		queryDate.put("endDate",endDate);
 		
-		EUDataGridResult<EveryMonthOtherInfo> list=everyMonthOtherInfoService.selectByStartAndEndDate(queryDate,page,rows);
+		EUDataGridResult<EveryMonthOtherInfo> list=everyMonthOtherInfoService.selectByStartAndEndDate(queryDate,page,rows);		
+
+		for(EveryMonthOtherInfo item : list.getRows()){
+            item.setInfoDate(item.getInfoDate().substring(0, 7));
+			System.out.println(item.getInfoDate());
+		}
+		
 		System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
@@ -126,7 +132,8 @@ public class OtherInfoController extends BaseController {
 	public Object selectByID(int ID) {
 
 		Gson gson = new Gson();
-		EveryMonthOtherInfo everyMonthOtherInfo=everyMonthOtherInfoService.selectPK(ID);
+		EveryMonthOtherInfo everyMonthOtherInfo=everyMonthOtherInfoService.selectPK(ID);		
+		everyMonthOtherInfo.setInfoDate(everyMonthOtherInfo.getInfoDate().substring(0, 7));		
 		return gson.toJson(everyMonthOtherInfo);
 	}
 	

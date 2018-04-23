@@ -13,6 +13,11 @@ public class ReceiptInfo {
      *订单ID
      */
     private Integer orderID;
+    
+    /**
+     *订单编号
+     */
+    private String orderCode;
 
     /**
      *收款日期
@@ -27,7 +32,7 @@ public class ReceiptInfo {
     /**
      *收款人
      */
-    private String receiptMenber;
+    private String receiptMember;
 
     /**
      *部门编号（外键）
@@ -71,8 +76,22 @@ public class ReceiptInfo {
     public void setOrderID(Integer orderID) {
         this.orderID = orderID;
     }
+    
+    /**
+     *订单编号
+     */
+    public String getOrderCode() {
+		return orderCode;
+	}
 
     /**
+     *订单编号
+     */
+	public void setOrderCode(String orderCode) {
+		this.orderCode = orderCode;
+	}
+
+	/**
      *收款日期
      */
     public String getReceiptDate() {
@@ -103,15 +122,15 @@ public class ReceiptInfo {
     /**
      *收款人
      */
-    public String getReceiptMenber() {
-        return receiptMenber;
+    public String getReceiptMember() {
+        return receiptMember;
     }
 
     /**
      *收款人
      */
-    public void setReceiptMenber(String receiptMenber) {
-        this.receiptMenber = receiptMenber == null ? null : receiptMenber.trim();
+    public void setReceiptMember(String receiptMember) {
+        this.receiptMember = receiptMember == null ? null : receiptMember.trim();
     }
 
     /**

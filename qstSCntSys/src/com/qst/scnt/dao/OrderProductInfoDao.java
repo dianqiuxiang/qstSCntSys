@@ -1,5 +1,7 @@
 package com.qst.scnt.dao;
 
+import java.util.List;
+
 import com.qst.scnt.model.OrderProductInfo;
 
 /**
@@ -9,6 +11,8 @@ import com.qst.scnt.model.OrderProductInfo;
 
 
 public interface OrderProductInfoDao  extends BaseDao<OrderProductInfo> {
+
+	public List<OrderProductInfo> selectOProductByOrderID(OrderProductInfo orderProductInfo);
 	
 }
 

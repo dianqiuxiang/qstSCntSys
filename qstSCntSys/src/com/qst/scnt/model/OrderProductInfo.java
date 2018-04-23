@@ -1,5 +1,7 @@
 package com.qst.scnt.model;
 
+import java.math.BigDecimal;
+
 public class OrderProductInfo {
     /**
      *主键（自增）
@@ -17,19 +19,24 @@ public class OrderProductInfo {
     private Integer productID;
 
     /**
+     *产品名称（外键）
+     */
+    private String productName;
+    
+    /**
      *购买数量
      */
-    private Long amount;
+    private BigDecimal amount;
 
     /**
      *购买单价
      */
-    private Long price;
+    private BigDecimal price;
 
     /**
      *购买总价
      */
-    private Long totalMoney;
+    private BigDecimal totalMoney;
 
     /**
      *是否删除：0 没删除，1 删除
@@ -77,46 +84,60 @@ public class OrderProductInfo {
     public void setProductID(Integer productID) {
         this.productID = productID == null ? null : productID;
     }
+    
+    /**
+     *产品名称（外键）
+     */
+    public String getProductName() {
+		return productName;
+	}
 
     /**
+     *产品名称（外键）
+     */
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	/**
      *购买数量
      */
-    public Long getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
     /**
      *购买数量
      */
-    public void setAmount(Long amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
     /**
      *购买单价
      */
-    public Long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
     /**
      *购买单价
      */
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
     /**
      *购买总价
      */
-    public Long getTotalMoney() {
+    public BigDecimal getTotalMoney() {
         return totalMoney;
     }
 
     /**
      *购买总价
      */
-    public void setTotalMoney(Long totalMoney) {
+    public void setTotalMoney(BigDecimal totalMoney) {
         this.totalMoney = totalMoney;
     }
 
