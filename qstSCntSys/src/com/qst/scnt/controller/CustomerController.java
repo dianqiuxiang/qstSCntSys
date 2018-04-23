@@ -113,8 +113,8 @@ public class CustomerController extends BaseController {
 			customerInfo.setCustomerName(customerName);
 			customerInfo.setCustomerPhone(customerPhone);
 			customerInfo.setCustomerAddress(customerAddress);
-			customerInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
-			customerInfo.setIsDelete(0);
+//			customerInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
+//			customerInfo.setIsDelete(0);
 			int result=customerInfoService.update(customerInfo);
 			if(result>0)
 			{
