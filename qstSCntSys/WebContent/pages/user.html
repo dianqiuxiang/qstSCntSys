@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>JK财务管理系统</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../locale/easyui-lang-zh_CN.js"></script>
+	<style type="text/css">
+	    html,body{
+	        padding:0;
+	        margin:0;
+	        width:100%;
+	        height:100%;
+	}
+	</style>
+</head>
+<body>
+   
+    <div id="userToolbar" style="padding:5px">
+        <span>用户姓名：</span><input id="uName" class='easyui-textbox'></input>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="doUserSearch()">查询</a>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="openDialog()">新增</a>  
+    </div>
+    <script type="text/javascript">
+	$(document).ready(function() {
+		$("#userDg").datagrid('getPager').pagination({showPageList:false});
+	});
+    function doUserSearch(){
+    	//parent.$.messager.alert("消息提示",$("#odate").datebox("getValue"));
+    	//parent.$.messager.alert("消息提示",$('#state').combobox('getValue'));
+    	//parent.$.messager.alert("消息提示",$('#state').combobox('getText'));
+    	$('#userDg').datagrid('load',{
+    		userName:$('#uNume').val()
+    		});
+    }
+    function openDialog()
+    {
+    
+    	parent.newUserDialog(function(v){
+    		var array=v.split("|");  
+    		alert(array[1]);
+    		if(array[0]=="Success")
+    		{
+    			parent.$.messager.alert("消息提示","新增成功！用户默认密码为\""+array[1]+"\"","info");
+     			parent.closeDialog();
+    			doUserSearch();
+    		}
+    		else if(array[0]=="Failed")
+    		{
+    			parent.$.messager.alert("消息提示","新增失败！","info");
+    		}
+    		else
+    		{
+    			parent.$.messager.alert("消息提示","用户已存在！","info");
+    		}
+    			
+    		  
+        });
+    }
+    function getUserOperation(value,row,index)
+    {
+    	
+    	return "<a href='#' onclick=\"deleteUser('"+row.id+"')\">删除</a>&ensp;<a href='#' onclick=\"updateUser('"+row.id+"')\">修改</a>";
+    }
+    function deleteUser(id)
+    {
+    	parent.$.messager.confirm('确认提示','确认删除？',function(r){
+    	    if (r){
+    	    	$.ajax({
+    	    		type:"post",
+    	    		url :"/qstSCntSys/user/deleteUserInfo.do",
+    	    		data:{id:id},
+    	    		dataType:"json",
+    	    		error: function(){
+    	    			
+    	    		},
+    	    		success: function(json){
+    	    			if(json.result=="Success")
+    	        		{
+    	        			parent.$.messager.alert("消息提示","删除成功！","info");
+    	        			doUserSearch();
+    	        		}
+    	        		else
+    	        		{
+    	        			parent.$.messager.alert("消息提示","删除失败！","info");
+    	        		}
+    	    		}
+    	    	});
+    	    }
+    	});
+    }
+    function updateUser(id)
+    {
+    	parent.updateUserDialog(id,function(v){
+    		if(v=="Success")
+    		{
+    			parent.$.messager.alert("消息提示","修改成功！","info");
+    			parent.closeDialog();
+    			doUserSearch();
+    		}
+    		else if(v=="Failed")
+    		{
+    			parent.$.messager.alert("消息提示","修改失败！","info");
+    		}
+    		else
+    		{
+    			parent.$.messager.alert("消息提示","用户已存在！","info");
+    		}
+        });
+    	
+    }
+    </script>
+   <table id="userDg"  toolbar="#userToolbar" class="easyui-datagrid" style="height:100%"
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/user/selectByUName.do',method:'get'">
+		<thead>
+			<tr>
+			    <th data-options="field:'id',width:200,hidden:true"></th>
+			    <th data-options="field:'userName',width:200">用户名</th>
+				<th data-options="field:'userPhone',width:200,align:'right'">联系电话</th>
+				<th data-options="field:'userEmail',width:200,align:'right'">用户邮箱</th>
+				<th data-options="field:'salesDepartmentName',width:200,align:'right'">销售部名称</th>
+				<th data-options="field:'uOperation',formatter:getUserOperation">操作</th>
+			</tr>
+		</thead>
+   </table>
+</body>
+</html>

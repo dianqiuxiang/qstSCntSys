@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <table>
+		<tr>
+			<td>原密码:</td>
+			<td>
+				<input id="userN" class='easyui-textbox'></input>
+			</td>
+		</tr>
+		<tr>
+			<td>新密码:</td>
+			<td>
+				<input id="userP" class='easyui-textbox'></input>
+			</td>
+		</tr>
+		<tr>
+			<td>再输入一遍密码:</td>
+			<td>
+				<input id="userE" class='easyui-textbox'></input>
+			</td>
+		</tr>
+</table>

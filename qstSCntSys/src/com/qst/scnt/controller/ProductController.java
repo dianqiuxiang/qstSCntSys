@@ -29,7 +29,17 @@ public class ProductController extends BaseController {
 		
 		Gson gson = new Gson();		
 		ProductInfo productInfo=new ProductInfo();
-		productInfo.setProductName(productName);
+		
+		if(productName==null||productName.equals(""))
+		{
+			productInfo.setProductName(null);
+		}
+		else
+		{ 
+			productInfo.setProductName(productName);
+		}
+		
+		
 		
 		EUDataGridResult<ProductInfo> list=productInfoService.selectParamFlexible(productInfo,page,rows);
 		System.out.println(gson.toJson(list));
@@ -55,26 +65,26 @@ public class ProductController extends BaseController {
 			int result=productInfoService.insert(productInfo);
 			if(result>0)
 			{
-				resultStr="[{\"result\":\"Success\"}]";
+				resultStr="{\"result\":\"Success\"}";
 			}
 			else
 			{
-				resultStr="[{\"result\":\"Failed\"}]";
+				resultStr="{\"result\":\"Failed\"}";
 			}
 		}
 		else
 		{
-			resultStr="[{\"result\":\"isExist\"}]";
+			resultStr="{\"result\":\"isExist\"}";
 		}
 		return resultStr;
 	}
 	
 	@RequestMapping(value="/selectByID.do")
 	@ResponseBody
-	public Object selectByID(int ID) {
+	public Object selectByID(int id) {
 		
 		Gson gson = new Gson();		
-		ProductInfo productInfo=productInfoService.selectPK(ID);
+		ProductInfo productInfo=productInfoService.selectPK(id);
 		System.out.println(gson.toJson(productInfo));
 		return gson.toJson(productInfo);
 	}
@@ -98,36 +108,36 @@ public class ProductController extends BaseController {
 			int result=productInfoService.update(productInfo);
 			if(result>0)
 			{
-				resultStr="[{\"result\":\"Success\"}]";
+				resultStr="{\"result\":\"Success\"}";
 			}
 			else
 			{
-				resultStr="[{\"result\":\"Failed\"}]";
+				resultStr="{\"result\":\"Failed\"}";
 			}
 		}
 		else
 		{
-			resultStr="[{\"result\":\"isExist\"}]";
+			resultStr="{\"result\":\"isExist\"}";
 		}
 		return resultStr;
 	}
 	
 	@RequestMapping(value="/deleteProductInfo.do")
 	@ResponseBody
-	public Object deleteProductInfo(int ID) {
+	public Object deleteProductInfo(int id) {
 
 		String resultStr="";
 		ProductInfo productInfo=new ProductInfo();
-		productInfo.setId(ID);		
+		productInfo.setId(id);		
 		productInfo.setIsDelete(1);//"1"代表删除，"0"代表未删除
 		int result=productInfoService.update(productInfo);
 		if(result>0)
 		{
-			resultStr="[{\"result\":\"Success\"}]";
+			resultStr="{\"result\":\"Success\"}";
 		}
 		else
 		{
-			resultStr="[{\"result\":\"Failed\"}]";
+			resultStr="{\"result\":\"Failed\"}";
 		}
 		
 		return resultStr;

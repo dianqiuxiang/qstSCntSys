@@ -1,0 +1,80 @@
+body {
+    font-family:verdana,helvetica,arial,sans-serif;
+    padding:20px;
+    font-size:12px;
+    margin:0;
+}
+h2 {
+    font-size:18px;
+    font-weight:bold;
+    margin:0;
+    margin-bottom:15px;
+}
+.demo-info{
+	padding:0 0 12px 0;
+}
+.demo-tip{
+	display:none;
+}
+.dv-table td{border:0;padding:5px;}
+
+#commonDlg  td{
+   padding:5px;
+   height:30px;
+}
+#commonDlg td input{
+   width:210px;
+   height:25px;
+}
+#commonDlg td select{
+   width:213px;
+   height:25px;
+}
+##cusDlg td{
+   padding:5px;
+   height:30px;
+}
+#cusDlg td input{
+   width:210px;
+   height:25px;
+}
+#cusDlg td select{
+   width:213px;
+   height:25px;
+}
+#workPage
+{
+	padding:10px;
+	line-height:0
+}
+#orderv  td{
+          padding:5px;
+          height:30px;
+}
+#orderv  td input{
+     width:120px;
+     height:25px;
+}
+#orderv  td select{
+     width:124px;
+     height:25px;
+}
+
+#mcost  td{
+          padding:5px;
+          height:30px;
+}
+#mcost  td input{
+     width:176px;
+     height:25px;
+}
+#msginfo,#msginfo2
+{
+color:red;
+}
+span.serif{
+	font-family:"¿¬Ìå";
+	font-size:3.5em;
+	display:inline-block;
+
+}

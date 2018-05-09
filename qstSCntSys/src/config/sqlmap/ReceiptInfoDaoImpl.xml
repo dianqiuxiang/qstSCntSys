@@ -210,27 +210,28 @@
 		   
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectByCodeAndRMemberAndDate" parameterType="java.util.Map" resultType="receiptInfo">  
-		        select a.*,b.orderCode from receiptInfo a,orderInfo b  
-		       <where>		
-				      <if test="salesDepartmentID != null" >
-				        a.salesDepartmentID = #{salesDepartmentID}
-				      </if>	
-				      <if test="receiptMember != null" >
-				        and a.receiptMember like "%"#{receiptMember}"%"
-				      </if>       
-			       	  <if test="orderCode != null" >
-				        and b.orderCode like "%"#{orderCode}"%"
-				      </if>
-				      <if test="startDate!=null and startDate!='' ">  
-				          <![CDATA[and a.receiptDate>= #{startDate}   ]]> 
-				       </if>  
-				       <if test="endDate!=null and endDate!=''">  
-				       <![CDATA[and a.receiptDate <=  #{endDate}    ]]>
-				       </if>
-	           </where> 
-	           and a.isDelete=0
-	           and a.orderID=b.id
-		   </select>
+		        select a.*,b.orderCode from receiptInfo a,orderInfo b
+				<trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="salesDepartmentID != null" >
+				and a.salesDepartmentID = #{salesDepartmentID}
+				</if>	
+				<if test="receiptMember != null" >
+				and a.receiptMember like "%"#{receiptMember}"%"
+				</if>       
+				<if test="orderCode != null" >
+				and b.orderCode like "%"#{orderCode}"%"
+				</if>
+				<if test="startDate!=null and startDate!='' ">  
+				<![CDATA[and a.receiptDate>= #{startDate}   ]]> 
+				</if>  
+				<if test="endDate!=null and endDate!=''">  
+				<![CDATA[and a.receiptDate <=  #{endDate}    ]]>
+				</if>
+				and a.isDelete=0
+				and a.orderID=b.id
+				</trim>
+			</select>
+		   
 		   <!-- 查询（参数） -->  
 		   <select id="selectByID" parameterType="Integer" resultType="receiptInfo">  
 		        select a.*,b.orderCode from receiptInfo a,orderInfo b where a.id = #{id} and a.isDelete=0 and a.orderID=b.id

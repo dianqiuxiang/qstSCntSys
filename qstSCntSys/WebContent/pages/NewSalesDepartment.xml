@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <table>
+		<tr>
+			<td>销售部名称:</td>
+			<td>
+				<input id="marketName" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>销售部电话:</td>
+			<td>
+				<input id="marketPhone" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>销售部地址:</td>
+			<td>
+				<input id="marketAddress" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>上一级销售部:</td>
+			<td>
+				<input class="easyui-combobox" id="parentMarketName"
+				data-options="editable:false,url:'/qstSCntSys/salesDepartment/selectSalesDepartment.do',method:'get',valueField:'id',textField:'salesDepartmentName',panelHeight:'auto'"></input>
+			</td>
+		</tr>
+		<tr>
+		    <td></td>
+			<td><span id='msginfo'></span></td>
+		</tr>
+</table>

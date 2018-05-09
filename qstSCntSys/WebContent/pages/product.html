@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>JK财务管理系统</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../locale/easyui-lang-zh_CN.js"></script>
+	<style type="text/css">
+	    html,body{
+	        padding:0;
+	        margin:0;
+	        width:100%;
+	        height:100%;
+	    }
+	</style>
+</head>
+<body>
+    <div id="productToolbar" style="padding:5px">
+        <span>产品名称：</span><input id="productN" class='easyui-textbox'></input>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="doProductSearch()">查询</a>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="openDialog()">新增</a>  
+    </div>
+    <script type="text/javascript">
+	$(document).ready(function() {
+		$("#productDg").datagrid('getPager').pagination({showPageList:false});
+	});
+    function doProductSearch(){
+    	//parent.$.messager.alert("消息提示",$("#odate").datebox("getValue"));
+    	//parent.$.messager.alert("消息提示",$('#state').combobox('getValue'));
+    	//parent.$.messager.alert("消息提示",$('#state').combobox('getText'));
+    	$('#productDg').datagrid('load',{
+    		    productName:$('#productN').val()
+    		});
+    }
+    function openDialog()
+    {
+    
+    	parent.newProductDialog(function(v){
+    		if(v=="Success")
+    		{
+    			parent.$.messager.alert("消息提示","新增成功！","info");
+     			parent.closeDialog();
+     			doProductSearch();
+    		}
+    		else if(v=="Failed")
+    		{
+    			parent.$.messager.alert("消息提示","新增失败！","info");
+    		}
+    		else
+    		{
+    			parent.$.messager.alert("消息提示","产品已存在！","info");
+    		}
+        });
+    }
+    function getProductOperation(value,row,index)
+    {
+    	
+    	return "<a href='#' onclick=\"deleteProduct('"+row.id+"')\">删除</a>&ensp;<a href='#' onclick=\"updateProduct('"+row.id+"')\">修改</a>";
+    }
+    function deleteProduct(id)
+    {
+    	parent.$.messager.confirm('确认提示','确认删除？',function(r){
+    	    if (r){
+    	    	$.ajax({
+    	    		type:"post",
+    	    		url :"/qstSCntSys/product/deleteProductInfo.do",
+    	    		data:{id:id},
+    	    		dataType:"json",
+    	    		error: function(){
+    	    			
+    	    		},
+    	    		success: function(json){
+    	    			if(json.result=="Success")
+    	        		{
+    	        			parent.$.messager.alert("消息提示","删除成功！","info");
+    	        			doProductSearch();
+    	        		}
+    	        		else
+    	        		{
+    	        			parent.$.messager.alert("消息提示","删除失败！","info");
+    	        		}
+    	    		}
+    	    	});
+    	    }
+    	});
+    }
+    function updateProduct(id)
+    {
+    	parent.updateProductDialog(id,function(v){
+    		if(v=="Success")
+    		{
+    			parent.$.messager.alert("消息提示","修改成功！","info");
+     			parent.closeDialog();
+     			doProductSearch();
+    		}
+    		else if(v=="Failed")
+    		{
+    			parent.$.messager.alert("消息提示","修改失败！","info");
+    		}
+    		else
+    		{
+    			parent.$.messager.alert("消息提示","产品已存在！","info");
+    		}
+        });
+    	
+    }
+    </script>
+   <table id="productDg"  toolbar="#productToolbar" class="easyui-datagrid" style="height:100%"
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/product/selectByPName.do',method:'get'">
+		<thead>
+			<tr>
+			    <th data-options="field:'id',width:200,hidden:true">编号</th>
+			    <th data-options="field:'productName',width:200">产品名称</th>
+				<th data-options="field:'productName',width:200">产品名称</th>
+				<th data-options="field:'productUnit',width:200,align:'right'">产品单位</th>
+				<th data-options="field:'productPrice',width:200,align:'right'">产品单价</th>
+				<th data-options="field:'uOperation',formatter:getProductOperation">操作</th>
+			</tr>
+		</thead>
+	</table>
+</body>
+</html>

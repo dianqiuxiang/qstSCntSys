@@ -1,5 +1,7 @@
 package com.qst.scnt.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -19,6 +21,12 @@ public class SalesDepartmentInfoServiceImpl extends BaseServiceImpl<SalesDepartm
 	public BaseDao<SalesDepartmentInfo> getBaseDao() {
 		// TODO Auto-generated method stub
 		return salesDepartmentInfoDao;
+	}
+
+	@Override
+	public List<SalesDepartmentInfo> selectAll() {
+		// TODO Auto-generated method stub
+		return salesDepartmentInfoDao.selectAll();
 	}
 	
 }

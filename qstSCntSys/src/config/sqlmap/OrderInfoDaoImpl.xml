@@ -261,44 +261,44 @@
 		   
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectParamFlexible" parameterType="orderInfo" resultType="orderInfo">  
-		        select * from orderInfo   
-		       <where>		       
-		       		<if test="orderCode != null" >
-			        orderCode like "%"#{orderCode}"%"
-			      </if>
-			      <if test="customerType != null" >
-			        and customerType = #{customerType}
-			      </if>
-			      <if test="customerPhone != null" >
-			        and customerPhone like "%"#{customerPhone}"%"
-			      </if>
-			      <if test="customerName != null" >
-			        and customerName like "%"#{customerName}"%"
-			      </if>
-			      <if test="customerAddress != null" >
-			        and customerAddress like "%"#{customerAddress}"%"
-			      </if>
-			      <if test="orderDate != null" >
-			        and orderDate = #{orderDate}
-			      </if>
-			      <if test="orderAmount != null" >
-			        and orderAmount = #{orderAmount}
-			      </if>
-			      <if test="healthMember != null" >
-			        and healthMember like "%"#{healthMember}"%"
-			      </if>
-			      <if test="customerSign != null" >
-			        and customerSign like "%"#{customerSign}"%"
-			      </if>
-			      <if test="salesDepartmentID != null" >
-			        and salesDepartmentID = #{salesDepartmentID}
-			      </if>
-	           </where> 
-	           and isDelete=0
-		   </select>
+		        select * from orderInfo
+				<trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="orderCode != null" >
+				and orderCode like "%"#{orderCode}"%"
+				</if>
+				<if test="customerType != null" >
+				and customerType = #{customerType}
+				</if>
+				<if test="customerPhone != null" >
+				and customerPhone like "%"#{customerPhone}"%"
+				</if>
+				<if test="customerName != null" >
+				and customerName like "%"#{customerName}"%"
+				</if>
+				<if test="customerAddress != null" >
+				and customerAddress like "%"#{customerAddress}"%"
+				</if>
+				<if test="orderDate != null" >
+				and orderDate = #{orderDate}
+				</if>
+				<if test="orderAmount != null" >
+				and orderAmount = #{orderAmount}
+				</if>
+				<if test="healthMember != null" >
+				and healthMember like "%"#{healthMember}"%"
+				</if>
+				<if test="customerSign != null" >
+				and customerSign like "%"#{customerSign}"%"
+				</if>
+				<if test="salesDepartmentID != null" >
+				and salesDepartmentID = #{salesDepartmentID}
+				</if>
+				and isDelete=0
+				</trim>
+			</select>
 		   
 		   <!-- 查询（模糊查询，参数订单编号，顾客姓名，起始时间） -->  
-		   <select id="selectByCNameAndCTypeAndDate" parameterType="java.util.Map" resultType="orderInfo">  
+		   <select id="selectByOCodeandCNameAndDate" parameterType="java.util.Map" resultType="orderInfo">  
 		        select * from orderInfo   
 		       <where>	
 			      <if test="salesDepartmentID != null" >
@@ -307,8 +307,8 @@
 			      <if test="customerName != null" >
 			        and customerName like "%"#{customerName}"%"
 			      </if>       
-		       	  <if test="customerType != null" >
-			        and customerType = #{customerType}
+		       	  <if test="orderCode != null" >
+			        and orderCode like "%" #{orderCode}"%"
 			      </if>
 			      <if test="startDate!=null and startDate!='' ">  
 			          <![CDATA[and orderDate>= #{startDate}   ]]> 

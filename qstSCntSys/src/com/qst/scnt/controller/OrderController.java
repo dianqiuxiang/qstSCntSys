@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.qst.scnt.model.Cost;
+import com.qst.scnt.model.CustomerInfo;
 import com.qst.scnt.model.OrderInfo;
 import com.qst.scnt.model.OrderProductInfo;
 import com.qst.scnt.model.ProductInfo;
+import com.qst.scnt.service.CustomerInfoService;
 import com.qst.scnt.service.OrderInfoService;
 import com.qst.scnt.service.OrderProductInfoService;
+import com.qst.scnt.service.ProductInfoService;
 import com.qst.scnt.utils.EUDataGridResult;
 
 @Controller
@@ -33,6 +36,11 @@ public class OrderController extends BaseController {
 	@Resource
 	private OrderProductInfoService orderProductInfoService;
 	
+	@Resource
+	private CustomerInfoService customerInfoService;
+	
+	@Resource
+	private ProductInfoService productInfoService;
 	/**
 	 * 查询所有结果
 	 * @return
@@ -51,9 +59,16 @@ public class OrderController extends BaseController {
 	 */
 	@RequestMapping(value="/selectByID.do")
 	@ResponseBody
-	public Object selectByID(int ID) {
+	public Object selectByID(int id) {
 		Gson gson=new Gson();
-		OrderInfo orderInfo=orderInfoService.selectPK(ID);
+		OrderInfo orderInfo=orderInfoService.selectPK(id);
+		
+		OrderProductInfo orderProductInfo=new OrderProductInfo();
+		if(orderInfo!=null)
+		{
+			orderProductInfo.setOrderID(orderInfo.getId());
+			orderInfo.setProducts(orderProductInfoService.selectOProductByOrderID(orderProductInfo));
+		}
 		return gson.toJson(orderInfo);
 	}
 	
@@ -94,29 +109,48 @@ public class OrderController extends BaseController {
 	}
 	
 	/**
-	 * 根据顾客姓名、顾客类别、起始时间模糊查询此部门下的订单信息
-	 * @param customerName
-	 * @param customerType
-	 * @param startDate
-	 * @param endDate
-	 * @param page
-	 * @param rows
+	 * 根据产品名称模糊查询产品信息
+	 * @param ID
 	 * @return
 	 */
-	@RequestMapping(value="/selectByCNameAndCTypeAndDate.do")
+	@RequestMapping(value="/selectByPName.do")
 	@ResponseBody
-	public Object selectByCNameAndCTypeAndDate(String customerName,String customerType,String startDate,String endDate,int page,int rows) {
+	public Object selectByPName(String productName,int page,int rows) {
+		
 		Gson gson = new Gson();		
-		Map<String, Object> queryDate = new HashMap<String, Object>();
+		ProductInfo productInfo=new ProductInfo();
 		
-		queryDate.put("customerType",customerType);
-		queryDate.put("customerName",customerName);
-		queryDate.put("startDate",startDate);
-		queryDate.put("endDate",endDate);
+		if(productName==null||productName.equals(""))
+		{
+			productInfo.setProductName(null);
+		}
+		else
+		{ 
+			productInfo.setProductName(productName);
+		}
 		
-		queryDate.put("salesDepartmentID",this.getCurrentUser().getSalesDepartmentID());
-				
-		EUDataGridResult<Cost> list=orderInfoService.selectByCNameAndCTypeAndDate(queryDate,page,rows);
+		//productInfo.setProductName(productName);
+		
+		EUDataGridResult<ProductInfo> list=productInfoService.selectParamFlexible(productInfo,page,rows);
+		System.out.println(gson.toJson(list));
+		return gson.toJson(list);
+	}
+	
+	/**
+	 * 查询产品信息
+	 * @param ID
+	 * @return
+	 */
+	@RequestMapping(value="/selectProduct.do")
+	@ResponseBody
+	public Object selectProduct() {
+		
+		Gson gson = new Gson();		
+//		ProductInfo productInfo=new ProductInfo();
+//		productInfo.setProductName(productName);
+		
+		//EUDataGridResult<ProductInfo> list=
+		List<ProductInfo> list=productInfoService.select();
 		System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
@@ -131,19 +165,105 @@ public class OrderController extends BaseController {
 	 * @param rows
 	 * @return
 	 */
+	@RequestMapping(value="/selectByOCodeandCNameAndDate.do")
+	@ResponseBody
+	public Object selectByOCodeandCNameAndDate(String customerName,String orderCode,String startDate,String endDate,int page,int rows) {
+		Gson gson = new Gson();		
+		Map<String, Object> queryDate = new HashMap<String, Object>();
+		
+		//queryDate.put("orderCode",orderCode);
+		
+		if(orderCode==null||orderCode.equals(""))
+		{
+			queryDate.put("orderCode",null);
+		}
+		else
+		{ 
+			queryDate.put("orderCode",orderCode);
+		}
+		
+		//queryDate.put("customerName",customerName);
+		
+		if(customerName==null||customerName.equals(""))
+		{
+			queryDate.put("customerName",null);
+		}
+		else
+		{ 
+			queryDate.put("customerName",customerName);
+		}
+		
+		if(startDate==null||startDate.equals(""))
+		{
+			queryDate.put("startDate",null);
+		}
+		else
+		{ 
+			queryDate.put("startDate",startDate);
+		}
+		
+		if(endDate==null||endDate.equals(""))
+		{
+			queryDate.put("endDate",null);
+		}
+		else
+		{ 
+			queryDate.put("endDate",endDate);
+		}
+		
+		queryDate.put("salesDepartmentID",this.getCurrentUser().getSalesDepartmentID());
+				
+		EUDataGridResult<Cost> list=orderInfoService.selectByOCodeandCNameAndDate(queryDate,page,rows);
+		System.out.println(gson.toJson(list));
+		return gson.toJson(list);
+	}
+	
+	/**
+	 * 根据订单ID查询此订单的产品信息
+	 * @param orderID
+	 * @return
+	 */
 	@RequestMapping(value="/selectOProductByOrderID.do")
 	@ResponseBody
 	public Object selectOProductByOrderID(int orderID) {
 		Gson gson = new Gson();		
 		OrderProductInfo orderProductInfo=new OrderProductInfo();
-		orderProductInfo.setOrderID(orderID);
-		
+		orderProductInfo.setOrderID(orderID);		
 				
-		List<OrderProductInfo> list=orderInfoService.selectOProductByOrderID(orderProductInfo);
+		List<OrderProductInfo> list=orderProductInfoService.selectOProductByOrderID(orderProductInfo);
+		OrderInfo orderInfo=new OrderInfo();
+		orderInfo.setProducts(list);
+		System.out.println(gson.toJson(orderInfo));
+		return gson.toJson(orderInfo);
+	}
+	
+	/**
+	 * 根据顾客姓名模糊查询此部门下订单中的顾客信息
+	 * @param ID
+	 * @return
+	 */
+	@RequestMapping(value="/selectCustomerInfo.do")
+	@ResponseBody
+	public Object selectCustomerInfo(String customerName,int page,int rows) {
+		Gson gson=new Gson();
+		CustomerInfo customerInfo=new CustomerInfo();
+		
+		if(customerName==null||customerName.equals(""))
+		{
+			customerInfo.setCustomerName(null);
+		}
+		else
+		{ 
+			customerInfo.setCustomerName(customerName);
+		}
+		
+		//customerInfo.setCustomerName(customerName);
+		customerInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
+		
+		EUDataGridResult<CustomerInfo> list=customerInfoService.selectParamFlexible(customerInfo,page,rows);
 		System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
-	
 	
 	/**
 	 * 新增，增加一条订单信息，并且向orderProductInfo中添加此订单的产品信息，（事务操作）
@@ -168,23 +288,24 @@ public class OrderController extends BaseController {
 			int result=orderInfoService.insertOrderAndOProductInfo(orderInfo);
 			if(result>0)
 			{
-				resultStr="[{\"result\":\"Success\"}]";
+				resultStr="{\"result\":\"Success\"}";
 			}
 			else
 			{
-				resultStr="[{\"result\":\"Failed\"}]";
+				resultStr="{\"result\":\"Failed\"}";
 			}
 		}
 		else
 		{
-			resultStr="[{\"result\":\"isExist\"}]";
+			resultStr="{\"result\":\"isExist\"}";
 		}
 		return resultStr;
 	}
 	
 	
+	
 	/**
-	 *  根据订单号修改此订单信息
+	 *  根据订单ID修改此订单信息
 	 * @param orderInfo
 	 * @return
 	 */
@@ -206,15 +327,15 @@ public class OrderController extends BaseController {
 			int result=orderInfoService.updateOrderAndOProductInfo(orderInfo);
 			if(result>0)
 			{
-				resultStr="[{\"result\":\"Success\"}]";
+				resultStr="{\"result\":\"Success\"}";
 			}
 			else
 			{
-				resultStr="[{\"result\":\"Failed\"}]";
+				resultStr="{\"result\":\"Failed\"}";
 			}			
 		}else
 		{
-			resultStr="[{\"result\":\"isExist\"}]";
+			resultStr="{\"result\":\"isExist\"}";
 		}
 		return resultStr;
 		
@@ -230,18 +351,18 @@ public class OrderController extends BaseController {
 	 */
 	@RequestMapping(value="/deleteOrderAndOProduct.do")
 	@ResponseBody
-	public Object deleteOrderAndOProduct(int ID) {
+	public Object deleteOrderAndOProduct(int id) {
 		String resultStr="";
 		OrderInfo orderInfo=new OrderInfo();
-		orderInfo.setId(ID);
+		orderInfo.setId(id);
 		orderInfo.setIsDelete(1);//删除订单
 		
 		int result=orderInfoService.deleteOrderAndOProduct(orderInfo);
 		
 		if(result>0) {
-			resultStr="[{\"result\":\"Success\"}]";
+			resultStr="{\"result\":\"Success\"}";
 		}else {
-			resultStr="[{\"result\":\"Failed\"}]";
+			resultStr="{\"result\":\"Failed\"}";
 		}
 		return resultStr;
 		

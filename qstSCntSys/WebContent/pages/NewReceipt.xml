@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <table>
+		<tr>
+			<td>订单编号:</td>
+			<td>
+				<input id='orderN' class="easyui-combogrid"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>收款金额:</td>
+			<td>
+				<input id="receiptA" class='easyui-numberbox' data-options="required:true,precision:2,groupSeparator:',',decimalSeparator:'.',prefix:'￥'"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>收款时间:</td>
+			<td>
+				<input id="receiptD" class='easyui-datebox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>收款人:</td>
+			<td>
+				<input id="receiptM" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>备注:</td>
+			<td>
+				<input id="receiptR" class='easyui-textbox'></input>
+			</td>
+		</tr>
+		<tr>
+		    <td></td>
+			<td><span id='msginfo'></span></td>
+		</tr>
+</table>

@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.qst.scnt.model.CustomerInfo;
 import com.qst.scnt.model.OrderInfo;
 import com.qst.scnt.model.ReceiptInfo;
+import com.qst.scnt.service.OrderInfoService;
 import com.qst.scnt.service.ReceiptInfoService;
 import com.qst.scnt.utils.EUDataGridResult;
 
@@ -25,6 +26,9 @@ public class ReceiptController extends BaseController {
 	
 	@Resource
 	private ReceiptInfoService receiptInfoServicce;
+	
+	@Resource
+	private OrderInfoService orderInfoService;
 	
 	/**
 	 * 查询所有结果
@@ -48,14 +52,70 @@ public class ReceiptController extends BaseController {
 		Gson gson = new Gson();
 		Map<String, Object> queryDate = new HashMap<String, Object>();
 		
-		queryDate.put("orderCode",orderCode);
-		queryDate.put("receiptMember",receiptMember);
-		queryDate.put("startDate",startDate);
-		queryDate.put("endDate",endDate);
+		//queryDate.put("orderCode",orderCode);
+		//queryDate.put("receiptMember",receiptMember);
+		
+		if(orderCode==null||orderCode.equals(""))
+		{
+			queryDate.put("orderCode",null);
+		}
+		else
+		{ 
+			queryDate.put("orderCode",receiptMember);
+		}
+		
+		
+		if(receiptMember==null||receiptMember.equals(""))
+		{
+			queryDate.put("receiptMember",null);
+		}
+		else
+		{ 
+			queryDate.put("receiptMember",receiptMember);
+		}
+		
+		if(startDate==null||startDate.equals(""))
+		{
+			queryDate.put("startDate",null);
+		}
+		else
+		{ 
+			queryDate.put("startDate",startDate);
+		}
+		
+		if(endDate==null||endDate.equals(""))
+		{
+			queryDate.put("endDate",null);
+		}
+		else
+		{ 
+			queryDate.put("endDate",endDate);
+		}
+		
+		//queryDate.put("startDate",startDate);
+		//queryDate.put("endDate",endDate);
 		
 		queryDate.put("salesDepartmentID",this.getCurrentUser().getSalesDepartmentID());
 		EUDataGridResult<ReceiptInfo> receiptInfoList=receiptInfoServicce.selectByCodeAndRMemberAndDate(queryDate,page,rows);
 		return gson.toJson(receiptInfoList);
+	}
+	
+	/**
+	 * 根据订单编号模糊查询此部门下订单中的订单编号
+	 * @param ID
+	 * @return
+	 */
+	@RequestMapping(value="/selectOrderCode.do")
+	@ResponseBody
+	public Object selectOrderCode(String orderCode,int page,int rows) {
+		Gson gson=new Gson();
+		OrderInfo orderInfo=new OrderInfo();
+		orderInfo.setOrderCode(orderCode);
+		orderInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
+		
+		EUDataGridResult<OrderInfo> list=orderInfoService.selectParamFlexible(orderInfo,page,rows);
+		System.out.println(gson.toJson(list));
+		return gson.toJson(list);
 	}
 	
 	/**
@@ -72,11 +132,11 @@ public class ReceiptController extends BaseController {
 		String resultStr="";
 		if(result>0)
 		{
-			resultStr="[{\"result\":\"Success\"}]";
+			resultStr="{\"result\":\"Success\"}";
 		}
 		else
 		{
-			resultStr="[{\"result\":\"Failed\"}]";
+			resultStr="{\"result\":\"Failed\"}";
 		}
 		return resultStr;
 	}
@@ -87,9 +147,9 @@ public class ReceiptController extends BaseController {
 	 */
 	@RequestMapping(value="/selectByID.do")
 	@ResponseBody
-	public Object selectByID(int ID) {
+	public Object selectByID(int id) {
 		Gson gson = new Gson();
-		ReceiptInfo receiptInfo=receiptInfoServicce.selectByID(ID);
+		ReceiptInfo receiptInfo=receiptInfoServicce.selectByID(id);
 		return gson.toJson(receiptInfo);
 	}
 	
@@ -104,11 +164,11 @@ public class ReceiptController extends BaseController {
 		String resultStr="";
 		if(result>0)
 		{
-			resultStr="[{\"result\":\"Success\"}]";
+			resultStr="{\"result\":\"Success\"}";
 		}
 		else
 		{
-			resultStr="[{\"result\":\"Failed\"}]";
+			resultStr="{\"result\":\"Failed\"}";
 		}
 		return resultStr;
 	}
@@ -119,19 +179,19 @@ public class ReceiptController extends BaseController {
 	 */
 	@RequestMapping(value="/deleteReceiptInfo.do")
 	@ResponseBody
-	public Object deleteReceiptInfo(int ID) {
+	public Object deleteReceiptInfo(int id) {
 		ReceiptInfo receiptInfo=new ReceiptInfo();
-		receiptInfo.setId(ID);		
+		receiptInfo.setId(id);		
 		receiptInfo.setIsDelete(1);//"1"代表删除，"0"代表未删除
 		int result=receiptInfoServicce.update(receiptInfo);
 		String resultStr="";
 		if(result>0)
 		{
-			resultStr="[{\"result\":\"Success\"}]";
+			resultStr="{\"result\":\"Success\"}";
 		}
 		else
 		{
-			resultStr="[{\"result\":\"Failed\"}]";
+			resultStr="{\"result\":\"Failed\"}";
 		}
 		return resultStr;
 	}

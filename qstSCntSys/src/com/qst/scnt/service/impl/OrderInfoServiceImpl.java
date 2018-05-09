@@ -38,9 +38,9 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo> implements 
 	}
 
 	@Override
-	public EUDataGridResult<Cost> selectByCNameAndCTypeAndDate(Map<String, Object> queryDate, int pageNum, int pageSize) {
+	public EUDataGridResult<Cost> selectByOCodeandCNameAndDate(Map<String, Object> queryDate, int pageNum, int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
-		List<Cost> list = orderInfoDao.selectByCNameAndCTypeAndDate(queryDate);		
+		List<Cost> list = orderInfoDao.selectByOCodeandCNameAndDate(queryDate);		
 		
         //创建一个返回值对象
         EUDataGridResult<Cost> result = new EUDataGridResult<Cost>();
@@ -144,12 +144,6 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo> implements 
             return 1;  
         }  
         return 0;
-	}
-
-	@Override
-	public 	List<OrderProductInfo> selectOProductByOrderID(OrderProductInfo orderProductInfo) {
-		// TODO Auto-generated method stub
-		return orderProductInfoDao.selectOProductByOrderID(orderProductInfo);
 	}
 
 	@Override

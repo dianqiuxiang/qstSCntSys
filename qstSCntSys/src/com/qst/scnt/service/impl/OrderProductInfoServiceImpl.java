@@ -1,5 +1,7 @@
 package com.qst.scnt.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -20,7 +22,13 @@ public class OrderProductInfoServiceImpl extends BaseServiceImpl<OrderProductInf
 		// TODO Auto-generated method stub
 		return orderProductInfoDao;
 	}
-	
+
+
+	@Override
+	public 	List<OrderProductInfo> selectOProductByOrderID(OrderProductInfo orderProductInfo) {
+		// TODO Auto-generated method stub
+		return orderProductInfoDao.selectOProductByOrderID(orderProductInfo);
+	}
 
 }
 

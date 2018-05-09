@@ -188,21 +188,21 @@
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectParamFlexible" parameterType="cost" resultType="cost">  
 		        select * from cost   
-		       <where>		       
-		       		<if test="expenseItemID != null" >
-				        expenseItemID = #{expenseItemID}
-				      </if>
-				      <if test="expenseAmount != null" >
-				        and expenseAmount = #{expenseAmount}
-				      </if>
-				      <if test="expenseDate != null" >
-				        and expenseDate = #{expenseDate}
-				      </if>
-				      <if test="salesDepartmentID != null" >
-				        and salesDepartmentID = #{salesDepartmentID}
-				      </if>
-	           </where> 
-	           and isDelete=0
+					<trim prefix="WHERE" prefixOverrides="and |or">
+					<if test="expenseItemID != null" >
+					and expenseItemID = #{expenseItemID}
+					</if>
+					<if test="expenseAmount != null" >
+					and expenseAmount = #{expenseAmount}
+					</if>
+					<if test="expenseDate != null" >
+					and expenseDate = #{expenseDate}
+					</if>
+					<if test="salesDepartmentID != null" >
+					and salesDepartmentID = #{salesDepartmentID}
+					</if>
+					and isDelete=0
+					</trim>
 		   </select>
 		   
 		  <!-- 查询（参数,根据起始时间查询） -->  

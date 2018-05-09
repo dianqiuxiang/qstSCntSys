@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>JK财务管理系统</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="../js/jexpand.js"></script>
+	<style type="text/css">
+	    html,body{
+	        padding:0;
+	        margin:0;
+	        width:100%;
+	        height:100%;
+	    }
+	</style>
+</head>
+<body>
+	 <div id="tb" style="padding:5px">
+        <span>订单编号：</span><input id="orderNa" class='easyui-textbox'></input>
+        <span>顾客姓名：</span><input id="customerNa" class='easyui-textbox'></input>
+        <span>订单时间：</span><input id="orderdate" class="easyui-datebox"></input>
+        <span>至：</span><input id="orderEdate" class="easyui-datebox"></input>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">查询</a>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="openOrderDialog()">新增</a>  
+    </div>
+    <table id="signReportTable">
+		<!-- ><thead>
+			<tr>
+			    <th data-options="field:'id',width:120,hidden:true"></th>
+				<th data-options="field:'orderCode',width:150">订单编号</th>
+				<th data-options="field:'customerType',width:80,align:'right',formatter:formateCType">会员类型</th>
+				<th data-options="field:'customerName',width:80,align:'right'">顾客姓名</th>
+				<th data-options="field:'customerPhone',width:100">联系电话</th>
+				<th data-options="field:'customerAddress',width:240,align:'center'">地址</th>
+			    <th data-options="field:'orderAmount',width:80">订单金额</th>
+				<th data-options="field:'orderDate',width:120">订单时间</th>
+				<th data-options="field:'healthMember',width:80,align:'right'">健康代表</th>
+				<th data-options="field:'customerSign',width:80,align:'right'">顾客签收</th>
+				<th data-options="field:'salesDepartmentID',width:120">部门编号</th>
+				<th data-options="field:'operation',formatter:getOrderOperation">操作</th>
+			</tr>
+		</thead><-->
+		<tr>
+		<td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td>
+		</tr>
+			<tr>
+		<td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td>
+		</tr>
+			<tr>
+		<td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td>
+		</tr>
+	</table>
+</body>
+</html>

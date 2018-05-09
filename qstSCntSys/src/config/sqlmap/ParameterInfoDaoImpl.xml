@@ -148,14 +148,15 @@
 		   
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectParamFlexible" parameterType="parameterInfo" resultType="parameterInfo">  
-		        select * from parameterInfo   
-		       <where>		       
-		       		<if test="parameterName != null" >
-				        and parameterName like "%"#{parameterName}"%"
-				      </if>
-				      <if test="value != null" >
-				        and value like "%"#{value}"%"
-				      </if>
-	           </where> 
+		        select * from parameterInfo
+					<trim prefix="WHERE" prefixOverrides="and |or">
+					<if test="parameterName != null" >
+					and parameterName like "%"#{parameterName}"%"
+					</if>
+					<if test="value != null" >
+					and value like "%"#{value}"%"
+					</if>
+					</trim>   
+		       
 		   </select>
     </mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <table id="orderv">
+		<tr>
+			<td>订单编号:</td>
+			<td colspan="4">
+				<input id="orid" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+			
+		</tr>
+           <tr>
+           <td>会员类型:</td>
+			<td>
+				<select class="easyui-combobox" id="vt"  data-options="editable:false">
+		        <option value="1">新会员</option>
+				<option value="2">转会员</option>
+				<option value="3">续会员</option>
+		        </select>
+			</td>
+			<td>顾客姓名:</td>
+			<td colspan="4">
+				<input id='cusN'  class="easyui-combogrid"></input>
+                <a href="#" class="easyui-linkbutton" plain="true" onclick="addCustomer()">添加</a>
+			</td>
+		</tr>
+		<tr>
+		<td>联系方式:</td>
+		<td>
+            <input id="cusP" class='easyui-textbox' data-options="editable:false"></input>
+		</td>
+		<td>顾客地址:</td> 
+		<td colspan="4"><input id="cusaddr" style="width:281px" class='easyui-textbox' data-options="editable:false"></input></td>
+		
+		</tr>
+		<tr>
+			<td>订单金额:</td>
+			<td>
+                     <input id="amount" class='easyui-numberbox' data-options="required:true,precision:2,groupSeparator:',',decimalSeparator:'.',prefix:'￥'"></input>
+			</td>
+			<td>订单时间:</td>
+			<td colspan="4">
+                   <input id="odate" class="easyui-datebox" data-options="required:true,formatter:dformatter,parser:dparser"></input>
+			</td>
+		</tr>
+		<tr id="plist_0">
+			<td style="display: none;"><input id="orderProductId_0" class="easyui-textbox" ></input></td>
+			<td>产品名称:</td>
+			<td>
+			<input class="easyui-combobox" id="proN_0" 
+				data-options="required:true,editable:false,url:'/qstSCntSys/order/selectProduct.do',method:'get',valueField:'id',textField:'productName',panelHeight:'auto', 
+				onSelect: function(rec){
+				$('#unitprice_0').numberbox({
+	            prefix:'￥',
+	            value:rec.productPrice
+	        });
+				}"></input>
+			</td>
+			<td>单价:</td>
+			<td><input id="unitprice_0" class='easyui-numberbox' data-options="required:true,precision:2,groupSeparator:',',decimalSeparator:'.',prefix:'￥'"></input>
+             </td>
+             <td>      
+             <span>数量:</span>
+               </td>
+             <td>  
+                  <input id="odate_0" value="1" class="easyui-numberspinner" data-options="min:0"></input>
+                   <a id="btn_add_0" href="#" class="easyui-linkbutton" plain="true" onclick="addProduct()">添加</a>
+                   <a id="btn_delete_0" href="#" class="easyui-linkbutton" plain="true" onclick="deleteProduct(plist_0,0)">删除</a> 
+			</td>
+		</tr>
+		<tr>
+			<td>健康代表:</td>
+			<td>
+                     <input id="hd" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+			<td>顾客签收:</td>
+			<td colspan="4">
+                   <input id="cs" class="easyui-textbox" data-options="required:true"></input>
+			</td>
+		</tr>
+		<td></td>
+		<td colspan="6"><span id='msginfo2'></span></td>
+</table>

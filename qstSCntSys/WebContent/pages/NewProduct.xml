@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <table>
+		<tr>
+			<td>产品名称:</td>
+			<td>
+				<input id="productN" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>产品单位:</td>
+			<td>
+				<input id="productU" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+			<tr>
+			<td>产品单价:</td>
+			<td>
+				<input id="productP" class='easyui-numberbox' data-options="required:true,precision:2,groupSeparator:',',decimalSeparator:'.',prefix:'￥'"></input>
+			</td>
+		</tr>
+		<tr>
+		    <td></td>
+			<td><span id='msginfo'></span></td>
+		</tr>
+</table>

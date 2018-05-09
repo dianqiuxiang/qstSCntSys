@@ -1,5 +1,7 @@
 package com.qst.scnt.dao;
 
+import java.util.List;
+
 import com.qst.scnt.model.SalesDepartmentInfo;
 
 /**
@@ -9,6 +11,8 @@ import com.qst.scnt.model.SalesDepartmentInfo;
 
 
 public interface SalesDepartmentInfoDao  extends BaseDao<SalesDepartmentInfo> {
+
+	public List<SalesDepartmentInfo> selectAll();
 	
 }
 

@@ -1,5 +1,11 @@
 package com.qst.scnt.model;
 
+import java.util.List;
+
+/**
+ * @author sqrh
+ *
+ */
 public class Menu {
     /**
      *主键（自增）
@@ -22,10 +28,10 @@ public class Menu {
     private String menuUrl;
 
     /**
-     *父亲节点
+     *父节点
      */
     private Integer parentID;
-
+        
     /**
      *主键（自增）
      */
@@ -83,16 +89,18 @@ public class Menu {
     }
 
     /**
-     *父亲节点
+     *父节点
      */
     public Integer getParentID() {
         return parentID;
     }
 
     /**
-     *父亲节点
+     *父节点
      */
     public void setParentID(Integer parentID) {
         this.parentID = parentID;
     }
+   
+    
 }

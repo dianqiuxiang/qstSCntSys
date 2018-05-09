@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>JK财务管理系统</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../locale/easyui-lang-zh_CN.js"></script>
+	<style type="text/css">
+	    html,body{
+	        padding:0;
+	        margin:0;
+	        width:100%;
+	        height:100%;
+	    }
+	</style>
+</head>
+<body>
+    <div id="departmentToolbar" style="padding:5px">
+        <span>部门名称：</span><input id="marketDepN" class='easyui-textbox'></input>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="doDepartmentSearch()">查询</a>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="openDialog()">新增</a>  
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function() {
+		$("#departmentDg").datagrid('getPager').pagination({showPageList:false});
+	});
+    function doDepartmentSearch(){
+    	//parent.$.messager.alert("消息提示",$("#odate").datebox("getValue"));
+    	//parent.$.messager.alert("消息提示",$('#state').combobox('getValue'));
+    	//parent.$.messager.alert("消息提示",$('#state').combobox('getText'));
+    	$('#departmentDg').datagrid('load',{
+    		   salesDepartmentName:$('#marketDepN').val()
+    		});
+    }
+    function openDialog()
+    {
+    
+    	parent.newDepartmentDialog(function(v){
+    		if(v=="Success")
+    		{
+    			parent.$.messager.alert("消息提示","新增成功！","info");
+     			parent.closeDialog();
+     			doDepartmentSearch();
+    		}
+    		else if(v=="Failed")
+    		{
+    			parent.$.messager.alert("消息提示","新增失败！","info");
+    		}
+    		else
+    		{
+    			parent.$.messager.alert("消息提示","部门信息已存在！","info");
+    		}
+    		  
+        });
+    }
+    function getDepartmentOperation(value,row,index)
+    {
+    	
+    	return "<a href='#' onclick=\"deleteDepartment('"+row.id+"')\">删除</a>&ensp;<a href='#' onclick=\"updateDepartment('"+row.id+"')\">修改</a>";
+    }
+    function deleteDepartment(id)
+    {
+    	parent.$.messager.confirm('确认提示','确认要删除此销售部门？删除此部门，此部门下所有的子部门也将会被删除！',function(r){
+    	    if (r){
+    	    	$.ajax({
+    	    		type:"post",
+    	    		url :"/qstSCntSys/salesDepartment/deleteSalesDepartmentInfo.do",
+    	    		data:{id:id},
+    	    		dataType:"json",
+    	    		error: function(){
+    	    			
+    	    		},
+    	    		success: function(json){
+    	    			if(json.result=="Success")
+    	        		{
+    	        			parent.$.messager.alert("消息提示","删除成功！","info");
+    	        			doDepartmentSearch();
+    	        		}
+    	        		else
+    	        		{
+    	        			parent.$.messager.alert("消息提示","删除失败！","info");
+    	        		}
+    	    		}
+    	    	});
+    	    }
+    	});
+    }
+    function updateDepartment(id)
+    {
+    	parent.updateDepartmentDialog(id,function(v){
+    		if(v=="Success")
+    		{
+    			parent.$.messager.alert("消息提示","修改成功！","info");
+     			parent.closeDialog();
+     			doDepartmentSearch();
+    		}
+    		else if(v=="Failed")
+    		{
+    			parent.$.messager.alert("消息提示","修改失败！","info");
+    		}
+    		else
+    		{
+    			parent.$.messager.alert("消息提示","部门信息已存在！","info");
+    		}
+        });
+    	
+    }
+    </script>
+   <table id="departmentDg"  toolbar="#departmentToolbar" class="easyui-datagrid" style="height:100%"
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/salesDepartment/selectByDName.do',method:'get'">
+		<thead>
+			<tr>
+			    <th data-options="field:'id',width:200,hidden:true"></th>
+			    <th data-options="field:'salesDepartmentName',width:200">销售部名称</th>
+				<th data-options="field:'salesDepartmentPhone',width:200">联系电话</th>
+				<th data-options="field:'salesDepartmentAddress',width:200,align:'right'">销售部地址</th>
+				<th data-options="field:'parentSalesDepartmentName',width:200,align:'right'">上一级销售部</th>
+				<th data-options="field:'salesDepOperation',formatter:getDepartmentOperation">操作</th>
+			</tr>
+		</thead>
+	</table>
+</body>
+</html>

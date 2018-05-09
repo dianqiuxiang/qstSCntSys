@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>JK财务管理系统</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+	<h2>Basic ComboGrid</h2>
+	<p>Click the right arrow button to show the DataGrid.</p>
+	<div style="margin:20px 0"></div>
+	<select class="easyui-combogrid" id="cb" style="width:250px" data-options="
+			panelWidth: 250,
+			idField: 'itemid',
+			textField: 'productname',
+			url: '/JQU/User',
+			method: 'post',
+			columns: [[
+				{field:'itemid',title:'订单编号',width:50},
+	            {field:'productname',title:'客户姓名',width:50}
+			]],
+			fitColumns: true,
+			rownumbers:true,
+			singleSelect:true,
+			pagination:true,
+			pageSize:20,
+			pageList:[20]
+		">
+	</select>
+	
+
+</body>
+</html>

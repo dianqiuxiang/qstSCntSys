@@ -22,9 +22,24 @@ public class SalesDepartmentInfo {
     private String salesDepartmentPhone;
 
     /**
-     *父亲节点
+     *父节点
      */
     private Integer parentID;
+    
+    /**
+     *父节点
+     */
+    private Integer _parentId;
+    
+    /**
+     *上一级销售部名称
+     */
+    private String parentSalesDepartmentName;
+    
+    /**
+     *层级
+     */
+    private Integer level;
 
     /**
      *是否删除：0 没删除，1 删除
@@ -88,20 +103,61 @@ public class SalesDepartmentInfo {
     }
 
     /**
-     *父亲节点
+     *父节点
      */
     public Integer getParentID() {
         return parentID;
     }
 
     /**
-     *父亲节点
+     *父节点
      */
     public void setParentID(Integer parentID) {
         this.parentID = parentID;
     }
+    
+    /**
+     *父节点
+     */
+    public Integer get_parentId() {
+		return _parentId;
+	}
+    /**
+     *父节点
+     */
+	public void set_parentId(Integer _parentId) {
+		this._parentId = _parentId;
+	}
+
+	/**
+     *上一级销售部名称
+     */    
+    public String getParentSalesDepartmentName() {
+		return parentSalesDepartmentName;
+	}
 
     /**
+     *上一级销售部名称
+     */
+	public void setParentSalesDepartmentName(String parentSalesDepartmentName) {
+		this.parentSalesDepartmentName = parentSalesDepartmentName;
+	}
+
+	/**
+     *层级
+     */    
+    public Integer getLevel() {
+		return level;
+	}
+
+    /**
+     *层级
+     */
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	/**
      *是否删除：0 没删除，1 删除
      */
     public Integer getIsDelete() {

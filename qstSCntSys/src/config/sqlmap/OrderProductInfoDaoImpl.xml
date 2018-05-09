@@ -197,25 +197,25 @@
 		   
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectParamFlexible" parameterType="orderProductInfo" resultType="orderProductInfo">  
-		        select * from orderProductInfo   
-		       <where>		       
-		       		<if test="orderID != null" >
-				        orderID = #{orderID}
-				      </if>
-				      <if test="productID != null" >
-				        and productID = #{productID}
-				      </if>
-				      <if test="amount != null" >
-				        and amount = #{amount}
-				      </if>
-				      <if test="price != null" >
-				        and price = #{price}
-				      </if>
-				      <if test="totalMoney != null" >
-				        and totalMoney = #{totalMoney}
-				      </if>
-	           </where> 
-	           and isDelete=0
+		        select * from orderProductInfo
+				<trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="orderID != null" >
+				and orderID = #{orderID}
+				</if>
+				<if test="productID != null" >
+				and productID = #{productID}
+				</if>
+				<if test="amount != null" >
+				and amount = #{amount}
+				</if>
+				<if test="price != null" >
+				and price = #{price}
+				</if>
+				<if test="totalMoney != null" >
+				and totalMoney = #{totalMoney}
+				</if>
+				and isDelete=0
+				</trim>
 		   </select>
 		   
 		   <!-- 查询（根据订单编号查询） -->  

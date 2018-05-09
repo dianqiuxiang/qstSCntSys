@@ -29,9 +29,47 @@ public class SalesDepartmentController extends BaseController {
 		
 		Gson gson = new Gson();		
 		SalesDepartmentInfo salesDepartmentInfo=new SalesDepartmentInfo();
-		salesDepartmentInfo.setSalesDepartmentName(salesDepartmentName);
-		
+		if(salesDepartmentName==null||salesDepartmentName.equals("")){
+			salesDepartmentInfo.setSalesDepartmentName(null);
+		}
+		else{
+			salesDepartmentInfo.setSalesDepartmentName(salesDepartmentName);
+		}
+		//salesDepartmentInfo.setSalesDepartmentName(salesDepartmentName);
 		EUDataGridResult<SalesDepartmentInfo> list=salesDepartmentInfoService.selectParamFlexible(salesDepartmentInfo,page,rows);
+		System.out.println(gson.toJson(list));
+		return gson.toJson(list);
+	}
+	
+	/**
+	 * 查询所有销售部门信息，绑定到下拉列表
+	 * @return
+	 */
+	@RequestMapping(value="/getInfo.do")
+	@ResponseBody
+	public Map<String,Object> getInfo() {
+
+		Gson gson = new Gson();
+
+		List<SalesDepartmentInfo> list=salesDepartmentInfoService.selectAll();
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("rows", list);
+		System.out.println(gson.toJson(list));
+		return map;
+	}
+	
+	
+	/**
+	 * 查询所有销售部门信息，绑定到下拉列表
+	 * @return
+	 */
+	@RequestMapping(value="/selectSalesDepartment.do")
+	@ResponseBody
+	public Object selectSalesDepartment() {
+
+		Gson gson = new Gson();
+
+		List<SalesDepartmentInfo> list=salesDepartmentInfoService.select();
 		System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
@@ -49,32 +87,35 @@ public class SalesDepartmentController extends BaseController {
 		
 		String resultStr="";
 		if(list.size()==0){
+			
+			SalesDepartmentInfo parent_SalesDepartmentInfo=salesDepartmentInfoService.selectPK(salesDepartmentInfo.getParentID());
 
+			salesDepartmentInfo.setLevel(parent_SalesDepartmentInfo.getLevel()+1);
 			salesDepartmentInfo.setIsDelete(0);
 			
 			int result=salesDepartmentInfoService.insert(salesDepartmentInfo);
 			if(result>0)
 			{
-				resultStr="[{\"result\":\"Success\"}]";
+				resultStr="{\"result\":\"Success\"}";
 			}
 			else
 			{
-				resultStr="[{\"result\":\"Failed\"}]";
+				resultStr="{\"result\":\"Failed\"}";
 			}
 		}
 		else
 		{
-			resultStr="[{\"result\":\"isExist\"}]";
+			resultStr="{\"result\":\"isExist\"}";
 		}
 		return resultStr;
 	}
 	
 	@RequestMapping(value="/selectByID.do")
 	@ResponseBody
-	public Object selectByID(int ID) {
+	public Object selectByID(int id) {
 		
 		Gson gson = new Gson();		
-		SalesDepartmentInfo salesDepartmentInfo=salesDepartmentInfoService.selectPK(ID);
+		SalesDepartmentInfo salesDepartmentInfo=salesDepartmentInfoService.selectPK(id);
 		System.out.println(gson.toJson(salesDepartmentInfo));
 		return gson.toJson(salesDepartmentInfo);
 	}
@@ -86,7 +127,7 @@ public class SalesDepartmentController extends BaseController {
 		SalesDepartmentInfo old_salesDepartmentInfo=salesDepartmentInfoService.selectPK(salesDepartmentInfo.getId());
 		
 		Map<String, Object> whereMap = new HashMap<String, Object>();
-		whereMap.put("productName",salesDepartmentInfo.getSalesDepartmentName());//指定查询范围,此处默认查询本部门下的顾客信息	 
+		whereMap.put("salesDepartmentName",salesDepartmentInfo.getSalesDepartmentName());//指定查询范围,此处默认查询本部门下的顾客信息	 
 		
 		Map<String, Object> params = new HashMap<String, Object>();  
 		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
@@ -95,39 +136,43 @@ public class SalesDepartmentController extends BaseController {
 		String resultStr="";
 		if(list.size()==0||old_salesDepartmentInfo.getSalesDepartmentName().equals(salesDepartmentInfo.getSalesDepartmentName())){
 			
+			SalesDepartmentInfo parent_SalesDepartmentInfo=salesDepartmentInfoService.selectPK(salesDepartmentInfo.getParentID());
+
+			salesDepartmentInfo.setLevel(parent_SalesDepartmentInfo.getLevel()+1);
+			
 			int result=salesDepartmentInfoService.update(salesDepartmentInfo);
 			if(result>0)
 			{
-				resultStr="[{\"result\":\"Success\"}]";
+				resultStr="{\"result\":\"Success\"}";
 			}
 			else
 			{
-				resultStr="[{\"result\":\"Failed\"}]";
+				resultStr="{\"result\":\"Failed\"}";
 			}
 		}
 		else
 		{
-			resultStr="[{\"result\":\"isExist\"}]";
+			resultStr="{\"result\":\"isExist\"}";
 		}
 		return resultStr;
 	}
 	
 	@RequestMapping(value="/deleteSalesDepartmentInfo.do")
 	@ResponseBody
-	public Object deleteSalesDepartmentInfo(int ID) {
+	public Object deleteSalesDepartmentInfo(int id) {
 
 		String resultStr="";
 		SalesDepartmentInfo salesDepartmentInfo=new SalesDepartmentInfo();
-		salesDepartmentInfo.setId(ID);		
+		salesDepartmentInfo.setId(id);		
 		salesDepartmentInfo.setIsDelete(1);//"1"代表删除，"0"代表未删除
 		int result=salesDepartmentInfoService.update(salesDepartmentInfo);
 		if(result>0)
 		{
-			resultStr="[{\"result\":\"Success\"}]";
+			resultStr="{\"result\":\"Success\"}";
 		}
 		else
 		{
-			resultStr="[{\"result\":\"Failed\"}]";
+			resultStr="{\"result\":\"Failed\"}";
 		}
 		
 		return resultStr;

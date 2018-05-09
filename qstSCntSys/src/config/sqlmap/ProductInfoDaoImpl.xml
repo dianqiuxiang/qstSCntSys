@@ -171,18 +171,19 @@
 		   
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectParamFlexible" parameterType="productInfo" resultType="productInfo">  
-		        select * from productInfo   
-		       <where>		       
-		       		<if test="productName != null" >
-				        productName like  "%"#{productName}"%"
-				      </if>
-				      <if test="productUnit != null" >
-				        and productUnit like "%"#{productUnit}"%"
-				      </if>
-				      <if test="productPrice != null" >
-				        and productPrice = #{productPrice}
-				      </if>
-	           </where> 
-	           and isDelete=0
+		        select * from productInfo
+		        <trim prefix="WHERE" prefixOverrides="and |or">
+					<if test="productName != null">
+						and productName like  "%"#{productName}"%"
+					</if>			
+					<if test="productUnit != null" >
+						and productUnit like "%"#{productUnit}"%"
+					</if>
+					<if test="productPrice != null" >
+						and productPrice = #{productPrice}
+					</if>
+						and isDelete=0
+				</trim> 
+		       
 		   </select>
     </mapper>

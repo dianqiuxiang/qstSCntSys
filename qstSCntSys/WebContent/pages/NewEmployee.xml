@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <table>
+		<tr>
+			<td>姓名:</td>
+			<td>
+				<input id="employeeN" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>性别:</td>
+			<td>
+				<select class="easyui-combobox" id="employeeS"  data-options="editable:false">
+			        <option value="0">男</option>
+					<option value="1">女</option>
+        		</select>
+			</td>
+		</tr>
+		<tr>
+			<td>电话:</td>
+			<td>
+				<input id="employeeP" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>住址:</td>
+			<td>
+				<input id="employeeA" class='easyui-textbox'></input>
+			</td>
+		</tr>
+		<tr>
+			<td>邮箱:</td>
+			<td>
+				<input id="employeeE" class='easyui-textbox'  data-options="validType:'email'"></input>
+			</td>
+		</tr>
+
+		<tr>
+		    <td></td>
+			<td><span id='msginfo'></span></td>
+		</tr>
+</table>

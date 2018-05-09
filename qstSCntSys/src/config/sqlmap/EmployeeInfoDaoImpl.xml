@@ -214,27 +214,27 @@
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectParamFlexible" parameterType="employeeInfo" resultType="employeeInfo">  
 		        select * from employeeInfo   
-		       <where>		       
-		       		<if test="employeeName != null" >
-				        employeeName like "%"#{employeeName}"%"
-				      </if>
-				      <if test="sex != null" >
-				        and sex = #{sex}
-				      </if>
-				      <if test="employeePhone != null" >
-				        and employeePhone like "%"#{employeePhone}"%"
-				      </if>
-				      <if test="employeeAddress != null" >
-				        and employeeAddress like "%"#{employeeAddress}"%"
-				      </if>
-				      <if test="employeeEmail != null" >
-				        and employeeEmail like "%"#{employeeEmail}"%"
-				      </if>
-				      <if test="salesDepartmentID != null" >
-				        and salesDepartmentID = #{salesDepartmentID}
-				      </if>
-	           </where> 
-	           and isDelete=0
+					<trim prefix="WHERE" prefixOverrides="and |or">
+					<if test="employeeName != null" >
+					and employeeName like "%"#{employeeName}"%"
+					</if>
+					<if test="sex != null" >
+					and sex like "%"#{sex}"%"
+					</if>
+					<if test="employeePhone != null" >
+					and employeePhone like "%"#{employeePhone}"%"
+					</if>
+					<if test="employeeAddress != null" >
+					and employeeAddress like "%"#{employeeAddress}"%"
+					</if>
+					<if test="employeeEmail != null" >
+					and employeeEmail like "%"#{employeeEmail}"%"
+					</if>
+					<if test="salesDepartmentID != null" >
+					and salesDepartmentID = #{salesDepartmentID}
+					</if>
+					and isDelete=0
+					</trim>
 		   </select>
 		   
     </mapper>

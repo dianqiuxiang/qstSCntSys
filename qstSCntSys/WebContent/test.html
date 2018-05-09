@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+
+};
+
+function updateOrderInfo()
+{
+	var json={
+			"id":"1",
+			"orderCode":"1234",
+			"customerType":"2",
+			"customerPhone":"123",
+			"customerName":"123",
+			"customerAddress":"123",
+			"orderDate":"2018-04-18",
+			"orderAmount":"100",
+			"healthMember":"显示",
+			"customerSign":"确认",
+			
+			"updateProducts":[],   
+			"deleteProducts":[],   
+			"insertProducts":[]   
+	};
+	for(var i=0;i<=2;i++)
+	{
+		var product=new Object();
+		product.id=i+1;
+		product.productID=i+1;
+		product.amount=i+3+1;
+		product.price=i+6;
+		json.updateProducts.push(product);
+	}
+	$.ajax({
+	    type:"POST",
+	    url:"http://localhost:8080/qstSCntSys/order/updateOrderAndOProductInfo.do",
+	    contentType:"application/json;charset=utf-8",
+	    dataType:"json",
+	    data:JSON.stringify(json),
+	    success:function(result){
+	        //console.log("success");
+	        alert(JSON.stringify(result));
+	    }
+	});
+}
+function addReceiptInfo()
+{
+	var json={
+			"orderID":"4",
+			"receiptMember":"高",
+			"receiptDate":"2018-04-23",
+			"receiptAmount":"200",	
+			"remark":""
+	};	
+	$.ajax({
+	    type:"POST",
+	    url:"http://localhost:8080/qstSCntSys/receipt/addReceiptInfo.do",
+	    contentType:"application/json;charset=utf-8",
+	    dataType:"json",
+	    data:JSON.stringify(json),
+	    success:function(result){
+	        //console.log("success");
+	        alert(JSON.stringify(result));
+	    }
+	});
+}
+function updateReceiptInfo()
+{
+	var json={
+			"id":"4",
+			"receiptMember":"高",
+			"receiptDate":"2018-04-23",
+			"receiptAmount":"2000",	
+			"remark":"123"
+	};	
+	$.ajax({
+	    type:"POST",
+	    url:"http://localhost:8080/qstSCntSys/receipt/updateReceiptInfo.do",
+	    contentType:"application/json;charset=utf-8",
+	    dataType:"json",
+	    data:JSON.stringify(json),
+	    success:function(result){
+	        //console.log("success");
+	        alert(JSON.stringify(result));
+	    }
+	});
+}
+
+function addEmployeeInfo()
+{
+	var json={
+			"employeeName":"高",
+			"sex":"2",
+			"employeePhone":"211111000",
+			"employeeAddress":"江苏省",
+			"employeeEmail":"123321@qq.com"
+	};	
+	$.ajax({
+	    type:"POST",
+	    url:"http://localhost:8080/qstSCntSys/employee/addEmployeeInfo.do",
+	    contentType:"application/json;charset=utf-8",
+	    dataType:"json",
+	    data:JSON.stringify(json),
+	    success:function(result){
+	        //console.log("success");
+	        alert(JSON.stringify(result));
+	    }
+	});
+}
+
+function updateEmployeeInfo()
+{
+	var json={
+			"id":"1",
+			"employeeName":"高12",
+			"sex":"1",
+			"employeePhone":"210",
+			"employeeAddress":"美国斯坦福大学",
+			"employeeEmail":"123321@163.com"
+	};	
+	$.ajax({
+	    type:"POST",
+	    url:"http://localhost:8080/qstSCntSys/employee/updateEmployeeInfo.do",
+	    contentType:"application/json;charset=utf-8",
+	    dataType:"json",
+	    data:JSON.stringify(json),
+	    success:function(result){
+	        //console.log("success");
+	        alert(JSON.stringify(result));
+	    }
+	});
+}
+
+function deleteEmployeeInfo()
+{	
+	$.ajax({
+	    type:"POST",
+	    url:"http://localhost:8080/qstSCntSys/employee/deleteEmployeeInfo.do",
+	    //contentType:"application/json;charset=utf-8",
+	    dataType:"json",
+	    data:{id:5},
+	    success:function(result){
+	        //console.log("success");
+	        alert(JSON.stringify(result));
+	    }
+	});
+}
+</script>
+</head>
+<body>
+<button onclick="updateOrderInfo()">修改订单信息</button>
+<button onclick="addReceiptInfo()">新增收款信息</button>
+<button onclick="updateReceiptInfo()">修改收款信息</button>
+
+<button onclick="addEmployeeInfo()">新增用户信息</button>
+<button onclick="updateEmployeeInfo()">修改用户信息</button>
+<button onclick="deleteEmployeeInfo()">删除用户信息</button>
+
+</body>
+</html>

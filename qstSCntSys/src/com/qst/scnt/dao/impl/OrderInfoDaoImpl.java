@@ -21,9 +21,9 @@ public class OrderInfoDaoImpl extends BaseDaoImpl<OrderInfo> implements OrderInf
 	}
 
 	@Override
-	public List<Cost> selectByCNameAndCTypeAndDate(Map<String, Object> queryDate) {
+	public List<Cost> selectByOCodeandCNameAndDate(Map<String, Object> queryDate) {
 		try {  
-            return this.getSqlSession().selectList(namespace + "." + "selectByCNameAndCTypeAndDate",queryDate);  
+            return this.getSqlSession().selectList(namespace + "." + "selectByOCodeandCNameAndDate",queryDate);  
         } catch (Exception e) {  
             e.printStackTrace();  
             return null;  

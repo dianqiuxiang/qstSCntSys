@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>JK财务管理系统</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../locale/easyui-lang-zh_CN.js"></script>
+	<style type="text/css">
+	    html,body{
+	        padding:0;
+	        margin:0;
+	        width:100%;
+	        height:100%;
+	    }
+	</style>
+</head>
+<body>
+	<div style="position:relative;border:1px solid #ccc;width:99%;height:99% ">
+	    <div id="reportToolbar" style="padding:5px;position:absolute;margin:0 auto">
+	        <span>时间：</span><input id="reportD" class="easyui-datebox"></input>
+	        <a href="#" class="easyui-linkbutton" plain="true" onclick="doReportSearch()">查询</a>
+	        <a href="#" class="easyui-linkbutton" plain="true" onclick="doReportExport()">导出</a>  
+	    </div>
+   </div>
+    <script type="text/javascript">
+    function doReportSearch(){
+    	parent.$.messager.alert("消息提示",$("#reportD").datebox("getValue"),"info");
+    }
+    function doReportExport()
+    {
+
+    }
+    
+    </script>
+</body>
+</html>

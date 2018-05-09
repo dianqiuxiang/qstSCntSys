@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <table>
+		<tr>
+			<td>用户姓名:</td>
+			<td>
+				<input id="userN" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>用户密码:</td>
+			<td>
+				<input id="userPwd" type="password" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>用户电话:</td>
+			<td>
+				<input id="userP" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>用户邮箱:</td>
+			<td>
+				<input id="userE" class='easyui-textbox'  data-options="validType:'email'"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>销售部名称:</td>
+			<td>
+				<input class="easyui-combobox" id="marketDep" 
+				data-options="editable:false,url:'/JQU/department',method:'get',valueField:'id',textField:'salesDepartmentName',panelHeight:'auto'"></input>
+			</td>
+		</tr>
+		<tr>
+		    <td></td>
+			<td><span id='msginfo'></span></td>
+		</tr>
+</table>

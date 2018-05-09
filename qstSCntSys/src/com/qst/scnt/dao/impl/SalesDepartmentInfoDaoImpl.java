@@ -1,5 +1,7 @@
 package com.qst.scnt.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.qst.scnt.dao.SalesDepartmentInfoDao;
@@ -14,6 +16,16 @@ public class SalesDepartmentInfoDaoImpl extends BaseDaoImpl<SalesDepartmentInfo>
 	public SalesDepartmentInfoDaoImpl(){
 		super.setNamespace("com.qst.scnt.dao.impl.SalesDepartmentInfoDaoImpl");	
 		namespace="com.qst.scnt.dao.impl.SalesDepartmentInfoDaoImpl";
+	}
+
+	@Override
+	public List<SalesDepartmentInfo> selectAll() {
+		try {  
+            return this.getSqlSession().selectList(namespace + "." + "selectAll");  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
 	}
 
 }

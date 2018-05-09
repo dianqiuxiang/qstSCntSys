@@ -225,31 +225,31 @@
 		   
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectParamFlexible" parameterType="everyMonthOtherInfo" resultType="everyMonthOtherInfo">  
-		        select * from everyMonthOtherInfo   
-		       <where>		       
-		       <if test="manageCost != null" >
-			        manageCost = #{manageCost}
-			      </if>
-			      <if test="earlyNumber != null" >
-			        and earlyNumber = #{earlyNumber}
-			      </if>
-			      <if test="finalNumber != null" >
-			        and finalNumber = #{finalNumber}
-			      </if>
-			      <if test="singleExcessAmount != null" >
-			        and singleExcessAmount = #{singleExcessAmount}
-			      </if>
-			      <if test="overallExcessAmount != null" >
-			        and overallExcessAmount = #{overallExcessAmount}
-			      </if>
-			      <if test="salesDepartmentID != null" >
-			        and salesDepartmentID = #{salesDepartmentID}
-			      </if>
-			      <if test="infoDate != null" >
-			        and infoDate = #{infoDate}
-			      </if>
-	           </where> 
-	           and isDelete=0
+		        select * from everyMonthOtherInfo
+				<trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="manageCost != null" >
+				and manageCost = #{manageCost}
+				</if>
+				<if test="earlyNumber != null" >
+				and earlyNumber = #{earlyNumber}
+				</if>
+				<if test="finalNumber != null" >
+				and finalNumber = #{finalNumber}
+				</if>
+				<if test="singleExcessAmount != null" >
+				and singleExcessAmount = #{singleExcessAmount}
+				</if>
+				<if test="overallExcessAmount != null" >
+				and overallExcessAmount = #{overallExcessAmount}
+				</if>
+				<if test="salesDepartmentID != null" >
+				and salesDepartmentID = #{salesDepartmentID}
+				</if>
+				<if test="infoDate != null" >
+				and infoDate = #{infoDate}
+				</if>
+				and isDelete=0
+				</trim> 
 		   </select>
 		   
 		   <!-- 查询（参数,根据起始时间查询） -->  

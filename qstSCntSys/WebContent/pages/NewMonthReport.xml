@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <table id="mcost">
+		<tr>
+			<td>管理费用:</td>
+			<td>
+				<input id="manageC" class='easyui-numberbox' data-options="precision:2,groupSeparator:',',decimalSeparator:'.',prefix:'￥'"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>期初人数:</td>
+			<td>
+				<input id="earlyN" class='easyui-numberbox'></input>
+			</td>
+		</tr>
+		<tr>
+			<td>期末人数:</td>
+			<td>
+				<input id="finalN" class='easyui-numberbox'></input>
+			</td>
+		</tr>
+		<tr>
+			<td>单笔累计赠送超标金额:</td>
+			<td>
+				<input id="singleExcessA" class='easyui-numberbox' data-options="precision:2,groupSeparator:',',decimalSeparator:'.',prefix:'￥'"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>整体考量赠送超标金额:</td>
+			<td>
+				<input id="overallExcessA" class='easyui-numberbox' data-options="precision:2,groupSeparator:',',decimalSeparator:'.',prefix:'￥'"></input>
+			</td>
+		</tr>
+			<tr>
+			<td>时间:</td>
+			<td>
+				<input id="infoD" class='easyui-datebox' data-options="required:true,editable:false"></input>
+			</td>
+		</tr>
+		<tr>
+		    <td></td>
+			<td><span id='msginfo'></span></td>
+		</tr>
+</table>

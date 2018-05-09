@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <table>
+		<tr>
+			<td>姓名:</td>
+			<td>
+				<input id="customerN" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>电话:</td>
+			<td>
+				<input id="customerP" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>住址:</td>
+			<td>
+				<input id="customerA" class='easyui-textbox'></input>
+			</td>
+		</tr>
+		<tr>
+		    <td></td>
+			<td><span id='msginfo'></span></td>
+		</tr>
+</table>

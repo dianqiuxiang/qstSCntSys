@@ -10,13 +10,11 @@ import com.qst.scnt.utils.EUDataGridResult;
 
 public interface OrderInfoService extends BaseService<OrderInfo> {
 
-	public EUDataGridResult<Cost> selectByCNameAndCTypeAndDate(Map<String, Object> queryDate, int pageNum, int pageSize);
+	public EUDataGridResult<Cost> selectByOCodeandCNameAndDate(Map<String, Object> queryDate, int pageNum, int pageSize);
 
 	public int insertOrderAndOProductInfo(OrderInfo orderInfo);
 
 	public int updateOrderAndOProductInfo(OrderInfo orderInfo);
-
-	public List<OrderProductInfo> selectOProductByOrderID(OrderProductInfo orderProductInfo);
 
 	public int deleteOrderAndOProduct(OrderInfo orderInfo);
 	
