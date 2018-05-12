@@ -10,6 +10,8 @@ public interface ReceiptInfoService extends BaseService<ReceiptInfo> {
 
 	public EUDataGridResult<ReceiptInfo> selectByCodeAndRMemberAndDate(Map<String, Object> queryDate,int pageNum, int pageSize);
 
+	public List<ReceiptInfo> selectByCodeAndRMemberAndDate(Map<String, Object> queryDate);
+	
 	public ReceiptInfo selectByID(int ID);
 	
 }

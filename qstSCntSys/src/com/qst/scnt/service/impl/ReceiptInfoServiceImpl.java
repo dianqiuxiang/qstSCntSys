@@ -42,6 +42,11 @@ public class ReceiptInfoServiceImpl extends BaseServiceImpl<ReceiptInfo> impleme
         result.setTotal(pageInfo.getTotal());
         return result;
 	}
+	//返回所有数据（页面带参数的查询到的）
+	public List<ReceiptInfo> selectByCodeAndRMemberAndDate(Map<String, Object> queryDate){
+		List<ReceiptInfo> list = receiptInfoDao.selectByCodeAndRMemberAndDate(queryDate);
+		return list;
+	}
 
 	@Override
 	public ReceiptInfo selectByID(int ID) {

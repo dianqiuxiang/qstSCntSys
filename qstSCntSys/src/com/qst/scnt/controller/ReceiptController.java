@@ -101,6 +101,64 @@ public class ReceiptController extends BaseController {
 	}
 	
 	/**
+	 * 查询所有结果
+	 * @return
+	 */
+	@RequestMapping(value="/selectByCodeAndRMemberAndDateNoPageSize.do")
+	@ResponseBody
+	public Object selectByCodeAndRMemberAndDate(String orderCode,String receiptMember,String startDate,String endDate) {
+		Gson gson = new Gson();
+		Map<String, Object> queryDate = new HashMap<String, Object>();
+		
+		//queryDate.put("orderCode",orderCode);
+		//queryDate.put("receiptMember",receiptMember);
+		
+		if(orderCode==null||orderCode.equals(""))
+		{
+			queryDate.put("orderCode",null);
+		}
+		else
+		{ 
+			queryDate.put("orderCode",receiptMember);
+		}
+		
+		
+		if(receiptMember==null||receiptMember.equals(""))
+		{
+			queryDate.put("receiptMember",null);
+		}
+		else
+		{ 
+			queryDate.put("receiptMember",receiptMember);
+		}
+		
+		if(startDate==null||startDate.equals(""))
+		{
+			queryDate.put("startDate",null);
+		}
+		else
+		{ 
+			queryDate.put("startDate",startDate);
+		}
+		
+		if(endDate==null||endDate.equals(""))
+		{
+			queryDate.put("endDate",null);
+		}
+		else
+		{ 
+			queryDate.put("endDate",endDate);
+		}
+		
+		//queryDate.put("startDate",startDate);
+		//queryDate.put("endDate",endDate);
+		
+		queryDate.put("salesDepartmentID",this.getCurrentUser().getSalesDepartmentID());
+		List<ReceiptInfo> receiptInfoList=receiptInfoServicce.selectByCodeAndRMemberAndDate(queryDate);
+		return gson.toJson(receiptInfoList);
+	}
+	
+	/**
 	 * 根据订单编号模糊查询此部门下订单中的订单编号
 	 * @param ID
 	 * @return
