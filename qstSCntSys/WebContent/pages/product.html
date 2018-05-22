@@ -76,7 +76,9 @@
     	    			if(json.result=="Success")
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！","info");
-    	        			doProductSearch();
+    	        			$('#productDg').datagrid('reload',{
+    	            		    productName:$('#productN').val()
+    	            		});
     	        		}
     	        		else
     	        		{
@@ -94,7 +96,9 @@
     		{
     			parent.$.messager.alert("消息提示","修改成功！","info");
      			parent.closeDialog();
-     			doProductSearch();
+     			$('#productDg').datagrid('reload',{
+        		    productName:$('#productN').val()
+        		});
     		}
     		else if(v=="Failed")
     		{

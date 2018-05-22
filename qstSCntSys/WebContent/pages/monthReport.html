@@ -19,6 +19,8 @@
 </head>
 <body>
     <div id="monthReportToolbar" style="padding:5px">
+    <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/otherInfo/getSalesDept.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
         <span>查询时间：</span><input id="monthReportD" class="easyui-datebox"></input>
         <span>至：</span><input id="monthReportED" class="easyui-datebox"></input>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="doMonthReportSearch()">查询</a>
@@ -26,9 +28,16 @@
     </div>
     <script type="text/javascript">
     $(document).ready(function() {
-		$("#monthReportDg").datagrid('getPager').pagination({showPageList:false});
-		dateformate("#monthReportD");
+    	
+		dateformateFirst("#monthReportD");
 		dateformate("#monthReportED");
+		
+		var opts=$("#monthReportDg").datagrid("options");    
+        if(null==opts.url||""==opts.url){    
+            opts.url="/qstSCntSys/otherInfo/selectByStartAndEndDate.do";    
+        }
+        doMonthReportSearch();
+		$("#monthReportDg").datagrid('getPager').pagination({showPageList:false});
 	});
     function dateformate(id) {
  	   $(id).datebox({
@@ -81,6 +90,59 @@
  	        //设置前当月
  	        $(id).datebox("setValue", myformatter(curr_time));
  	}
+    
+    function dateformateFirst(id) {
+  	   $(id).datebox({
+  	       //显示日趋选择对象后再触发弹出月份层的事件，初始化时没有生成月份层
+  	       onShowPanel: function () {
+  	          //触发click事件弹出月份层
+  	          span.trigger('click'); 
+  	          if (!tds)
+  	            //延时触发获取月份对象，因为上面的事件触发和对象生成有时间间隔
+  	            setTimeout(function() { 
+  	                tds = p.find('div.calendar-menu-month-inner td');
+  	                tds.click(function(e) {
+  	                   //禁止冒泡执行easyui给月份绑定的事件
+  	                   e.stopPropagation(); 
+  	                   //得到年份
+  	                   var year = /\d{4}/.exec(span.html())[0] ,
+  	                   //月份
+  	                   //之前是这样的month = parseInt($(this).attr('abbr'), 10) + 1; 
+  	                   month = parseInt($(this).attr('abbr'), 10);  
+
+  	         //隐藏日期对象                     
+  	         $(id).datebox('hidePanel') 
+  	           //设置日期的值
+  	           .datebox('setValue', year + '-' + month); 
+  	                        });
+  	                    }, 0);
+  	            },
+  	            //配置parser，返回选择的日期
+  	            parser: function (s) {
+  	                if (!s) return new Date();
+  	                var arr = s.split('-');
+  	                return new Date(parseInt(arr[0], 10), parseInt(arr[1], 10) - 1, 1);
+  	            },
+  	            //配置formatter，只返回年月 之前是这样的d.getFullYear() + '-' +(d.getMonth()); 
+  	            formatter: function (d) { 
+  	                var currentMonth = (d.getMonth()+1);
+  	                var currentMonthStr = currentMonth < 10 ? ('0' + currentMonth) : (currentMonth + '');
+  	                return d.getFullYear() + '-' + currentMonthStr; 
+  	            }
+  	        });
+
+  	        //日期选择对象
+  	        var p = $(id).datebox('panel'), 
+  	        //日期选择对象中月份
+  	        tds = false, 
+  	        //显示月份层的触发控件
+  	        span = p.find('span.calendar-text'); 
+  	        var curr_time = new Date();
+  	      	var y = curr_time.getFullYear();
+  	        //设置前当月
+  	        $(id).datebox("setValue", y + '-01');
+  	}
+    
 	function myformatter(date) {
 	    //获取年份
 	    var y = date.getFullYear();
@@ -92,7 +154,9 @@
     	//parent.$.messager.alert("消息提示",$("#odate").datebox("getValue"));
     	//parent.$.messager.alert("消息提示",$('#state').combobox('getValue'));
     	//parent.$.messager.alert("消息提示",$('#state').combobox('getText'));
+    	
     	$('#monthReportDg').datagrid('load',{
+    		 	salesDepartmentID:$('#salesDept').combotree("getValue"),
     	    	startDate:$('#monthReportD').datebox("getValue"),
     	    	endDate:$('#monthReportED').datebox("getValue")
     		});
@@ -138,6 +202,11 @@
     	    			if(json.result=="Success")
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！","info");
+    	        			$('#monthReportDg').datagrid('reload',{
+    	            		 	salesDepartmentID:$('#salesDept').combotree("getValue"),
+    	            	    	startDate:$('#monthReportD').datebox("getValue"),
+    	            	    	endDate:$('#monthReportED').datebox("getValue")
+    	            		});
     	        		}
     	        		else
     	        		{
@@ -155,7 +224,11 @@
     		{
     			parent.$.messager.alert("消息提示","修改成功！","info");
      			parent.closeDialog();
-     			doMonthReportSearch();
+     			$('#monthReportDg').datagrid('reload',{
+        		 	salesDepartmentID:$('#salesDept').combotree("getValue"),
+        	    	startDate:$('#monthReportD').datebox("getValue"),
+        	    	endDate:$('#monthReportED').datebox("getValue")
+        		});
     		}
     		else if(v=="Failed")
     		{
@@ -170,7 +243,7 @@
     }
     </script>
    <table id="monthReportDg"  toolbar="#monthReportToolbar" class="easyui-datagrid" style="height:100%"
-		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/otherInfo/selectByStartAndEndDate.do',method:'get'">
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,method:'get'">
 		<thead>
 			<tr>
 			    <th data-options="field:'id',width:200,hidden:true"></th>
@@ -180,6 +253,7 @@
 				<th data-options="field:'singleExcessAmount',width:200,align:'right'">单笔累计赠送超标金额</th>
 				<th data-options="field:'overallExcessAmount',width:200,align:'right'">整体考量赠送超标金额</th>
 				<th data-options="field:'infoDate',width:200,align:'right'">时间</th>
+				<th data-options="field:'salesDepartmentName',width:200,align:'right'">销售部门</th>
 				<th data-options="field:'receiptOperation',formatter:getMonthReportOperation">操作</th>
 			</tr>
 		</thead>

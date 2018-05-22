@@ -5,6 +5,8 @@ import com.qst.scnt.model.UserInfo;
 public interface UserInfoService extends BaseService<UserInfo> {
 
 	public int update();
+	
+    public UserInfo login(UserInfo userInfo);
 
 }
 

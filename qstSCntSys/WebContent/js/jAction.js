@@ -12,7 +12,7 @@ function newOrderDialog(callback)
 	productTRCount=0;
 	//orderProducts.productCount=0;
 
-	var args={'url':'NewOrder.xml','width':'750','height':'450','action':'product','title':'新增订单信息'};
+	var args={'url':'NewOrder.xml','width':'850','height':'450','action':'product','title':'新增订单信息'};
 	openDialog(args,newOrder,callback,initOrder);
 }
 function newProductDialog(callback)
@@ -52,17 +52,89 @@ function newReceiptDialog(callback)
 }
 function newMonthReportDialog(callback)
 {
-	var args={'url':'NewMonthReport.xml','width':'400','height':'450','action':'monthReport','title':'新增月报其他信息'};
+	var args={'url':'NewMonthReport.xml','width':'450','height':'450','action':'monthReport','title':'新增月报其他信息'};
 	openDialog(args,newMonthReport,callback,initMonthReport);
 }
 
 
 //set model view
 function setOrderModel(json)
-{
-	initOrder();
+{	
 	if(json.length!=0)
     {
+		$('#salesDept').combotree({
+			onLoadSuccess:function(node,data){  
+		    	$('#salesDept').combotree('setValue',json.salesDepartmentID);
+		    },
+			onSelect:function(node) {				
+				$("#cusN").combogrid({
+					required:true,
+					panelWidth: 281,
+					idField: 'id',
+					textField: 'customerName',
+					url: '/qstSCntSys/order/selectCustomerInfo.do?salesDepartmentID='+node.id,
+					method: 'post',
+					columns: [[
+						{field:'customerName',title:'客户姓名',width:60},
+						{field:'customerPhone',title:'客户电话',width:60},
+						{field:'customerAddress',title:'顾客住址',width:159}
+					]],
+					rownumbers:false,
+					singleSelect:true,
+					pagination:true,
+					pageSize:5,				
+					pageList: [5],       //可以设置每页记录条数的列表
+					fitColumns: true,
+					onSelect:function(){
+						$("#cusP").textbox("setValue",$("#cusN").combogrid('grid').datagrid('getSelected').customerPhone);
+						$("#cusaddr").textbox("setValue",$("#cusN").combogrid('grid').datagrid('getSelected').customerAddress);				
+					},
+					keyHandler:{
+						query:function(q)
+						{
+							$('#cusN').combogrid("grid").datagrid("reload",{'customerName':q});
+							$('#cusN').combogrid("setValue",q);
+						}
+					}
+				});
+				$("#cusN").combogrid('grid').datagrid('getPager').pagination({showPageList:false,displayMsg:''});
+			}
+		})
+	
+		$("#cusN").combogrid({
+			required:true,
+			panelWidth: 281,
+			idField: 'id',
+			textField: 'customerName',
+			url: '/qstSCntSys/order/selectCustomerInfo.do?salesDepartmentID='+json.salesDepartmentID,
+			method: 'post',
+			columns: [[
+				{field:'customerName',title:'客户姓名',width:60},
+				{field:'customerPhone',title:'客户电话',width:60},
+				{field:'customerAddress',title:'顾客住址',width:159}
+			]],
+			rownumbers:false,
+			singleSelect:true,
+			pagination:true,
+			pageSize:5,				
+			pageList: [5],       //可以设置每页记录条数的列表
+			fitColumns: true,
+			onSelect:function(){
+				$("#cusP").textbox("setValue",$("#cusN").combogrid('grid').datagrid('getSelected').customerPhone);
+				$("#cusaddr").textbox("setValue",$("#cusN").combogrid('grid').datagrid('getSelected').customerAddress);				
+			},
+			keyHandler:{
+				query:function(q)
+				{
+					$('#cusN').combogrid("grid").datagrid("reload",{'customerName':q});
+					$('#cusN').combogrid("setValue",q);
+				}
+			}
+		});
+		$("#cusN").combogrid('grid').datagrid('getPager').pagination({showPageList:false,displayMsg:''});
+			
+		
+		
 		$('#orid').textbox('setValue',json.orderCode);
 		$('#vt').combobox('select',json.customerType);
 		$('#cusP').textbox('setValue',json.customerPhone);
@@ -135,6 +207,10 @@ function setCustomerModel(json)
 {
 	if(json.length!=0)
     {
+		$('#salesDept').combotree({
+		    onLoadSuccess:function(node,data){  
+		    	$('#salesDept').combotree('setValue',json.salesDepartmentID);
+		    }}); 
 		$('#customerN').textbox('setValue',json.customerName);
 		$('#customerP').textbox('setValue',json.customerPhone);
 		$('#customerA').textbox('setValue',json.customerAddress);
@@ -164,6 +240,10 @@ function setExpenseModel(json)
 	if(json.length!=0)
     {
 
+		$('#salesDept').combotree({
+		    onLoadSuccess:function(node,data){  
+		    	$('#salesDept').combotree('setValue',json.salesDepartmentID);
+		    }}); 
 	    $('#expenseN').combobox('setValue',json.expenseItemID);
 		$('#expenseA').numberbox('setValue',json.expenseAmount);
 		$('#expenseD').datebox("setValue",json.expenseDate);
@@ -175,16 +255,84 @@ function setExpenseModel(json)
 }
 function setReceiptModel(json)
 {
-	initReceipt();
 	//parent.$.messager.alert("消息提示","1 "+json.result);
 	if(json.length!=0)
     {
-		//parent.$.messager.alert("消息提示","2 "+json.result);
+		$('#salesDept').combotree({
+		    onLoadSuccess:function(node,data){  
+		    	$('#salesDept').combotree('setValue',json.salesDepartmentID);
+		    },
+		    onSelect:function(node) {	
+				$('#orderN').combogrid({
+					required:true,
+					panelWidth: 270,
+					idField: 'id',
+					textField: 'orderCode',
+					url: '/qstSCntSys/receipt/selectOrderCode.do?salesDepartmentID='+node.id,
+					method: 'post',
+					columns: [[
+					    {field:'id',title:'订单编号',hidden:true},
+						{field:'orderCode',title:'订单编号',width:80},
+						{field:'customerName',title:'客户姓名',width:80},
+						{field:'customerPhone',title:'客户电话',width:130}
+					]],
+					rownumbers:false,
+					singleSelect:true,
+					pagination:true,
+					pageSize:5,				
+					pageList: [5],
+					fitColumns: true,
+					keyHandler:{
+						query:function(q)
+						{
+							$('#orderN').combogrid("grid").datagrid("reload",{'orderCode':q});
+							$('#orderN').combogrid("setValue",q);
+						}
+					}
+					});
+				$("#orderN").combogrid('grid').datagrid('getPager').pagination({showPageList:false,displayMsg:''});
+		
+			}
+		}); 
+
+		
+		$('#orderN').combogrid({
+			required:true,
+			panelWidth: 270,
+			idField: 'id',
+			textField: 'orderCode',
+			url: '/qstSCntSys/receipt/selectOrderCode.do?salesDepartmentID='+json.salesDepartmentID,
+			method: 'post',
+			columns: [[
+			    {field:'id',title:'订单编号',hidden:true},
+				{field:'orderCode',title:'订单编号',width:80},
+				{field:'customerName',title:'客户姓名',width:80},
+				{field:'customerPhone',title:'客户电话',width:130}
+			]],
+			rownumbers:false,
+			singleSelect:true,
+			pagination:true,
+			pageSize:5,				
+			pageList: [5],
+			fitColumns: true,
+			keyHandler:{
+				query:function(q)
+				{
+					$('#orderN').combogrid("grid").datagrid("reload",{'orderCode':q});
+					$('#orderN').combogrid("setValue",q);
+				}
+			}
+			});
+		$("#orderN").combogrid('grid').datagrid('getPager').pagination({showPageList:false,displayMsg:''});
+
+	
+		
 		$('#receiptA').numberbox('setValue',json.receiptAmount);
 		$('#receiptM').textbox('setValue',json.receiptMember);
 		$('#receiptR').textbox('setValue',json.remark);
-		//$('#orderN').combogrid('setValue',json.orderCode);
-		$('#orderN').combogrid('setValue',{id:json.orderID,name:json.orderCode});
+		$('#orderN').combogrid('setValue',json.orderCode);
+		//alert(json.orderCode);
+		//$('#orderN').combogrid('setValue',{id:json.orderID,name:json.orderCode});
 		$('#receiptD').datebox('setValue',json.receiptDate);
 
 	}
@@ -198,6 +346,10 @@ function setMonthReportModel(json)
 	initMonthReport();
 	if(json.length!=0)
     {
+		$('#salesDept').combotree({
+		    onLoadSuccess:function(node,data){  
+		    	$('#salesDept').combotree('setValue',json.salesDepartmentID);
+		    }}); 
 		$('#manageC').numberbox('setValue',json.manageCost);
 		$('#infoD').datebox('setValue',json.infoDate);
 		$('#earlyN').numberbox('setValue',json.earlyNumber);
@@ -239,7 +391,7 @@ function updateOrderDialog(id,callback)
 	//orderProducts.productCount=0;
 	//orderProducts.updateProducts=[];
 	orderProducts.deleteProducts=[];
-	var args={'actionUrl':'/qstSCntSys/order/selectByID.do','url':'NewOrder.xml','width':'750','height':'450','action':'product','title':'修改订单信息'};
+	var args={'actionUrl':'/qstSCntSys/order/selectByID.do','url':'NewOrder.xml','width':'850','height':'450','action':'product','title':'修改订单信息'};
 	openUpdateDialog(args,updateOrder,callback,id,setOrderModel)
 }
 function updateProductDialog(id,callback)
@@ -275,12 +427,12 @@ function updateExpenseDialog(id,callback)
 }
 function updateReceiptDialog(id,callback)
 {
-	var args={'actionUrl':'/qstSCntSys/receipt/selectByID.do','url':'NewReceipt.xml','width':'400','height':'350','action':'receipt','title':'修改收款'};
+	var args={'actionUrl':'/qstSCntSys/receipt/selectByID.do','url':'NewReceipt.xml','width':'400','height':'400','action':'receipt','title':'修改收款'};
 	openUpdateDialog(args,updateReceipt,callback,id,setReceiptModel);
 }
 function updateMonthReportDialog(id,callback)
 {
-	var args={'actionUrl':'/qstSCntSys/otherInfo/selectByID.do','url':'NewMonthReport.xml','width':'400','height':'450','action':'monthReport','title':'修改月报其他信息'};
+	var args={'actionUrl':'/qstSCntSys/otherInfo/selectByID.do','url':'NewMonthReport.xml','width':'450','height':'450','action':'monthReport','title':'修改月报其他信息'};
 	openUpdateDialog(args,updateMonthReport,callback,id,setMonthReportModel);
 }
 
@@ -367,69 +519,78 @@ function addCustomer()
 }
 function initOrder()
 {
-	$("#cusN").combogrid({
-		required:true,
-		panelWidth: 281,
-		idField: 'id',
-		textField: 'customerName',
-		url: '/qstSCntSys/order/selectCustomerInfo.do',
-		method: 'post',
-		columns: [[
-			{field:'customerName',title:'客户姓名',width:60},
-			{field:'customerPhone',title:'客户电话',width:60},
-			{field:'customerAddress',title:'顾客住址',width:159}
-		]],
-		rownumbers:false,
-		singleSelect:true,
-		pagination:true,
-		pageSize:10,
-		fitColumns: true,
-		onSelect:function(){
-			$("#cusP").textbox("setValue",$("#cusN").combogrid('grid').datagrid('getSelected').customerPhone);
-			$("#cusaddr").textbox("setValue",$("#cusN").combogrid('grid').datagrid('getSelected').customerAddress);
-		
-		},
-		keyHandler:{
-			query:function(q)
-			{
-				$('#cusN').combogrid("grid").datagrid("reload",{'customerName':q});
-				$('#cusN').combogrid("setValue",q);
-			}
+	$('#salesDept').combotree({
+		onSelect:function(node) {
+			
+			$("#cusN").combogrid({
+				required:true,
+				panelWidth: 281,
+				idField: 'id',
+				textField: 'customerName',
+				url: '/qstSCntSys/order/selectCustomerInfo.do?salesDepartmentID='+node.id,
+				method: 'post',
+				columns: [[
+					{field:'customerName',title:'客户姓名',width:60},
+					{field:'customerPhone',title:'客户电话',width:60},
+					{field:'customerAddress',title:'顾客住址',width:159}
+				]],
+				rownumbers:false,
+				singleSelect:true,
+				pagination:true,
+				pageSize:5,				
+				pageList: [5],       //可以设置每页记录条数的列表
+				fitColumns: true,
+				onSelect:function(){
+					$("#cusP").textbox("setValue",$("#cusN").combogrid('grid').datagrid('getSelected').customerPhone);
+					$("#cusaddr").textbox("setValue",$("#cusN").combogrid('grid').datagrid('getSelected').customerAddress);				
+				},
+				keyHandler:{
+					query:function(q)
+					{
+						$('#cusN').combogrid("grid").datagrid("reload",{'customerName':q});
+						$('#cusN').combogrid("setValue",q);
+					}
+				}
+			});
+			$("#cusN").combogrid('grid').datagrid('getPager').pagination({showPageList:false,displayMsg:''});
 		}
-	});
-	$("#cusN").combogrid('grid').datagrid('getPager').pagination({showPageList:false,displayMsg:''});
-	
+	})
 }
 function initReceipt()
 {
+	$('#salesDept').combotree({
+		onSelect:function(node) {	
+			$('#orderN').combogrid({
+				required:true,
+				panelWidth: 270,
+				idField: 'id',
+				textField: 'orderCode',
+				url: '/qstSCntSys/receipt/selectOrderCode.do?salesDepartmentID='+node.id,
+				method: 'post',
+				columns: [[
+				    {field:'id',title:'订单编号',hidden:true},
+					{field:'orderCode',title:'订单编号',width:80},
+					{field:'customerName',title:'客户姓名',width:80},
+					{field:'customerPhone',title:'客户电话',width:130}
+				]],
+				rownumbers:false,
+				singleSelect:true,
+				pagination:true,
+				pageSize:5,				
+				pageList: [5],
+				fitColumns: true,
+				keyHandler:{
+					query:function(q)
+					{
+						$('#orderN').combogrid("grid").datagrid("reload",{'orderCode':q});
+						$('#orderN').combogrid("setValue",q);
+					}
+				}
+				});
+			$("#orderN").combogrid('grid').datagrid('getPager').pagination({showPageList:false,displayMsg:''});
 	
-	$('#orderN').combogrid({
-		required:true,
-		panelWidth: 270,
-		idField: 'id',
-		textField: 'orderCode',
-		url: '/qstSCntSys/receipt/selectOrderCode.do',
-		method: 'post',
-		columns: [[
-		    {field:'id',title:'订单编号',hidden:true},
-			{field:'orderCode',title:'订单编号',width:80},
-			{field:'customerName',title:'客户姓名',width:80},
-			{field:'customerPhone',title:'客户电话',width:130}
-		]],
-		rownumbers:false,
-		singleSelect:true,
-		pagination:true,
-		pageSize:10,
-		fitColumns: true,
-		keyHandler:{
-			query:function(q)
-			{
-				$('#orderN').combogrid("grid").datagrid("reload",{'orderCode':q});
-				$('#orderN').combogrid("setValue",q);
-			}
 		}
-		});
-	$("#orderN").combogrid('grid').datagrid('getPager').pagination({showPageList:false,displayMsg:''});
+	})
 }
 
 
@@ -486,6 +647,11 @@ function openUpdateDialog(args,action,callback,id,setModel)
 //new operation
 function newOrder(callback)
 {
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo2').html("销售部门为必选项！");
+		return;
+	}
 	if($("#orid").textbox('isValid')==false)
 	{
 		$('#msginfo2').html("订单编号为必输项！");
@@ -541,10 +707,11 @@ function newOrder(callback)
 		return;
 	}
 	var json={
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"orderCode":$('#orid').val(),
 			"customerType":$('#vt').combobox('getValue'),
 			"customerPhone":$('#cusP').val(),
-			"customerName":$('#cusN').combogrid('getValue'),
+			"customerName":$('#cusN').combogrid('getText'),
 			"customerAddress":$('#cusaddr').val(),
 			"orderDate":$('#odate').datebox("getValue"),
 			"orderAmount":$("#amount").val(),
@@ -641,6 +808,11 @@ function newDepartment(callback)
 }
 function newCustomer(callback)
 {
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo2').html("销售部门为必选项！");
+		return;
+	}
 	if($("#customerN").textbox('isValid')==false)
 	{
 		$('#msginfo').html("客户姓名为必输项！");
@@ -652,6 +824,7 @@ function newCustomer(callback)
 		return;
 	}
 	var json={
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"customerPhone":$('#customerP').val(),
 			"customerName":$('#customerN').val(),
 			"customerAddress":$('#customerA').val()
@@ -686,9 +859,14 @@ function newEmployee(callback)
 }
 function newExpense(callback)
 {
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo2').html("销售部门为必选项！");
+		return;
+	}
 	if($("#expenseA").numberbox('isValid')==false)
 	{
-		$('#msginfo').html("费用为必输项！");
+		$('#msginfo').html("费用项目为必选项！");
 		return;
 	}
 	if($("#expenseD").datebox('isValid')==false)
@@ -697,6 +875,7 @@ function newExpense(callback)
 		return;
 	}
 	var json={
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"expenseItemID":$('#expenseN').combobox('getValue'),
 			"expenseAmount":$('#expenseA').numberbox('getValue'),
 			"expenseDate":$('#expenseD').datebox("getValue")
@@ -705,6 +884,11 @@ function newExpense(callback)
 }
 function newReceipt(callback)
 {
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo').html("销售部门为必选项！");
+		return;
+	}
 	if($("#orderN").combogrid('isValid')==false)
 	{
 		$('#msginfo').html("订单编号为必选项！");
@@ -726,6 +910,7 @@ function newReceipt(callback)
 		return;
 	}
 	var json={
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"orderID":$('#orderN').combobox("getValue"),
 			"receiptDate":$('#receiptD').datebox("getValue"),
 			"receiptAmount":$('#receiptA').numberbox("getValue"),
@@ -736,7 +921,11 @@ function newReceipt(callback)
 }
 function newMonthReport(callback)
 {
-	
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo').html("销售部门为必选项！");
+		return;
+	}
 	var manageCost=0;
 	var earlyNumber=0;
 	var finalNumber=0;
@@ -787,6 +976,7 @@ function newMonthReport(callback)
 		overallExcessAmount=$('#overallExcessA').numberbox('getValue');
 	}
 	var json={
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"manageCost":manageCost,
 			"earlyNumber":earlyNumber,
 			"finalNumber":finalNumber,
@@ -822,6 +1012,11 @@ function setDataModel(url,json,callback)
 //update operation
 function updateOrder(callback,id)
 {
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo2').html("销售部门为必选项！");
+		return;
+	}
 	if($("#orid").textbox('isValid')==false)
 	{
 		$('#msginfo2').html("订单编号为必输项！");
@@ -895,10 +1090,11 @@ function updateOrder(callback,id)
 	}
 	var json={
 			"id":id,
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"orderCode":$('#orid').val(),
 			"customerType":$('#vt').combobox('getValue'),
 			"customerPhone":$('#cusP').val(),
-			"customerName":$('#cusN').combobox('getValue'),
+			"customerName":$('#cusN').combobox('getText'),
 			"customerAddress":$('#cusaddr').val(),
 			"orderDate":$('#odate').datebox("getValue"),
 			"orderAmount":$("#amount").val(),
@@ -1046,6 +1242,11 @@ function updateDepartment(callback,id)
 }
 function updateCustomer(callback,id)
 {
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo2').html("销售部门为必选项！");
+		return;
+	}
 	if($("#customerN").textbox('isValid')==false)
 	{
 		$('#msginfo').html("客户姓名为必输项！");
@@ -1058,6 +1259,7 @@ function updateCustomer(callback,id)
 	}
 	var json={
 			"id":id,
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"customerPhone":$('#customerP').val(),
 			"customerName":$('#customerN').val(),
 			"customerAddress":$('#customerA').val()
@@ -1093,9 +1295,14 @@ function updateEmployee(callback,id)
 }
 function updateExpense(callback,id)
 {
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo2').html("销售部门为必选项！");
+		return;
+	}
 	if($("#expenseA").numberbox('isValid')==false)
 	{
-		$('#msginfo').html("费用为必输项！！");
+		$('#msginfo').html("费用项目为必选项！！");
 		return;
 	}
 	if($("#expenseD").datebox('isValid')==false)
@@ -1105,6 +1312,7 @@ function updateExpense(callback,id)
 	}
 	var json={
 			"id":id,
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"expenseItemID":$('#expenseN').combobox('getValue'),
 			"expenseAmount":$('#expenseA').numberbox('getValue'),
 			"expenseDate":$('#expenseD').datebox("getValue")
@@ -1113,6 +1321,11 @@ function updateExpense(callback,id)
 }
 function updateReceipt(callback,id)
 {
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo').html("销售部门为必选项！");
+		return;
+	}
 	if($("#orderN").combogrid('isValid')==false)
 	{
 		$('#msginfo').html("订单编号为必选项！");
@@ -1135,6 +1348,7 @@ function updateReceipt(callback,id)
 	}
 	var json={
 			"id":id,
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"orderID":$('#orderN').combobox("getValue"),
 			"receiptDate":$('#receiptD').datebox("getValue"),
 			"receiptAmount":$('#receiptA').numberbox('getValue'),
@@ -1145,6 +1359,11 @@ function updateReceipt(callback,id)
 }
 function updateMonthReport(callback,id)
 {
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo').html("销售部门为必选项！");
+		return;
+	}
 	var manageCost=0;
 	var earlyNumber=0;
 	var finalNumber=0;
@@ -1196,6 +1415,7 @@ function updateMonthReport(callback,id)
 	}
 	var json={
 			"id":id,
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"manageCost":manageCost,
 			"earlyNumber":earlyNumber,
 			"finalNumber":finalNumber,
@@ -1321,5 +1541,6 @@ function dparser(s){
 		return new Date();
 	}
 }
+
 
 

@@ -38,6 +38,11 @@ public class ReceiptInfo {
      *部门编号（外键）
      */
     private Integer salesDepartmentID;
+    
+    /**
+     *部门名称
+     */
+    private String salesDepartmentName;
 
     /**
      *备注
@@ -148,6 +153,20 @@ public class ReceiptInfo {
     }
 
     /**
+     *部门名称
+     */    
+    public String getSalesDepartmentName() {
+		return salesDepartmentName;
+	}
+    
+    /**
+     *部门名称
+     */
+	public void setSalesDepartmentName(String salesDepartmentName) {
+		this.salesDepartmentName = salesDepartmentName;
+	}
+
+	/**
      *备注
      */
     public String getRemark() {

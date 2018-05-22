@@ -14,7 +14,7 @@ import com.qst.scnt.model.OrderInfo;
 
 public interface OrderInfoDao  extends BaseDao<OrderInfo> {
 
-	List<Cost> selectByOCodeandCNameAndDate(Map<String, Object> queryDate);
+	List<OrderInfo> selectByOCodeandCNameAndDate(Map<String, Object> queryDate);
 	
 }
 

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <table id="orderv">
+ 		<tr>
+			<td>销售部门:</td>
+			<td colspan="4">
+				<select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/order/getSalesDept.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',required:true,onBeforeSelect:function(node){
+                     if ($(this).tree('getLevel',node.target)!=3) {  
+		                return false;  
+		            }  
+                }"></select>
+			</td>
+			
+		</tr>
 		<tr>
 			<td>订单编号:</td>
 			<td colspan="4">

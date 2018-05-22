@@ -81,7 +81,9 @@
     	    			if(json.result=="Success")
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！","info");
-    	        			doUserSearch();
+    	        			$('#userDg').datagrid('reload',{
+    	        	    		userName:$('#uNume').val()
+    	        	    		});
     	        		}
     	        		else
     	        		{
@@ -99,7 +101,9 @@
     		{
     			parent.$.messager.alert("消息提示","修改成功！","info");
     			parent.closeDialog();
-    			doUserSearch();
+    			$('#userDg').datagrid('reload',{
+    	    		userName:$('#uNume').val()
+    	    		});
     		}
     		else if(v=="Failed")
     		{

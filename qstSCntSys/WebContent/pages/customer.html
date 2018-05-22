@@ -19,6 +19,8 @@
 </head>
 <body>
     <div id="customerToolbar" style="padding:5px">
+        <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/customer/getSalesDept.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
         <span>客户名称：</span><input id="customerN" class='easyui-textbox'></input>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="doCustomerSearch()">查询</a>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="openDialog()">新增</a>  
@@ -32,6 +34,7 @@
     	//parent.$.messager.alert("消息提示",$('#state').combobox('getValue'));
     	//parent.$.messager.alert("消息提示",$('#state').combobox('getText'));
     	$('#customerDg').datagrid('load',{
+    		salesDepartmentID:$('#salesDept').combotree("getValue"),
     		customerName:$('#customerN').val()
     		});
     }
@@ -77,6 +80,10 @@
     	    			if(json.result=="Success")
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！");
+    	        			 $("#customerDg").datagrid("reload",{
+    	     		    		salesDepartmentID:$('#salesDept').combotree("getValue"),
+    	     		    		customerName:$('#customerN').val()
+    	     		    		});
     	        		}
     	        		else
     	        		{
@@ -94,7 +101,10 @@
     		{
     			parent.$.messager.alert("消息提示","修改成功！");
     			parent.closeDialog();
-    			doCustomerSearch();
+    			 $("#customerDg").datagrid("reload",{
+    		    		salesDepartmentID:$('#salesDept').combotree("getValue"),
+    		    		customerName:$('#customerN').val()
+    		    		});
     		}
     		else if(v=="Failed")
     		{
@@ -117,6 +127,7 @@
 			    <th data-options="field:'customerName',width:200">姓名</th>
 				<th data-options="field:'customerPhone',width:200">电话</th>
 				<th data-options="field:'customerAddress',width:200,align:'right'">住址</th>
+				<th data-options="field:'salesDepartmentName',width:200,align:'right'">部门名称</th>
 				<th data-options="field:'customerOperation',formatter:getCustomerOperation">操作</th>
 			</tr>
 		</thead>

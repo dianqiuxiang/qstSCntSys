@@ -77,7 +77,9 @@
     	    			if(json.result=="Success")
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！","info");
-    	        			doDepartmentSearch();
+    	        			$('#departmentDg').datagrid('reload',{
+    	        	    		   salesDepartmentName:$('#marketDepN').val()
+    	        	    		});
     	        		}
     	        		else
     	        		{
@@ -95,7 +97,9 @@
     		{
     			parent.$.messager.alert("消息提示","修改成功！","info");
      			parent.closeDialog();
-     			doDepartmentSearch();
+     			$('#departmentDg').datagrid('reload',{
+ 	    		   salesDepartmentName:$('#marketDepN').val()
+ 	    		});
     		}
     		else if(v=="Failed")
     		{

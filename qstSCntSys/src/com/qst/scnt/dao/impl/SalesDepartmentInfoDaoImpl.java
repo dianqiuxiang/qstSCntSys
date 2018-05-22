@@ -28,5 +28,15 @@ public class SalesDepartmentInfoDaoImpl extends BaseDaoImpl<SalesDepartmentInfo>
         }  
 	}
 
+	@Override
+	public List<SalesDepartmentInfo> selectByParentID(SalesDepartmentInfo entity) {
+		try {  
+            return this.getSqlSession().selectList(namespace + "." + "selectByParentID",entity);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+	}
+
 }
 

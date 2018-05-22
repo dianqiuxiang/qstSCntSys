@@ -299,24 +299,29 @@
 		   
 		   <!-- 查询（模糊查询，参数订单编号，顾客姓名，起始时间） -->  
 		   <select id="selectByOCodeandCNameAndDate" parameterType="java.util.Map" resultType="orderInfo">  
-		        select * from orderInfo   
-		       <where>	
-			      <if test="salesDepartmentID != null" >
-			        salesDepartmentID = #{salesDepartmentID}
-			      </if>	
-			      <if test="customerName != null" >
-			        and customerName like "%"#{customerName}"%"
-			      </if>       
-		       	  <if test="orderCode != null" >
-			        and orderCode like "%" #{orderCode}"%"
-			      </if>
-			      <if test="startDate!=null and startDate!='' ">  
-			          <![CDATA[and orderDate>= #{startDate}   ]]> 
-			       </if>  
-			       <if test="endDate!=null and endDate!=''">  
-			       <![CDATA[and orderDate <=  #{endDate}    ]]>
-			       </if>
-	           </where> 
-	           and isDelete=0
+		        select a.*,b.salesDepartmentName from orderInfo a,salesdePartmentInfo b
+		        <trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="salesDepartmentIDList !=null">
+				and a.salesDepartmentID IN
+				<foreach collection="salesDepartmentIDList" item="salesDepartmentID"  open="(" separator="," close=")">
+				#{salesDepartmentID.id}
+				</foreach>
+				</if>	
+				<if test="customerName != null" >
+				and a.customerName like "%"#{customerName}"%"
+				</if>       
+				<if test="orderCode != null" >
+				and a.orderCode like "%" #{orderCode}"%"
+				</if>
+				<if test="startDate!=null and startDate!='' ">  
+				<![CDATA[and a.orderDate>= #{startDate}   ]]> 
+				</if>  
+				<if test="endDate!=null and endDate!=''">  
+				<![CDATA[and a.orderDate <=  #{endDate}    ]]>
+				</if>
+				and a.isDelete=0
+				and a.salesDepartmentID=b.id
+				ORDER BY a.orderDate DESC
+				</trim>
 		   </select>
     </mapper>

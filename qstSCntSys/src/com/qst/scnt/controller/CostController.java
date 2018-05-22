@@ -19,8 +19,10 @@ import com.google.gson.Gson;
 import com.qst.scnt.model.Cost;
 import com.qst.scnt.model.EveryMonthOtherInfo;
 import com.qst.scnt.model.ExpenseItem;
+import com.qst.scnt.model.SalesDepartmentInfo;
 import com.qst.scnt.service.CostService;
 import com.qst.scnt.service.ExpenseItemService;
+import com.qst.scnt.service.SalesDepartmentInfoService;
 import com.qst.scnt.utils.EUDataGridResult;
 
 @Controller
@@ -32,6 +34,94 @@ public class CostController extends BaseController {
 	
 	@Resource
 	private ExpenseItemService expenseItemService;
+	
+	@Resource
+	private SalesDepartmentInfoService salesDepartmentInfoService;
+	
+	/**
+	 * 查询所有部门信息
+	 * @return
+	 */
+	@RequestMapping(value="/getSalesDept.do")
+	@ResponseBody
+	public Object getSalesDept(){
+		Map<String, Object> whereMap = new HashMap<String, Object>();
+		whereMap.put("parentID",0);//指定查询范围,此处默认查询本部门下的顾客信息	 
+		
+		Map<String, Object> params = new HashMap<String, Object>();  
+		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+		
+		List<SalesDepartmentInfo> list=salesDepartmentInfoService.selectParam(params);
+		
+		String returnJson="[";
+		int i=0;
+		for(SalesDepartmentInfo item:list){
+			i++;
+			returnJson+="{";
+			returnJson+="\"id\":"+ item.getId() +",";
+			returnJson+="\"text\":\""+ item.getSalesDepartmentName() +"\",";
+			returnJson+="\"children\":[";
+			Map<String, Object> fieldMap = new HashMap<String, Object>();
+			fieldMap.put("parentID",item.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
+			
+			Map<String, Object> queryParams = new HashMap<String, Object>();  
+			queryParams.put("where", fieldMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+			
+			List<SalesDepartmentInfo> childrenList=salesDepartmentInfoService.selectParam(queryParams);
+			
+			int j=0;
+			for(SalesDepartmentInfo childNode:childrenList){
+				j++;
+				returnJson+="{";
+				returnJson+="\"id\":"+ childNode.getId() +",";
+				returnJson+="\"text\":\""+ childNode.getSalesDepartmentName() +"\",";
+				returnJson+="\"children\":[";
+				
+				Map<String, Object> fieldMap2 = new HashMap<String, Object>();
+				fieldMap2.put("parentID",childNode.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
+				
+				Map<String, Object> queryParams2 = new HashMap<String, Object>();  
+				queryParams2.put("where", fieldMap2); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+				
+				List<SalesDepartmentInfo> childrenList2=salesDepartmentInfoService.selectParam(queryParams2);
+				
+				int k=0;
+				for(SalesDepartmentInfo childNode2:childrenList2){
+					k++;
+					returnJson+="{";
+					returnJson+="\"id\":"+ childNode2.getId() +",";
+					returnJson+="\"text\":\""+ childNode2.getSalesDepartmentName() +"\"";
+					
+					
+					if(k==childrenList2.size()){
+						returnJson+="}";
+					}
+					else{
+						returnJson+="},";
+					}
+				}
+				returnJson+="]";
+				
+				if(j==childrenList.size()){
+					returnJson+="}";
+				}
+				else{
+					returnJson+="},";
+				}
+			}
+			returnJson+="]";
+			
+			if(i==list.size()){
+				returnJson+="}";
+			}
+			else{
+				returnJson+="},";
+			}
+		}
+		returnJson+="]";
+		System.out.println(returnJson);
+		return returnJson;
+	}
 	
 	@RequestMapping(value="/getExpenseItem.do")
 	@ResponseBody
@@ -73,7 +163,7 @@ public class CostController extends BaseController {
 	
 	@RequestMapping(value="/selectByItemIdAndStartAndEndDate.do")
 	@ResponseBody
-	public Object selectByItemIdAndStartAndEndDate(Integer expenseItemID,String startDate,String endDate,int page,int rows) {
+	public Object selectByItemIdAndStartAndEndDate(Integer expenseItemID,Integer salesDepartmentID,String startDate,String endDate,int page,int rows) {
 		
 		Gson gson = new Gson();	
 		
@@ -102,7 +192,7 @@ public class CostController extends BaseController {
 			queryDate.put("endDate",endDate);
 		}
 		
-		queryDate.put("salesDepartmentID",this.getCurrentUser().getSalesDepartmentID());
+		queryDate.put("salesDepartmentID",salesDepartmentID);
 				
 		EUDataGridResult<Cost> list=costService.selectByItemIdAndStartAndEndDate(queryDate,page,rows);
 		System.out.println(gson.toJson(list));
@@ -122,7 +212,7 @@ public class CostController extends BaseController {
 		String resultStr="";	
 //		if(list.size()==0) {				
 			
-			cost.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
+//			cost.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
 			cost.setIsDelete(0);
 			int result=costService.insert(cost);
 			if(result>0)
@@ -169,7 +259,7 @@ public class CostController extends BaseController {
 //			costinfo.setExpenseItemID(expenseItemID);
 //			costinfo.setExpenseAmount(expenseAmount);
 //			costinfo.setExpenseDate(expenseDate);
-			cost.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
+//			cost.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
 			cost.setIsDelete(0);
 			int result=costService.update(cost);
 			if(result>0)

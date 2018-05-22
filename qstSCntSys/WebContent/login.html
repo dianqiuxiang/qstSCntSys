@@ -3,10 +3,54 @@
 <head runat="server">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>JK财务管理系统</title>
-    <link href="css/alogin.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="css/alogin.css" />
+    <link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="js/jexpand.js"></script>
+	<script type="text/javascript">
+	
+	function login(){
+		var userName=$("#userName").val();
+		var pwd=$("#pwd").val();
+		
+		if(userName==null||userName=="")
+		{
+			$.messager.alert("消息提示","用户名不能为空","info");
+			return;
+		}
+		if(pwd==null||pwd=="")
+		{
+			$.messager.alert("消息提示","密码不能为空","info");
+			return;
+		}
+		var data={
+					"userName":userName,
+					"pwd":pwd
+				};
+		$.ajax({
+			type:"post",
+			async: true, 
+			url:"/qstSCntSys/login/login.do",
+			data:JSON.stringify(data),
+			dataType:"json",
+			contentType:"application/json;charset=utf-8",
+			success: function(result){
+				//$.messager.alert("消息提示",result.result,"info");
+				window.location.href = "pages/index.html";
+				return false;
+			},
+			error: function(){
+				$.messager.alert("消息提示","系统报错请联系管理员","info");
+				return false;
+			}			
+		});
+	}
+	
+	</script>
 </head>
 <body>
-    <form id="form1" runat="server" action="" method="post">
     <div class="Main">
         <ul>
             <li class="top"></li>
@@ -17,11 +61,11 @@
             <li class="topD">
                 <ul class="login">
                     <li><span class="left login-text">用户名：</span> <span style="left">
-                        <input id="Text1" type="text" class="txt" name="username"/>  
+                        <input id="userName" type="text" class="txt" name="userName"/>  
                      
                     </span></li>
                     <li><span class="left login-text">密码：</span> <span style="left">
-                       <input id="Text2" type="password" class="txt" name="pwd" />  
+                       <input id="pwd" type="password" class="txt" name="pwd" />  
                     </span></li>
 					
                 </ul>
@@ -29,12 +73,11 @@
             <li class="topE"></li>
             <li class="middle_A"></li>
             <li class="middle_B"></li>
-            <li class="middle_C"><span class="btn"><input name="" type="image" src="images/login/btnlogin.gif" /></span></li>
-            <li class="middle_D"></li>
+            <li class="middle_C"><span class="btn"><input name="" href='#' onclick="login()" type="image" src="images/login/btnlogin.gif" /></span></li>
+          	<li class="middle_D"></li>
             <li class="bottom_A"></li>
-            <li class="bottom_B">JK财务管理系统</li>
+            <li class="bottom_B">网站后台管理系统&nbsp;&nbsp;www.php.com</li>
         </ul>
     </div>
-    </form>
 </body>
 </html>

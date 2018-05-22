@@ -219,4 +219,8 @@
 				</trim> 
 		   </select>
 	    
+	    <!-- 根据用户名，密码查询（参数），登录 -->  
+		   <select id="login" parameterType="userInfo" resultType="userInfo">  
+		        select * from userInfo where userName = #{userName} and pwd = #{pwd} and isDelete=0
+		   </select> 
     </mapper>

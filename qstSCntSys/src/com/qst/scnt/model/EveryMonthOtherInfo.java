@@ -37,6 +37,11 @@ public class EveryMonthOtherInfo {
      *部门编号（外键）
      */
     private Integer salesDepartmentID;
+    
+    /**
+     *部门名称
+     */
+    private String salesDepartmentName;
 
     /**
      *月报其他信息时间
@@ -145,8 +150,22 @@ public class EveryMonthOtherInfo {
     public void setSalesDepartmentID(Integer salesDepartmentID) {
         this.salesDepartmentID = salesDepartmentID;
     }
+    
+    /**
+     *部门名称
+     */
+    public String getSalesDepartmentName() {
+		return salesDepartmentName;
+	}
 
     /**
+     *部门名称
+     */
+	public void setSalesDepartmentName(String salesDepartmentName) {
+		this.salesDepartmentName = salesDepartmentName;
+	}
+
+	/**
      *月报其他信息时间
      */
     public String getInfoDate() {

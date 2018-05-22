@@ -210,10 +210,13 @@
 		   
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectByCodeAndRMemberAndDate" parameterType="java.util.Map" resultType="receiptInfo">  
-		        select a.*,b.orderCode from receiptInfo a,orderInfo b
+		        select a.*,b.orderCode,c.salesDepartmentName from receiptInfo a,orderInfo b,salesdePartmentInfo c
 				<trim prefix="WHERE" prefixOverrides="and |or">
-				<if test="salesDepartmentID != null" >
-				and a.salesDepartmentID = #{salesDepartmentID}
+				<if test="salesDepartmentIDList !=null">
+				and a.salesDepartmentID IN
+				<foreach collection="salesDepartmentIDList" item="salesDepartmentID"  open="(" separator="," close=")">
+				#{salesDepartmentID.id}
+				</foreach>
 				</if>	
 				<if test="receiptMember != null" >
 				and a.receiptMember like "%"#{receiptMember}"%"
@@ -229,6 +232,8 @@
 				</if>
 				and a.isDelete=0
 				and a.orderID=b.id
+				and a.salesDepartmentID=c.id
+				ORDER BY a.receiptDate DESC
 				</trim>
 			</select>
 		   

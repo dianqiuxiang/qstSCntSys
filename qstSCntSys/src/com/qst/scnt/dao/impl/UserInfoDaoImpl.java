@@ -16,5 +16,16 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo> implements UserInfoDa
 		namespace="com.qst.scnt.dao.impl.UserInfoDaoImpl";
 	}
 	
+	@Override
+	public UserInfo login(UserInfo userInfo)
+	{
+		try {  
+            return this.getSqlSession().selectOne(namespace + "." + "login",userInfo);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+	}
+	
 }
 

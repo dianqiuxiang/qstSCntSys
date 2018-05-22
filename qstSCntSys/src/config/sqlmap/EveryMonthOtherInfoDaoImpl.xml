@@ -254,19 +254,24 @@
 		   
 		   <!-- 查询（参数,根据起始时间查询） -->  
 		   <select id="selectByStartAndEndDate" parameterType="java.util.Map" resultType="everyMonthOtherInfo">  
-		        select * from everyMonthOtherInfo 
-		        <where>  
-		        	<if test="salesDepartmentID!=null and salesDepartmentID!='' ">  
-			           salesDepartmentID =  #{salesDepartmentID}
-			        </if>
-			        <if test="startDate!=null and startDate!='' ">  
-			          <![CDATA[ and DATE_FORMAT(infoDate, '%Y-%m')>=  DATE_FORMAT(#{startDate}, '%Y-%m')   ]]> 
-			        </if>  
-			        <if test="endDate!=null and endDate!=''">  
-			        <![CDATA[  and DATE_FORMAT(infoDate, '%Y-%m') <= DATE_FORMAT(#{endDate}, '%Y-%m')    ]]>
-			        </if>  
-			     </where> 		       
-	             and isDelete=0
+		        select a.*,b.salesDepartmentName from everyMonthOtherInfo a,salesdePartmentInfo b
+		        <trim prefix="WHERE" prefixOverrides="and |or">
+		        <if test="salesDepartmentIDList !=null">
+				and a.salesDepartmentID IN
+				<foreach collection="salesDepartmentIDList" item="salesDepartmentID"  open="(" separator="," close=")">
+				#{salesDepartmentID.id}
+				</foreach>
+				</if>
+			    <if test="startDate!=null and startDate!='' ">  
+			    <![CDATA[ and DATE_FORMAT(a.infoDate, '%Y-%m')>=  DATE_FORMAT(#{startDate}, '%Y-%m')   ]]> 
+			    </if>
+				<if test="endDate!=null and endDate!=''">  
+			    <![CDATA[  and DATE_FORMAT(a.infoDate, '%Y-%m') <= DATE_FORMAT(#{endDate}, '%Y-%m')    ]]>
+			    </if>  
+				and a.isDelete=0
+				and a.salesDepartmentID=b.id
+				ORDER BY a.infoDate DESC
+				</trim>		        
 		   </select>
 		   
 		   <!-- 查询（参数,根据时间查询） -->  

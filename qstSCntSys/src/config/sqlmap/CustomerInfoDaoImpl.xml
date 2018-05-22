@@ -202,6 +202,32 @@
 				and salesDepartmentID = #{salesDepartmentID}
 				</if>
 				and isDelete=0
+				order by id DESC
+				</trim>
+		   </select>
+		   
+		   <!-- 查询（模糊查询，参数） -->  
+		   <select id="selectByCNameAndCPhone" parameterType="customerInfo" resultType="customerInfo">  
+		        select a.*,b.salesDepartmentName from customerInfo a, salesdePartmentInfo b
+				<trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="customerPhone != null" >
+				and a.customerPhone like "%"#{customerPhone}"%" 
+				</if>
+				<if test="customerName != null" >
+				and a.customerName like "%"#{customerName}"%"
+				</if>
+				<if test="customerAddress != null" >
+				and a.customerAddress like "%"#{customerAddress}"%"
+				</if>
+				<if test="salesDepartmentIDList !=null">
+				and a.salesDepartmentID IN
+				<foreach collection="salesDepartmentIDList" item="salesDepartmentID"  open="(" separator="," close=")">
+				#{salesDepartmentID.id}
+				</foreach>
+				</if>
+				and a.isDelete=0
+				and a.salesDepartmentID=b.id
+				order by a.id DESC
 				</trim>
 		   </select>
 		   

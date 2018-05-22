@@ -27,6 +27,11 @@ public class CustomerInfo {
     private Integer salesDepartmentID;
 
     /**
+     *部门名称
+     */
+    private String salesDepartmentName;
+    
+    /**
      *是否删除：0 没删除，1 删除
      */
     private Integer isDelete;
@@ -93,8 +98,22 @@ public class CustomerInfo {
     public Integer getSalesDepartmentID() {
         return salesDepartmentID;
     }
+    
+    /**
+     *部门名称
+     */
+    public String getSalesDepartmentName() {
+		return salesDepartmentName;
+	}
 
     /**
+     *部门名称
+     */
+	public void setSalesDepartmentName(String salesDepartmentName) {
+		this.salesDepartmentName = salesDepartmentName;
+	}
+
+	/**
      *部门编号（外键）
      */
     public void setSalesDepartmentID(Integer salesDepartmentID) {

@@ -23,6 +23,8 @@
    
     <div id="tb" style="padding:5px">
         <span>订单编号：</span><input id="orderNa" class='easyui-textbox'></input>
+        <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/order/getSalesDept.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
         <span>顾客姓名：</span><input id="customerNa" class='easyui-textbox'></input>
         <span>订单时间：</span><input id="orderdate" class="easyui-datebox"></input>
         <span>至：</span><input id="orderEdate" class="easyui-datebox"></input>
@@ -51,8 +53,9 @@
         if(null==opts.url||""==opts.url){    
             opts.url="/qstSCntSys/order/selectByOCodeandCNameAndDate.do";    
         }  
-    	$('#dg').datagrid('reload',{
+    	$('#dg').datagrid('load',{
     		orderCode:$('#orderNa').val(),
+    		salesDepartmentID:$('#salesDept').combotree("getValue"),
     		customerName:$('#customerNa').val(),
     		startDate:$('#orderdate').datebox("getValue"),
     		endDate:$('#orderEdate').datebox("getValue")
@@ -99,7 +102,13 @@
     	    			if(json.result=="Success")
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！","info");
-    	        			doSearch();
+    	        			$('#dg').datagrid('reload',{
+    	        	    		orderCode:$('#orderNa').val(),
+    	        	    		salesDepartmentID:$('#salesDept').combotree("getValue"),
+    	        	    		customerName:$('#customerNa').val(),
+    	        	    		startDate:$('#orderdate').datebox("getValue"),
+    	        	    		endDate:$('#orderEdate').datebox("getValue")
+    	        	    		});
     	        		}
     	        		else
     	        		{
@@ -117,7 +126,13 @@
  	   		{
  	   			parent.$.messager.alert("消息提示","修改成功！","info");
  	   			parent.closeDialog();
- 	   			doSearch();
+	 	   		$('#dg').datagrid('reload',{
+		    		orderCode:$('#orderNa').val(),
+		    		salesDepartmentID:$('#salesDept').combotree("getValue"),
+		    		customerName:$('#customerNa').val(),
+		    		startDate:$('#orderdate').datebox("getValue"),
+		    		endDate:$('#orderEdate').datebox("getValue")
+		    		});
  	   		}
  	   		else if(v=="Failed")
  	   		{
@@ -147,7 +162,7 @@
 				<th data-options="field:'orderDate',width:120">订单时间</th>
 				<th data-options="field:'healthMember',width:80,align:'right'">健康代表</th>
 				<th data-options="field:'customerSign',width:80,align:'right'">顾客签收</th>
-				<th data-options="field:'salesDepartmentID',width:120">部门编号</th>
+				<th data-options="field:'salesDepartmentName',width:120">部门名称</th>
 				<th data-options="field:'operation',formatter:getOrderOperation">操作</th>
 			</tr>
 		</thead>
@@ -208,8 +223,9 @@
 					$('#dg').datagrid('fixDetailRowHeight',index);
 				}
 			});
+			$("#dg").datagrid('getPager').pagination({showPageList:false});
 		});
-		$.parser.onComplete=function(){$("#dg").datagrid('getPager').pagination({showPageList:false});};
+		//$.parser.onComplete=function(){$("#dg").datagrid('getPager').pagination({showPageList:false});};
 	</script>
 	
 </body>

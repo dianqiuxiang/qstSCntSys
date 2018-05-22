@@ -18,13 +18,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.qst.scnt.model.Cost;
 import com.qst.scnt.model.CustomerInfo;
+import com.qst.scnt.model.Menu;
 import com.qst.scnt.model.OrderInfo;
 import com.qst.scnt.model.OrderProductInfo;
 import com.qst.scnt.model.ProductInfo;
+import com.qst.scnt.model.SalesDepartmentInfo;
 import com.qst.scnt.service.CustomerInfoService;
 import com.qst.scnt.service.OrderInfoService;
 import com.qst.scnt.service.OrderProductInfoService;
 import com.qst.scnt.service.ProductInfoService;
+import com.qst.scnt.service.SalesDepartmentInfoService;
 import com.qst.scnt.utils.EUDataGridResult;
 
 @Controller
@@ -41,6 +44,95 @@ public class OrderController extends BaseController {
 	
 	@Resource
 	private ProductInfoService productInfoService;
+	
+	@Resource
+	private SalesDepartmentInfoService salesDepartmentInfoService;
+	
+	/**
+	 * 查询所有部门信息
+	 * @return
+	 */
+	@RequestMapping(value="/getSalesDept.do")
+	@ResponseBody
+	public Object getSalesDept(){
+		Map<String, Object> whereMap = new HashMap<String, Object>();
+		whereMap.put("parentID",0);//指定查询范围,此处默认查询本部门下的顾客信息	 
+		
+		Map<String, Object> params = new HashMap<String, Object>();  
+		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+		
+		List<SalesDepartmentInfo> list=salesDepartmentInfoService.selectParam(params);
+		
+		String returnJson="[";
+		int i=0;
+		for(SalesDepartmentInfo item:list){
+			i++;
+			returnJson+="{";
+			returnJson+="\"id\":"+ item.getId() +",";
+			returnJson+="\"text\":\""+ item.getSalesDepartmentName() +"\",";
+			returnJson+="\"children\":[";
+			Map<String, Object> fieldMap = new HashMap<String, Object>();
+			fieldMap.put("parentID",item.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
+			
+			Map<String, Object> queryParams = new HashMap<String, Object>();  
+			queryParams.put("where", fieldMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+			
+			List<SalesDepartmentInfo> childrenList=salesDepartmentInfoService.selectParam(queryParams);
+			
+			int j=0;
+			for(SalesDepartmentInfo childNode:childrenList){
+				j++;
+				returnJson+="{";
+				returnJson+="\"id\":"+ childNode.getId() +",";
+				returnJson+="\"text\":\""+ childNode.getSalesDepartmentName() +"\",";
+				returnJson+="\"children\":[";
+				
+				Map<String, Object> fieldMap2 = new HashMap<String, Object>();
+				fieldMap2.put("parentID",childNode.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
+				
+				Map<String, Object> queryParams2 = new HashMap<String, Object>();  
+				queryParams2.put("where", fieldMap2); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+				
+				List<SalesDepartmentInfo> childrenList2=salesDepartmentInfoService.selectParam(queryParams2);
+				
+				int k=0;
+				for(SalesDepartmentInfo childNode2:childrenList2){
+					k++;
+					returnJson+="{";
+					returnJson+="\"id\":"+ childNode2.getId() +",";
+					returnJson+="\"text\":\""+ childNode2.getSalesDepartmentName() +"\"";
+					
+					
+					if(k==childrenList2.size()){
+						returnJson+="}";
+					}
+					else{
+						returnJson+="},";
+					}
+				}
+				returnJson+="]";
+				
+				if(j==childrenList.size()){
+					returnJson+="}";
+				}
+				else{
+					returnJson+="},";
+				}
+			}
+			returnJson+="]";
+			
+			if(i==list.size()){
+				returnJson+="}";
+			}
+			else{
+				returnJson+="},";
+			}
+		}
+		returnJson+="]";
+		System.out.println(returnJson);
+		return returnJson;
+	}
+	
 	/**
 	 * 查询所有结果
 	 * @return
@@ -167,7 +259,7 @@ public class OrderController extends BaseController {
 	 */
 	@RequestMapping(value="/selectByOCodeandCNameAndDate.do")
 	@ResponseBody
-	public Object selectByOCodeandCNameAndDate(String customerName,String orderCode,String startDate,String endDate,int page,int rows) {
+	public Object selectByOCodeandCNameAndDate(String customerName,String orderCode,Integer salesDepartmentID,String startDate,String endDate,int page,int rows) {
 		Gson gson = new Gson();		
 		Map<String, Object> queryDate = new HashMap<String, Object>();
 		
@@ -211,9 +303,9 @@ public class OrderController extends BaseController {
 			queryDate.put("endDate",endDate);
 		}
 		
-		queryDate.put("salesDepartmentID",this.getCurrentUser().getSalesDepartmentID());
+		queryDate.put("salesDepartmentID",salesDepartmentID);
 				
-		EUDataGridResult<Cost> list=orderInfoService.selectByOCodeandCNameAndDate(queryDate,page,rows);
+		EUDataGridResult<OrderInfo> list=orderInfoService.selectByOCodeandCNameAndDate(queryDate,page,rows);
 		System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
@@ -244,7 +336,7 @@ public class OrderController extends BaseController {
 	 */
 	@RequestMapping(value="/selectCustomerInfo.do")
 	@ResponseBody
-	public Object selectCustomerInfo(String customerName,int page,int rows) {
+	public Object selectCustomerInfo(Integer salesDepartmentID,String customerName,int page,int rows) {
 		Gson gson=new Gson();
 		CustomerInfo customerInfo=new CustomerInfo();
 		
@@ -258,7 +350,7 @@ public class OrderController extends BaseController {
 		}
 		
 		//customerInfo.setCustomerName(customerName);
-		customerInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
+		customerInfo.setSalesDepartmentID(salesDepartmentID);
 		
 		EUDataGridResult<CustomerInfo> list=customerInfoService.selectParamFlexible(customerInfo,page,rows);
 		System.out.println(gson.toJson(list));
@@ -283,7 +375,7 @@ public class OrderController extends BaseController {
 		String resultStr="";
 		if(list.size()==0){
 			
-			orderInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
+			//orderInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
 			orderInfo.setIsDelete(0);
 			int result=orderInfoService.insertOrderAndOProductInfo(orderInfo);
 			if(result>0)

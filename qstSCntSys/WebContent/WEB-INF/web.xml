@@ -9,47 +9,51 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  
-  <!-- =====================2018.4.2 by zl=================== -->
   <context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/classes/applicationContext*.xml</param-value>
-	</context-param>
-	
-	<!-- 配置spring的监听器 -->
-  	<!-- listener -->
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-	</listener>
-	
-	
-	<!-- spring编码过滤器 -->
-	<filter>
-		<filter-name>encoding</filter-name>
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>UTF-8</param-value>
-		</init-param>
-		<init-param>
-			<param-name>forceEncoding</param-name>
-			<param-value>true</param-value>
-		</init-param>
-	</filter> 
-	<servlet>
-		<servlet-name>springMvc</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/classes/config/applicationContext-mvc.xml</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>springMvc</servlet-name>
-		<url-pattern>/*</url-pattern>
-	</servlet-mapping>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/classes/applicationContext*.xml</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+  <filter>
+    <filter-name>encoding</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <servlet>
+    <servlet-name>springMvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/classes/config/applicationContext-mvc.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>springMvc</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+ <!--  <filter>
+      <filter-name>LoginFilter</filter-name>
+      <filter-class>com.qst.scnt.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>-->
+   <!--   <filter-name>LoginFilter</filter-name>-->
+	<!--这里的/pages/* 表示是指定路径下的文件需要过滤   也可以写为 <url-pattern>/*</url-pattern> 表示所有文件都需要过滤-->
+   <!--   <url-pattern>/pages/*</url-pattern>
+      <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+  -->
+   
 </web-app>

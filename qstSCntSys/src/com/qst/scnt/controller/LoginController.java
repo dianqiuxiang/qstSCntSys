@@ -1,12 +1,16 @@
 package com.qst.scnt.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,42 +27,30 @@ public class LoginController extends BaseController {
 	@Resource
 	private UserInfoService userInfoService;
 
-	@RequestMapping(value="/login.do",method = RequestMethod.GET)
-	public ModelAndView login(UserInfo userInfo,HttpSession httpSession) {
+	@RequestMapping(value="/login.do")
+	@ResponseBody // String userName,String pwd,
+	public Object login(HttpServletRequest request,HttpServletResponse response,@RequestBody UserInfo userInfo,HttpSession httpSession) {
+		response.addHeader("Access-Control-Allow-Origin", "*"); 
+//		UserInfo userInfo=new UserInfo();
+//		userInfo.setUserName(userName);
+//		userInfo.setPwd(pwd);
 		System.out.println(userInfo.getUserName());
-		Map<String, Object> whereMap = new HashMap();
-		whereMap.put("userName", "123");	 
-		whereMap.put("pwd", "123");
+		System.out.println(userInfo.getPwd());
+
+		UserInfo currentUser=userInfoService.login(userInfo);
 		
-	    Map<String, Object> params = new HashMap();  
-        params.put("where", whereMap);
-		UserInfo currentUser=(UserInfo) this.userInfoService.selectParam(params).get(0);
-		
-		System.out.println(this.userInfoService.selectParam(params).get(0).getUserName());
+		String resultStr="";
 		if(currentUser!=null){ 
 			httpSession.setAttribute("currentUser", currentUser);  
-            return new ModelAndView(new RedirectView("index.html"));  
+            resultStr="{\"result\":\"Success\"}";  
+             
         }else{  
-            return new ModelAndView(new RedirectView("index.html"));  
+        	resultStr="{\"result\":\"Failed\"}";  
         }  
+		return resultStr;
 	}
 	
-	
-	@RequestMapping(value="/select.do")
-	@ResponseBody
-	public Object select() {
-		 //System.out.println(userInfo.getUserName());
-		Gson gson = new Gson();
-		System.out.println(123);
-		//调用存储过程，获取列表
-		//this.userService.get(1);
-		System.out.println(this.userInfoService.selectPK(1).getUserName());
-		System.out.println(gson.toJson(this.userInfoService.selectPK(1)));
-		return gson.toJson("123");
-	}
-	 public String execute() {
-//		 this.contrList = this.tabService.queryContractList(new Contract());
-
-	        return "";
-	    }
+//	UserInfo userInfo=new UserInfo();
+//	userInfo.setUserName(userName);
+//	userInfo.setPwd(pwd);
 }

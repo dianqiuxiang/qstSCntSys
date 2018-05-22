@@ -2,6 +2,7 @@ package com.qst.scnt.service.impl;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +17,14 @@ import com.github.pagehelper.PageInfo;
 import com.qst.scnt.dao.BaseDao;
 import com.qst.scnt.dao.OrderInfoDao;
 import com.qst.scnt.dao.OrderProductInfoDao;
+import com.qst.scnt.dao.SalesDepartmentInfoDao;
 import com.qst.scnt.model.Cost;
 import com.qst.scnt.model.OrderInfo;
 import com.qst.scnt.model.OrderProductInfo;
+import com.qst.scnt.model.SalesDepartmentInfo;
 import com.qst.scnt.service.OrderInfoService;
 import com.qst.scnt.utils.EUDataGridResult;
+import com.qst.scnt.utils.ListSortUtil;
 
 @Service("orderInfoService")
 public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo> implements OrderInfoService {
@@ -31,6 +35,9 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo> implements 
 	@Resource
 	private OrderProductInfoDao orderProductInfoDao;
 	
+	@Resource
+	private SalesDepartmentInfoDao salesDepartmentInfoDao;
+	
 	@Override
 	public BaseDao<OrderInfo> getBaseDao() {
 		// TODO Auto-generated method stub
@@ -38,15 +45,44 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo> implements 
 	}
 
 	@Override
-	public EUDataGridResult<Cost> selectByOCodeandCNameAndDate(Map<String, Object> queryDate, int pageNum, int pageSize) {
+	public EUDataGridResult<OrderInfo> selectByOCodeandCNameAndDate(Map<String, Object> queryDate, int pageNum, int pageSize) {
+
+		if(queryDate.get("salesDepartmentID")==null){
+			queryDate.put("salesDepartmentIDList", null);
+		}
+		else{
+			int salesDeptID=(int)queryDate.get("salesDepartmentID");
+			SalesDepartmentInfo salesDept=new SalesDepartmentInfo();
+			salesDept=salesDepartmentInfoDao.selectPK(salesDeptID);
+			
+			List<SalesDepartmentInfo> salesDeptList_Level3 =new ArrayList();
+			if(salesDept.getLevel()==1){
+				List<SalesDepartmentInfo> salesDeptList_Level2 =new ArrayList();
+				salesDeptList_Level2=salesDepartmentInfoDao.selectByParentID(salesDept);
+				
+				for(SalesDepartmentInfo entity_Level2:salesDeptList_Level2){
+					salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(entity_Level2));
+				}
+				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+			}
+			else if(salesDept.getLevel()==2){
+				salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(salesDept));
+				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+			}
+			else{
+				salesDeptList_Level3.add(salesDept);
+				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+			}
+		}
+
 		PageHelper.startPage(pageNum, pageSize);
-		List<Cost> list = orderInfoDao.selectByOCodeandCNameAndDate(queryDate);		
+		List<OrderInfo> list = orderInfoDao.selectByOCodeandCNameAndDate(queryDate);
 		
         //创建一个返回值对象
-        EUDataGridResult<Cost> result = new EUDataGridResult<Cost>();
+        EUDataGridResult<OrderInfo> result = new EUDataGridResult<OrderInfo>();
         result.setRows(list);
         //取记录总条数
-        PageInfo<Cost> pageInfo = new PageInfo<Cost>(list);
+        PageInfo<OrderInfo> pageInfo = new PageInfo<OrderInfo>(list);
         result.setTotal(pageInfo.getTotal());
         return result;
 	}

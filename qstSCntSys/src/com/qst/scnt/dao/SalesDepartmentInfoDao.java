@@ -13,6 +13,7 @@ import com.qst.scnt.model.SalesDepartmentInfo;
 public interface SalesDepartmentInfoDao  extends BaseDao<SalesDepartmentInfo> {
 
 	public List<SalesDepartmentInfo> selectAll();
+	public List<SalesDepartmentInfo>  selectByParentID(SalesDepartmentInfo entity);
 	
 }
 

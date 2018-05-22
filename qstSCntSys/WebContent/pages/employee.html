@@ -95,7 +95,10 @@
     	    			if(json.result=="Success")
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！","info");
-    	        			doEmployeeSearch();
+    	        			$('#employeeDg').datagrid('reload',{
+    	        	    		employeeName:$('#employeeN').val(),
+    	        	    		sex:$('#employeeS').combobox("getValue")
+    	        	    		});
     	        		}
     	        		else
     	        		{
@@ -113,7 +116,10 @@
     		{
     			parent.$.messager.alert("消息提示","修改成功！","info");
      			parent.closeDialog();
-     			doEmployeeSearch();
+     			$('#employeeDg').datagrid('reload',{
+     	    		employeeName:$('#employeeN').val(),
+     	    		sex:$('#employeeS').combobox("getValue")
+     	    		});
     		}
     		else if(v=="Failed")
     		{

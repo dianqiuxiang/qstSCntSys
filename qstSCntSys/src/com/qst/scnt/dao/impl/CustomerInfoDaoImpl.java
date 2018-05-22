@@ -1,6 +1,7 @@
 package com.qst.scnt.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +23,16 @@ public class CustomerInfoDaoImpl extends BaseDaoImpl<CustomerInfo> implements Cu
 	public List selectByCNameAndCPhone(String cName, String cPhone) {
 		try {  
             return this.getSqlSession().selectList(namespace + "." + SQLID_SELECT);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+	}
+
+	@Override
+	public List<CustomerInfo> selectByCNameAndCPhone(Map<String, Object> queryDate) {
+		try {  
+            return this.getSqlSession().selectList(namespace + "." + "selectByCNameAndCPhone",queryDate);  
         } catch (Exception e) {  
             e.printStackTrace();  
             return null;  

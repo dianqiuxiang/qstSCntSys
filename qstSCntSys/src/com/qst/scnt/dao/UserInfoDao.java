@@ -9,6 +9,6 @@ import com.qst.scnt.model.UserInfo;
 
 public interface UserInfoDao extends BaseDao<UserInfo> {
 	
-	
+	public UserInfo login(UserInfo userInfo);
 }
 

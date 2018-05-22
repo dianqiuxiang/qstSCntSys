@@ -32,6 +32,11 @@ public class Cost {
      *部门编号（外键）
      */
     private Integer salesDepartmentID;
+    
+    /**
+     *部门名称
+     */
+    private String salesDepartmentName;
 
     /**
      *是否删除：0 没删除，1 删除
@@ -73,7 +78,10 @@ public class Cost {
 		return expenseItem;
 	}
 
-	public void setExpenseIteme(String expenseItem) {
+    /**
+     *项目名称（外键）
+     */
+    public void setExpenseItem(String expenseItem) {
 		this.expenseItem = expenseItem;
 	}
 
@@ -113,6 +121,21 @@ public class Cost {
     }
 
     /**
+     *部门名称
+     */    
+    public String getSalesDepartmentName() {
+		return salesDepartmentName;
+	}
+    
+    /**
+     *部门名称
+     */
+	public void setSalesDepartmentName(String salesDepartmentName) {
+		this.salesDepartmentName = salesDepartmentName;
+	}
+
+	
+	/**
      *部门编号（外键）
      */
     public void setSalesDepartmentID(Integer salesDepartmentID) {

@@ -51,5 +51,11 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo> implements Us
         }  
         return 0;
     }
+    
+    @Override
+    public UserInfo login(UserInfo userInfo)
+    {
+    	return userInfoDao.login(userInfo);
+    }
 }
 

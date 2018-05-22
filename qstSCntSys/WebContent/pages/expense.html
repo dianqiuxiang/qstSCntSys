@@ -19,6 +19,8 @@
 </head>
 <body>
     <div id="expenseToolbar" style="padding:5px">
+        <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/cost/getSalesDept.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
         <span>费用项目：</span><input id="expenseN" class='easyui-combobox' 
         data-options="editable:false,url:'/qstSCntSys/cost/getExpenseItem.do',method:'get',valueField:'id',textField:'expenseItem',panelHeight:'auto',onLoadSuccess: function(data){$('#expenseN').combobox('select', data[0].id);}">
         </input>
@@ -38,6 +40,7 @@
     	//parent.$.messager.alert("消息提示",$('#state').combobox('getText'));
     	$('#expenseDg').datagrid('load',{
     		    expenseItemID:$('#expenseN').combobox('getValue'),
+    		    salesDepartmentID:$('#salesDept').combotree("getValue"),
     		    startDate:$('#expenseSD').datebox('getValue'),
     		    endDate:$('#expenseED').datebox('getValue')
     		});
@@ -83,7 +86,12 @@
     	    			if(json.result=="Success")
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！","info");
-    	        			doExpenseSearch();
+    	        			$('#expenseDg').datagrid('reload',{
+    	            		    expenseItemID:$('#expenseN').combobox('getValue'),
+    	            		    salesDepartmentID:$('#salesDept').combotree("getValue"),
+    	            		    startDate:$('#expenseSD').datebox('getValue'),
+    	            		    endDate:$('#expenseED').datebox('getValue')
+    	            		});
     	        		}
     	        		else
     	        		{
@@ -101,7 +109,12 @@
     		{
     			parent.$.messager.alert("消息提示","修改成功！","info");
      			parent.closeDialog();
-     			doExpenseSearch();
+     			$('#expenseDg').datagrid('reload',{
+        		    expenseItemID:$('#expenseN').combobox('getValue'),
+        		    salesDepartmentID:$('#salesDept').combotree("getValue"),
+        		    startDate:$('#expenseSD').datebox('getValue'),
+        		    endDate:$('#expenseED').datebox('getValue')
+        		});
     		}
     		else if(v=="Failed")
     		{
