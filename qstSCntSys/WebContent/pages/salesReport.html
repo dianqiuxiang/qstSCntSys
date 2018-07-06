@@ -1,10 +1,239 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>JK财务管理系统</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="../js/jexpand.js"></script>
+	<style type="text/css">
+	    html,body{
+	        padding:0;
+	        margin:0;
+	        width:100%;
+	        height:100%;
+	    }
+		.grid
+ 		{
+  			table-layout:fixed;
+  			border-collapse: collapse;
+  			border: solid 1px #cad9ea;
+ 		}
+ 		.grid td
+ 		{
+  			height:30px;
+  			text-align:center;
+  			border: solid 1px #cad9ea;
+  			word-wrap:break-word;word-break:break-all;
+ 		}
+ 		.grid th
+ 		{
+  			height:30px;
+  			text-align:center;
+  			background-color: #f5fafe;
+  			border: solid 1px #cad9ea;
+ 		}
+	</style>
+	<script type="text/javascript">
+    
+   		/*
+     	 *初始加载,克隆table
+     	 */
+        jQuery(function() {
+        	
+        });
+        
+        /*
+         *浏览器窗口的缩放监听:
+         */
+        jQuery(window).resize(function() {
+        	var headerDivWidth=jQuery("#bodyDiv_id").width()-17;
+            jQuery("#headerDiv_id").css("width", headerDivWidth);
+        });
+   		
+        function doSearch(){
+        	
+   			if($('#orderdate').datebox("getValue")==""||$('#orderEdate').datebox("getValue")=="")
+   			{
+   				parent.$.messager.alert("消息提示","请选择时间区间","info");
+   				return false;
+   			}
+   			
+   			
+   			$.ajax({
+	    		type:"post",
+	    		url :"/qstSCntSys/reportExport/getSalesReport.do",
+	    		data:{startDate:$('#orderdate').datebox("getValue"),endDate:$('#orderEdate').datebox("getValue")},
+	    		dataType:"json",
+	    		error: function(){
+	    			
+	    		},
+	    		success: function(json){	    			
+	    			
+	    			var a=json[0].oList.length;
+	    			
+	    			var productJson={
+	    					"freeProducts":[]
+	    					};
+	    			for(var i=0;i<json[0].opList.length;i++)//要删除的产品信息
+	    			{
+	    				if(json[0].opList[i].price=="0"){
+	    					var product=new Object();
+	    					product.productName=json[0].opList[i].productName;
+	    					product.amount=json[0].opList[i].amount;
+	    					productJson.freeProducts.push(product);
+	    					json[0].opList.splice(i,1);
+	    				}
+	    			}
+	    			var b=json[0].opList.length;
+	    			var c=json[0].rList.length;
+	    			var d=productJson.freeProducts.length;
+	    			
+	    			var max=0;
+	    			max=a>b?a:b;
+	    			max=max>c?max:c;
+	    			max=max>d?max:d;
+	    			
+    				$("#tbody_id").html("");
+    				var str_html="";
+    				var k=json.length;
+    				//for(var i=0;i<19;i++){    				
+    					
+    					for(var j=0;j<max;j++){
+    						str_html+="<tr>";
+    						if(j<a){
+	    						str_html+="<td scope=\"col\" >"+json[0].oList[j].orderDate+"</td>";
+	    						str_html+="<td scope=\"col\" >"+json[0].oList[j].orderCode+"</td>";
+	    						str_html+="<td scope=\"col\" >"+json[0].oList[j].parentSalesDeptName+"</td>";
+	    						str_html+="<td scope=\"col\" >"+json[0].oList[j].salesDepartmentName+"</td>";
+	    						if(json[0].oList[j].customerType=="1"){
+	    							str_html+="<td scope=\"col\" >新购</td>";
+	    						}
+	    						else if(json[0].oList[j].customerType==2){
+	    							str_html+="<td scope=\"col\" >转购</td>";
+	    	    		    	}
+	    	    		    	else{
+	    	    		    		str_html+="<td scope=\"col\" >续购</td>";
+	    	    		    	}
+	    						str_html+="<td scope=\"col\" >"+json[0].oList[j].healthMember+"</td>";
+	    						str_html+="<td scope=\"col\" >"+json[0].oList[j].customerName+"</td>";
+	    						str_html+="<td scope=\"col\" >"+json[0].oList[j].customerPhone+"</td>";
+	    						str_html+="<td scope=\"col\" >"+json[0].oList[j].customerAddress+"</td>";
+    						}
+    						else{
+    							str_html+="<td scope=\"col\" ></td>";
+        						str_html+="<td scope=\"col\" ></td>";   
+        						str_html+="<td scope=\"col\" ></td>";
+        						str_html+="<td scope=\"col\" ></td>";   
+        						str_html+="<td scope=\"col\" ></td>";
+        						str_html+="<td scope=\"col\" ></td>";   
+        						str_html+="<td scope=\"col\" ></td>";
+        						str_html+="<td scope=\"col\" ></td>";
+        						str_html+="<td scope=\"col\" ></td>";   
+    						}
+    						str_html+="<td scope=\"col\" ></td>"; 
+    						if(j<b){
+	    						str_html+="<td scope=\"col\" >"+json[0].opList[j].productName+"</td>";
+	    						str_html+="<td scope=\"col\" >"+json[0].opList[j].amount+"</td>";
+	    						str_html+="<td scope=\"col\" >"+json[0].opList[j].price+"</td>";
+	    						str_html+="<td scope=\"col\" >"+json[0].opList[j].totalMoney+"</td>";
+    						}
+    						else{
+    							str_html+="<td scope=\"col\" ></td>";
+        						str_html+="<td scope=\"col\" ></td>";
+        						str_html+="<td scope=\"col\" ></td>";
+        						str_html+="<td scope=\"col\" ></td>";
+    						}
+    						if(j<d){
+    							if(productJson.freeProducts.length=="0"){
+    								str_html+="<td scope=\"col\" ></td>";
+    	    						str_html+="<td scope=\"col\" ></td>";
+    							}
+    							else{
+    								str_html+="<td scope=\"col\" >"+productJson.freeProducts[j].productName+"</td>";
+    								str_html+="<td scope=\"col\" >"+productJson.freeProducts[j].amount+"</td>";
+	    						}
+    						}
+	    					else{
+	    						str_html+="<td scope=\"col\" ></td>";
+	    						str_html+="<td scope=\"col\" ></td>"; 
+	    					}
+	    					if(j<c){
+    							str_html+="<td scope=\"col\" >"+json[0].rList[j].receiptAmount+"</td>";
+    							str_html+="<td scope=\"col\" >"+json[0].rList[j].receiptDate+"</td>";
+	    					}
+	    					else{
+	    						str_html+="<td scope=\"col\" ></td>";
+	    						str_html+="<td scope=\"col\" ></td>"; 
+	    					}
+    						str_html+="<td scope=\"col\" ></td>";
+    						str_html+="</tr>";
+    					}
+    					
+    					
+    				//}
+    				$("#tbody_id").append(str_html);
+	    			
+	    		}
+	    	});
+   		}
+    </script>
 </head>
-<body>
-
-</body>
+ <body>
+ 	<div id=salesDeptTb style="padding:5px">        
+       <span>时间：</span><input id="orderdate" class="easyui-datebox"></input>
+       <span>至：</span><input id="orderEdate" class="easyui-datebox"></input>
+       <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">查询</a>       
+    </div>
+    <div id="p" class="easyui-panel" style="width:100%;height:90%;padding:0px;">
+	    <div id="headerDiv_id" style="position:relative; margin-bottom:-100px;height:100px; overflow:hidden;" ></div>
+	    <div id="bodyDiv_id" style="width:100%; height:100%; overflow:scroll-y;" onscroll="headerDiv_id.scrollLeft=this.scrollLeft;">
+	        <table id="table_id" class="grid" style="width:100%;">
+	        	<thead>
+	        	<!-- 表头 -->
+	        	<tr>
+					<th rowspan="3" scope="col">日期</th>
+					<th rowspan="3" scope="col">订单号</th>
+					<th rowspan="3" scope="col">市场</th>
+					<th rowspan="3" scope="col">部门</th>
+					<th rowspan="3" scope="col">销售来源</th>
+					<th rowspan="3" scope="col">员工姓名</th>
+					<th rowspan="3" scope="col">顾客姓名</th>
+					<th rowspan="3" scope="col">电话</th>
+					<th rowspan="3" scope="col">联系地址</th>					
+	        		<th rowspan="3" scope="col">期初应收账款</th>
+	        		
+	        		<th colspan="4" scope="col">本期销售小计</th>
+	        		<th colspan="2" scope="col">本期赠送</th>
+	        		<th rowspan="3" scope="col">本期回款金额</th>
+	        		<th rowspan="3" scope="col">回款日期</th>
+	    			<th rowspan="3" scope="col">期末应收账款</th>
+	       		</tr>
+	            <tr>
+	        		<th colspan="4">产品</th>
+	        		<th colspan="2">赠品</th>
+	     		</tr>    
+	        	<tr>
+	
+					<th scope="col">产品名称</th>
+					<th scope="col">数量</th>
+					<th scope="col">单价</th>
+					<th scope="col">金额</th>
+					<th scope="col">产品名称</th>
+					<th scope="col">数量</th>
+					
+	         	</tr>
+	         	</thead>   
+	         	<!-- 内容 -->
+		        <tbody id="tbody_id">	         	
+	         	
+	       		 </tbody> 
+	        </table>
+	    </div>
+    </div>
+  </body>
 </html>

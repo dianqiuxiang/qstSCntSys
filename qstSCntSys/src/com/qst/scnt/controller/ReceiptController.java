@@ -1,16 +1,23 @@
 package com.qst.scnt.controller;
 
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.tagext.PageData;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.qst.scnt.model.CustomerInfo;
@@ -21,6 +28,7 @@ import com.qst.scnt.service.OrderInfoService;
 import com.qst.scnt.service.ReceiptInfoService;
 import com.qst.scnt.service.SalesDepartmentInfoService;
 import com.qst.scnt.utils.EUDataGridResult;
+import com.qst.scnt.utils.ExcelUtil;
 
 @Controller
 @RequestMapping(value="/receipt")
@@ -116,7 +124,7 @@ public class ReceiptController extends BaseController {
 			}
 		}
 		returnJson+="]";
-		System.out.println(returnJson);
+		//System.out.println(returnJson);
 		return returnJson;
 	}
 	
@@ -262,7 +270,7 @@ public class ReceiptController extends BaseController {
 		orderInfo.setSalesDepartmentID(salesDepartmentID);
 		
 		EUDataGridResult<OrderInfo> list=orderInfoService.selectParamFlexible(orderInfo,page,rows);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -343,4 +351,113 @@ public class ReceiptController extends BaseController {
 		}
 		return resultStr;
 	}
+	
+	/**
+     * 导出报表
+     * @return
+     */
+    @RequestMapping(value = "/export")
+    @ResponseBody
+    public void export(HttpServletRequest request,HttpServletResponse response,String orderCode,Integer salesDepartmentID, String receiptMember,String startDate,String endDate) throws Exception {
+//           //获取数据
+//Map<String, Object> queryDate = new HashMap<String, Object>();
+//		
+//		//queryDate.put("orderCode",orderCode);
+//		//queryDate.put("receiptMember",receiptMember);
+//		
+//		if(orderCode==null||orderCode.equals(""))
+//		{
+//			queryDate.put("orderCode",null);
+//		}
+//		else
+//		{ 
+//			queryDate.put("orderCode",receiptMember);
+//		}
+//		
+//		
+//		if(receiptMember==null||receiptMember.equals(""))
+//		{
+//			queryDate.put("receiptMember",null);
+//		}
+//		else
+//		{ 
+//			queryDate.put("receiptMember",receiptMember);
+//		}
+//		
+//		if(startDate==null||startDate.equals(""))
+//		{
+//			queryDate.put("startDate",null);
+//		}
+//		else
+//		{ 
+//			queryDate.put("startDate",startDate);
+//		}
+//		
+//		if(endDate==null||endDate.equals(""))
+//		{
+//			queryDate.put("endDate",null);
+//		}
+//		else
+//		{ 
+//			queryDate.put("endDate",endDate);
+//		}
+//		
+//		//queryDate.put("startDate",startDate);
+//		//queryDate.put("endDate",endDate);
+//		
+//		queryDate.put("salesDepartmentID",salesDepartmentID);
+//		List<ReceiptInfo> receiptInfoList=receiptInfoServicce.selectByCodeAndRMemberAndDate(queryDate);
+//
+//           //excel标题
+//        String[] title = {"名称","性别","年龄","学校","班级"};
+//
+//        //excel文件名
+//        String fileName = "学生信息表"+System.currentTimeMillis()+".xls";
+//
+//		//sheet名
+//		String sheetName = "学生信息表";
+
+//		for (int i = 0; i < receiptInfoList.size(); i++) {
+//            content[i] = new String[title.length];
+//            PageData obj = receiptInfoList.get(i);
+//            content[i][0] = obj.get("stuName").tostring();
+//            content[i][1] = obj.get("stuSex").tostring();
+//            content[i][2] = obj.get("stuAge").tostring();
+//            content[i][3] = obj.get("stuSchoolName").tostring();
+//            content[i][4] = obj.get("stuClassName").tostring();
+//}
+
+////创建HSSFWorkbook 
+//HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+//
+////响应到客户端
+//try {
+//this.setResponseHeader(response, fileName);
+//OutputStream os = response.getOutputStream();
+//wb.write(os);
+//os.flush();
+//os.close();
+//} catch (Exception e) {
+//e.printStackTrace();}
+}
+//
+//
+//    //发送响应流方法
+//    public void setResponseHeader(HttpServletResponse response, String fileName) {
+//        try {
+//            try {
+//                fileName = new String(fileName.getBytes(),"ISO8859-1");
+//            } catch (UnsupportedEncodingException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//            response.setContentType("application/octet-stream;charset=ISO8859-1");
+//            response.setHeader("Content-Disposition", "attachment;filename="+ fileName);
+//            response.addHeader("Pargam", "no-cache");
+//            response.addHeader("Cache-Control", "no-cache");
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//    }
+
 }

@@ -230,4 +230,21 @@
 	            ORDER BY c.expenseDate DESC
 				</trim>		        
 		   </select>
+		   
+		   <!-- 查询（参数） -->  
+		   <select id="selectBySDeptIdAndYM" parameterType="java.util.Map" resultType="java.util.HashMap">  
+		        select sum(a.expenseAmount) as sumCostAmount from cost a,expenseItem b  where month(a.expenseDate) =
+				month(#{salesDate}) and year(a.expenseDate) = year(#{salesDate}) and a.salesDepartmentID = #{salesDepartmentID}
+				and b.expenseItem=#{expenseItem}
+				and a.expenseItemID=b.id
+				and a.isDelete=0
+		   </select>
+		   
+		   <!-- 查询（参数） -->  
+		   <select id="selectBySDeptIdAndY" parameterType="java.util.Map" resultType="java.util.HashMap">  
+		        select sum(a.expenseAmount) as sumCostAmount from cost a,expenseItem b  where year(a.expenseDate) = year(#{salesDate}) and a.salesDepartmentID = #{salesDepartmentID}
+				and b.expenseItem=#{expenseItem}
+				and a.expenseItemID=b.id
+				and a.isDelete=0
+		   </select>
     </mapper>

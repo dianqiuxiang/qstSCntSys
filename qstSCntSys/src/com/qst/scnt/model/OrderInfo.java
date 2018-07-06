@@ -64,6 +64,11 @@ public class OrderInfo {
      *部门名称
      */
     private String salesDepartmentName;
+    
+    /**
+     *父级部门名称
+     */
+    private String parentSalesDeptName;
 
     /**
      *是否删除：0 没删除，1 删除
@@ -244,6 +249,20 @@ public class OrderInfo {
      */ 
 	public void setSalesDepartmentName(String salesDepartmentName) {
 		this.salesDepartmentName = salesDepartmentName;
+	}
+
+	 /**
+     *父级部门名称
+     */
+	public String getParentSalesDeptName() {
+		return parentSalesDeptName;
+	}
+	
+	/**
+     *父级部门名称
+     */
+	public void setParentSalesDeptName(String parentSalesDeptName) {
+		this.parentSalesDeptName = parentSalesDeptName;
 	}
 
 	/**

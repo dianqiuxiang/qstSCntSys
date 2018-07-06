@@ -1,6 +1,7 @@
 package com.qst.scnt.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,15 +55,30 @@ public class ReceiptInfoServiceImpl extends BaseServiceImpl<ReceiptInfo> impleme
 				for(SalesDepartmentInfo entity_Level2:salesDeptList_Level2){
 					salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(entity_Level2));
 				}
-				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				if(salesDeptList_Level3==null){
+					queryDate.put("salesDepartmentIDList", null);
+				}
+				else{
+					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
 			}
 			else if(salesDept.getLevel()==2){
 				salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(salesDept));
-				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				if(salesDeptList_Level3==null){
+					queryDate.put("salesDepartmentIDList", null);
+				}
+				else{
+					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
 			}
 			else{
 				salesDeptList_Level3.add(salesDept);
-				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				if(salesDeptList_Level3==null){
+					queryDate.put("salesDepartmentIDList", null);
+				}
+				else{
+					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
 			}
 		}
 
@@ -131,6 +147,48 @@ public class ReceiptInfoServiceImpl extends BaseServiceImpl<ReceiptInfo> impleme
 	public ReceiptInfo selectByID(int ID) {
 		// TODO Auto-generated method stub
 		return receiptInfoDao.selectByID(ID);
+	}
+
+	@Override
+	public HashMap selectBySDeptIdAndYM(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return receiptInfoDao.selectBySDeptIdAndYM(params);
+	}
+
+	@Override
+	public HashMap selectSalesVolume(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return receiptInfoDao.selectSalesVolume(params);
+	}
+
+	@Override
+	public HashMap selectNewCustomerSalesVolume(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return receiptInfoDao.selectNewCustomerSalesVolume(params);
+	}
+
+	@Override
+	public HashMap selectBySDeptIdAndY(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return receiptInfoDao.selectBySDeptIdAndY(params);
+	}
+
+	@Override
+	public HashMap selectSalesVolume1(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return receiptInfoDao.selectSalesVolume1(params);
+	}
+
+	@Override
+	public HashMap selectNewCustomerSalesVolume1(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return receiptInfoDao.selectNewCustomerSalesVolume1(params);
+	}
+
+	@Override
+	public List<ReceiptInfo> selectByOrderID(Map<String, Object> orParams) {
+		// TODO Auto-generated method stub
+		return receiptInfoDao.selectByOrderID(orParams);
 	}
 	
 

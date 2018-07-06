@@ -111,7 +111,7 @@ public class CustomerController extends BaseController {
 			}
 		}
 		returnJson+="]";
-		System.out.println(returnJson);
+		//System.out.println(returnJson);
 		return returnJson;
 	}
 	
@@ -121,7 +121,7 @@ public class CustomerController extends BaseController {
 		Gson gson = new Gson();
 
 		List<CustomerInfo> list=customerInfoService.select();
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -153,7 +153,7 @@ public class CustomerController extends BaseController {
 		queryDate.put("salesDepartmentID",salesDepartmentID);
 		
 		EUDataGridResult<CustomerInfo> list=customerInfoService.selectByCNameAndCPhone(queryDate,page,rows);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	

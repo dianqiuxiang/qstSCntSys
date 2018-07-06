@@ -9,17 +9,17 @@
 		    <insert id="insert" parameterType="employeeInfo">  
 		        insert into employeeInfo (employeeName, sex, 
 			      employeePhone, employeeAddress, employeeEmail, 
-			      salesDepartmentID, isDelete)
+			      salesDepartmentID,role, isDelete)
 			    values (#{employeeName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
 			      #{employeePhone,jdbcType=VARCHAR}, #{employeeAddress,jdbcType=VARCHAR}, #{employeeEmail,jdbcType=VARCHAR}, 
-			      #{salesDepartmentID,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER})
+			      #{salesDepartmentID,jdbcType=INTEGER}, #{role,jdbcType=INTEGER}),#{isDelete,jdbcType=INTEGER})
 		   </insert>  		    
 		     
 		   <!-- 批量插入 -->  
 		   <insert id="insertBatch" parameterType="arraylist">  
 		        insert into employeeInfo (employeeName, sex, 
 			      employeePhone, employeeAddress, employeeEmail, 
-			      salesDepartmentID, isDelete)
+			      salesDepartmentID,role, isDelete)
 			      values   
 		        <!-- collection可以是List对于list,数组对于array,Map对应ids -->
 		        <foreach collection="list" item="item"  index="index" separator=",">
@@ -28,7 +28,9 @@
         			  #{item.employeeName,jdbcType=VARCHAR}, #{item.sex,jdbcType=CHAR}, 
 				      #{item.employeePhone,jdbcType=VARCHAR}, #{item.employeeAddress,jdbcType=VARCHAR}, 
 				      #{item.employeeEmail,jdbcType=VARCHAR}, 
-				      #{item.salesDepartmentID,jdbcType=INTEGER}, #{item.isDelete,jdbcType=INTEGER}
+				      #{item.salesDepartmentID,jdbcType=INTEGER}, 
+				      #{item.role,jdbcType=INTEGER},
+				       #{item.isDelete,jdbcType=INTEGER}
 				      
 				      </trim>   
            		</foreach>  
@@ -55,6 +57,9 @@
 				      </if>
 				      <if test="salesDepartmentID != null" >
 				        salesDepartmentID = #{salesDepartmentID,jdbcType=INTEGER},
+				      </if>
+				      <if test="role != null" >
+				        role = #{role,jdbcType=INTEGER},
 				      </if>
 				      <if test="isDelete != null" >
 				        isDelete = #{isDelete,jdbcType=INTEGER},
@@ -127,6 +132,14 @@
 			                 <foreach collection="list" item="item" index="index">
 			                     <if test="item.salesDepartmentID != null" >
 							        when id=#{item.id} then #{item.salesDepartmentID,jdbcType=INTEGER}
+							      </if>
+			                 </foreach>
+			            </trim>
+			            
+			            <trim prefix="role = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.role != null" >
+							        when id=#{item.id} then #{item.role,jdbcType=INTEGER}
 							      </if>
 			                 </foreach>
 			            </trim>
@@ -213,27 +226,58 @@
 		   
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectParamFlexible" parameterType="employeeInfo" resultType="employeeInfo">  
-		        select * from employeeInfo   
+		        select a.*,b.salesDepartmentName from employeeInfo a,salesDepartmentInfo b   
 					<trim prefix="WHERE" prefixOverrides="and |or">
 					<if test="employeeName != null" >
-					and employeeName like "%"#{employeeName}"%"
+					and a.employeeName like "%"#{employeeName}"%"
 					</if>
 					<if test="sex != null" >
-					and sex like "%"#{sex}"%"
+					and a.sex like "%"#{sex}"%"
 					</if>
 					<if test="employeePhone != null" >
-					and employeePhone like "%"#{employeePhone}"%"
+					and a.employeePhone like "%"#{employeePhone}"%"
 					</if>
 					<if test="employeeAddress != null" >
-					and employeeAddress like "%"#{employeeAddress}"%"
+					and a.employeeAddress like "%"#{employeeAddress}"%"
 					</if>
 					<if test="employeeEmail != null" >
-					and employeeEmail like "%"#{employeeEmail}"%"
+					and a.employeeEmail like "%"#{employeeEmail}"%"
 					</if>
 					<if test="salesDepartmentID != null" >
-					and salesDepartmentID = #{salesDepartmentID}
+					and a.salesDepartmentID = #{salesDepartmentID}
 					</if>
-					and isDelete=0
+					and a.isDelete=0
+					and a.salesDepartmentID=b.id
+					</trim>
+		   </select>
+		   
+		   <!-- 查询（模糊查询，参数） -->  
+		   <select id="selectByNameAndSex" parameterType="java.util.Map" resultType="employeeInfo">  
+		        select a.*,b.salesDepartmentName from employeeInfo a,salesDepartmentInfo b   
+					<trim prefix="WHERE" prefixOverrides="and |or">
+					<if test="employeeName != null" >
+					and a.employeeName like "%"#{employeeName}"%"
+					</if>
+					<if test="sex != null" >
+					and a.sex like "%"#{sex}"%"
+					</if>
+					<if test="employeePhone != null" >
+					and a.employeePhone like "%"#{employeePhone}"%"
+					</if>
+					<if test="employeeAddress != null" >
+					and a.employeeAddress like "%"#{employeeAddress}"%"
+					</if>
+					<if test="employeeEmail != null" >
+					and a.employeeEmail like "%"#{employeeEmail}"%"
+					</if>
+					<if test="salesDepartmentIDList !=null">
+					and a.salesDepartmentID IN
+					<foreach collection="salesDepartmentIDList" item="salesDepartmentID"  open="(" separator="," close=")">
+					#{salesDepartmentID.id}
+					</foreach>
+					</if>	
+					and a.isDelete=0
+					and a.salesDepartmentID=b.id
 					</trim>
 		   </select>
 		   

@@ -60,15 +60,30 @@ public class CustomerInfoServiceImpl extends BaseServiceImpl<CustomerInfo> imple
 				for(SalesDepartmentInfo entity_Level2:salesDeptList_Level2){
 					salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(entity_Level2));
 				}
-				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				if(salesDeptList_Level3==null){
+					queryDate.put("salesDepartmentIDList", null);
+				}
+				else{
+					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
 			}
 			else if(salesDept.getLevel()==2){
 				salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(salesDept));
-				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				if(salesDeptList_Level3==null){
+					queryDate.put("salesDepartmentIDList", null);
+				}
+				else{
+					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
 			}
 			else{
 				salesDeptList_Level3.add(salesDept);
-				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				if(salesDeptList_Level3==null){
+					queryDate.put("salesDepartmentIDList", null);
+				}
+				else{
+					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
 			}
 		}
 

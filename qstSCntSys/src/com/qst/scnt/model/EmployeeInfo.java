@@ -35,7 +35,16 @@ public class EmployeeInfo {
      *部门编号（外键）
      */
     private Integer salesDepartmentID;
+    
+    /**
+     * 部门名称
+     */
+    private String salesDepartmentName;
 
+    /**
+     *角色
+     */
+    private Integer role;
     /**
      *是否删除：0 没删除，1 删除
      */
@@ -131,7 +140,7 @@ public class EmployeeInfo {
     public Integer getSalesDepartmentID() {
         return salesDepartmentID;
     }
-
+    
     /**
      *部门编号（外键）
      */
@@ -139,7 +148,37 @@ public class EmployeeInfo {
         this.salesDepartmentID = salesDepartmentID;
     }
 
+
     /**
+     * 部门名称
+     */
+    public String getSalesDepartmentName() {
+		return salesDepartmentName;
+	}
+
+
+    /**
+     * 部门名称
+     */
+	public void setSalesDepartmentName(String salesDepartmentName) {
+		this.salesDepartmentName = salesDepartmentName;
+	}
+
+	/**
+     *角色
+     */
+    public Integer getRole() {
+		return role;
+	}
+    
+    /**
+     *角色
+     */
+	public void setRole(Integer role) {
+		this.role = role;
+	}
+
+	/**
      *是否删除：0 没删除，1 删除
      */
     public Integer getIsDelete() {

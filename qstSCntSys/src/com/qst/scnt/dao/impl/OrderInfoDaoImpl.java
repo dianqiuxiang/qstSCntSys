@@ -1,5 +1,6 @@
 package com.qst.scnt.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,36 @@ public class OrderInfoDaoImpl extends BaseDaoImpl<OrderInfo> implements OrderInf
 	public List<OrderInfo> selectByOCodeandCNameAndDate(Map<String, Object> queryDate) {
 		try {  
             return this.getSqlSession().selectList(namespace + "." + "selectByOCodeandCNameAndDate",queryDate);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+	}
+
+	@Override
+	public HashMap selectNewCustomer(Map<String, Object> params) {
+		try {  
+            return this.getSqlSession().selectOne(namespace + "." + "selectNewCustomer",params);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+	}
+
+	@Override
+	public HashMap selectNewCustomer1(Map<String, Object> params) {
+		try {  
+            return this.getSqlSession().selectOne(namespace + "." + "selectNewCustomer1",params);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+	}
+
+	@Override
+	public List<OrderInfo> selectByDate(Map<String, Object> oParams) {
+		try {  
+            return this.getSqlSession().selectList(namespace + "." + "selectByDate",oParams);  
         } catch (Exception e) {  
             e.printStackTrace();  
             return null;  

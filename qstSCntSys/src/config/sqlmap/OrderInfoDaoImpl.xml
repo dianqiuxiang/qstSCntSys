@@ -324,4 +324,65 @@
 				ORDER BY a.orderDate DESC
 				</trim>
 		   </select>
+		   
+		   
+		   <!-- 查询 -->  
+		   <select id="selectNewCustomer" parameterType="java.util.Map" resultType="java.util.HashMap">  
+		        select count(*) as newCustomer from orderInfo
+		        <trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="ministerList !=null">
+				and healthMember IN
+				<foreach collection="ministerList" item="ministerName"  open="(" separator="," close=")">
+				#{ministerName.employeeName}
+				</foreach>
+				</if>	
+				<if test="salesDepartmentID != null" >
+				and salesDepartmentID = #{salesDepartmentID}
+				</if>
+				<if test="salesDate!=null and startDate!='' "> 
+				and month(orderDate) = month(#{salesDate}) and year(orderDate) = year(#{salesDate})				
+				</if>
+				and isDelete=0
+				and customerType=1
+				</trim>
+		   </select>
+		   
+		   <!-- 查询 -->  
+		   <select id="selectNewCustomer1" parameterType="java.util.Map" resultType="java.util.HashMap">  
+		        select count(*) as newCustomer from orderInfo
+		        <trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="ministerList !=null">
+				and healthMember IN
+				<foreach collection="ministerList" item="ministerName"  open="(" separator="," close=")">
+				#{ministerName.employeeName}
+				</foreach>
+				</if>	
+				<if test="salesDepartmentID != null" >
+				and salesDepartmentID = #{salesDepartmentID}
+				</if>
+				<if test="salesDate!=null and startDate!='' ">
+				and year(orderDate) = year(#{salesDate})				
+				</if>
+				and isDelete=0
+				and customerType=1
+				</trim>
+		   </select>
+		   
+		   
+		   <!-- 查询（起始时间） -->  
+		   <select id="selectByDate" parameterType="java.util.Map" resultType="orderInfo">  
+		        select a.*,b.salesDepartmentName,c.salesDepartmentName as parentSalesDeptName from orderInfo a,salesdePartmentInfo b ,salesdePartmentInfo c
+		        <trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="startDate!=null and startDate!='' ">  
+				<![CDATA[and a.orderDate>= #{startDate}   ]]> 
+				</if>  
+				<if test="endDate!=null and endDate!=''">  
+				<![CDATA[and a.orderDate <=  #{endDate}    ]]>
+				</if>
+				and a.isDelete=0
+				and a.salesDepartmentID=b.id
+				and b.parentID=c.id
+				ORDER BY a.orderDate ASC
+				</trim>
+		   </select>
     </mapper>

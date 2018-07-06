@@ -1,5 +1,6 @@
 package com.qst.scnt.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,26 @@ public class CostDaoImpl extends BaseDaoImpl<Cost> implements CostDao {
 	public List<Cost> selectByItemIdAndStartAndEndDate(Map<String, Object> queryDate) {
 		try {  
             return this.getSqlSession().selectList(namespace + "." + "selectByItemIdAndStartAndEndDate",queryDate);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+	}
+
+	@Override
+	public HashMap selectBySDeptIdAndYM(Map<String, Object> params) {
+		try {  
+            return this.getSqlSession().selectOne(namespace + "." + "selectBySDeptIdAndYM",params);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+	}
+
+	@Override
+	public HashMap selectBySDeptIdAndY(Map<String, Object> params) {
+		try {  
+            return this.getSqlSession().selectOne(namespace + "." + "selectBySDeptIdAndY",params);  
         } catch (Exception e) {  
             e.printStackTrace();  
             return null;  

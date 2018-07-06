@@ -37,7 +37,7 @@ public class SalesDepartmentController extends BaseController {
 		}
 		//salesDepartmentInfo.setSalesDepartmentName(salesDepartmentName);
 		EUDataGridResult<SalesDepartmentInfo> list=salesDepartmentInfoService.selectParamFlexible(salesDepartmentInfo,page,rows);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -54,7 +54,7 @@ public class SalesDepartmentController extends BaseController {
 		List<SalesDepartmentInfo> list=salesDepartmentInfoService.selectAll();
 		Map<String,Object> map=new HashMap<String,Object>();
 		map.put("rows", list);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return map;
 	}
 	
@@ -70,7 +70,7 @@ public class SalesDepartmentController extends BaseController {
 		Gson gson = new Gson();
 
 		List<SalesDepartmentInfo> list=salesDepartmentInfoService.select();
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -116,7 +116,7 @@ public class SalesDepartmentController extends BaseController {
 		
 		Gson gson = new Gson();		
 		SalesDepartmentInfo salesDepartmentInfo=salesDepartmentInfoService.selectPK(id);
-		System.out.println(gson.toJson(salesDepartmentInfo));
+		//System.out.println(gson.toJson(salesDepartmentInfo));
 		return gson.toJson(salesDepartmentInfo);
 	}
 	

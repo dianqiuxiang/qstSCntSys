@@ -34,18 +34,18 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo> implements Us
 	    a1.setUserName("321");
 	    a1.setPwd("321");
 	   
-	    System.out.println("aaaaaaaaaaaaaaaaaa1");
+	    //System.out.println("aaaaaaaaaaaaaaaaaa1");
 	    int aa=userInfoDao.update(a1);
-	    System.out.println("aaaaaaaaaaaaaaaaaa2");
+	    //System.out.println("aaaaaaaaaaaaaaaaaa2");
 	    UserInfo a2=new UserInfo();
 	    a2.setId(2);
 	    a2.setUserName("aa");
 	    a2.setPwd("aa");
 	    
 	    int i = 1 / 0; // 抛出运行时异常，事务回滚
-	    System.out.println("aaaaaaaaaaaaaaaaaa3");
+	    //System.out.println("aaaaaaaaaaaaaaaaaa3");
 	    int ab=userInfoDao.update(a2);
-	    System.out.println("aaaaaaaaaaaaaaaaaa4");
+	    //System.out.println("aaaaaaaaaaaaaaaaaa4");
 	    if (aa == 1 && ab == 1) {  
             return 1;  
         }  

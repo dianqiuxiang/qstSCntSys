@@ -42,7 +42,7 @@ public class ProductController extends BaseController {
 		
 		
 		EUDataGridResult<ProductInfo> list=productInfoService.selectParamFlexible(productInfo,page,rows);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -85,7 +85,7 @@ public class ProductController extends BaseController {
 		
 		Gson gson = new Gson();		
 		ProductInfo productInfo=productInfoService.selectPK(id);
-		System.out.println(gson.toJson(productInfo));
+		//System.out.println(gson.toJson(productInfo));
 		return gson.toJson(productInfo);
 	}
 	

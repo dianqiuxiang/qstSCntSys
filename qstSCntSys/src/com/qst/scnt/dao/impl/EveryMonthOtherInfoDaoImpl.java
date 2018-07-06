@@ -1,6 +1,7 @@
 package com.qst.scnt.dao.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,24 @@ public class EveryMonthOtherInfoDaoImpl extends BaseDaoImpl<EveryMonthOtherInfo>
 	{
 		try {  
             return this.getSqlSession().selectList(namespace + "." + "selectByDate",infoDate);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+	}
+	@Override
+	public HashMap selectBySDeptIdAndYM(Map<String, Object> params) {
+		try {  
+            return this.getSqlSession().selectOne(namespace + "." + "selectBySDeptIdAndYM",params);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+	}
+	@Override
+	public HashMap selectBySDeptIdAndY(Map<String, Object> params) {
+		try {  
+            return this.getSqlSession().selectOne(namespace + "." + "selectBySDeptIdAndY",params);  
         } catch (Exception e) {  
             e.printStackTrace();  
             return null;  

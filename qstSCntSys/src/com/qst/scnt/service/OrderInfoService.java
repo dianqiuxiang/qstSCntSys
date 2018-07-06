@@ -1,5 +1,6 @@
 package com.qst.scnt.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,12 @@ public interface OrderInfoService extends BaseService<OrderInfo> {
 	public int updateOrderAndOProductInfo(OrderInfo orderInfo);
 
 	public int deleteOrderAndOProduct(OrderInfo orderInfo);
+
+	public HashMap selectNewCustomer(Map<String, Object> params);
+
+	public HashMap selectNewCustomer1(Map<String, Object> params);
+
+	public List<OrderInfo> selectByDate(Map<String, Object> oParams);
 	
 }
 

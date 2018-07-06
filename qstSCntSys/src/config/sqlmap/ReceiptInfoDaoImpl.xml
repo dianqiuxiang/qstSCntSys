@@ -241,4 +241,116 @@
 		   <select id="selectByID" parameterType="Integer" resultType="receiptInfo">  
 		        select a.*,b.orderCode from receiptInfo a,orderInfo b where a.id = #{id} and a.isDelete=0 and a.orderID=b.id
 		   </select>
+
+			<!-- 查询（参数） -->  
+		   <select id="selectBySDeptIdAndYM" parameterType="java.util.Map" resultType="java.util.HashMap">  
+		        select sum(receiptAmount) as sumReceiptAmount from receiptInfo where month(receiptDate) =
+				month(#{salesDate}) and year(receiptDate) = year(#{salesDate}) and salesDepartmentID = #{salesDepartmentID}
+				and isDelete=0
+		   </select>
+		   
+		   <!-- 查询（参数） -->  
+		   <select id="selectBySDeptIdAndY" parameterType="java.util.Map" resultType="java.util.HashMap">  
+		        select sum(receiptAmount) as sumReceiptAmount from receiptInfo where year(receiptDate) = year(#{salesDate}) and salesDepartmentID = #{salesDepartmentID}
+				and isDelete=0
+		   </select>
+		   
+		   <!-- 查询（参数） -->  
+		   <select id="selectSalesVolume" parameterType="java.util.Map" resultType="java.util.HashMap">  
+		        select sum(a.receiptAmount) as sumReceiptAmount from receiptInfo a,orderInfo b 
+		        <trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="ministerList !=null">
+				and b.healthMember IN
+				<foreach collection="ministerList" item="ministerName"  open="(" separator="," close=")">
+				#{ministerName.employeeName}
+				</foreach>
+				</if>	
+				<if test="salesDepartmentID != null" >
+				and a.salesDepartmentID = #{salesDepartmentID}
+				and b.salesDepartmentID = #{salesDepartmentID}
+				</if>
+				<if test="salesDate!=null and startDate!='' "> 
+				and month(a.receiptDate) = month(#{salesDate}) and year(a.receiptDate) = year(#{salesDate})				
+				</if>
+				and a.isDelete=0
+				and b.isDelete=0
+				and a.orderID=b.id
+				</trim>
+		   </select>
+		   
+		    <!-- 查询（参数） -->  
+		   <select id="selectNewCustomerSalesVolume" parameterType="java.util.Map" resultType="java.util.HashMap">  
+		        select sum(a.receiptAmount) as newCustomerSalesVolume from receiptInfo a,orderInfo b 
+		        <trim prefix="WHERE" prefixOverrides="and |or">				
+				<if test="salesDepartmentID != null" >
+				and a.salesDepartmentID = #{salesDepartmentID}
+				and b.salesDepartmentID = #{salesDepartmentID}
+				</if>
+				<if test="salesDate!=null and startDate!='' "> 
+				and month(a.receiptDate) = month(#{salesDate}) and year(a.receiptDate) = year(#{salesDate})				
+				</if>
+				and a.isDelete=0
+				and b.isDelete=0
+				and a.orderID=b.id
+				and b.customerType=1
+				</trim>
+		   </select>
+		   
+		   <!-- 查询（参数） -->  
+		   <select id="selectSalesVolume1" parameterType="java.util.Map" resultType="java.util.HashMap">  
+		        select sum(a.receiptAmount) as sumReceiptAmount from receiptInfo a,orderInfo b 
+		        <trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="ministerList !=null">
+				and b.healthMember IN
+				<foreach collection="ministerList" item="ministerName"  open="(" separator="," close=")">
+				#{ministerName.employeeName}
+				</foreach>
+				</if>	
+				<if test="salesDepartmentID != null" >
+				and a.salesDepartmentID = #{salesDepartmentID}
+				and b.salesDepartmentID = #{salesDepartmentID}
+				</if>
+				<if test="salesDate!=null and startDate!='' ">
+				and year(a.receiptDate) = year(#{salesDate})				
+				</if>
+				and a.isDelete=0
+				and b.isDelete=0
+				and a.orderID=b.id
+				</trim>
+		   </select>
+		   
+		    <!-- 查询（参数） -->  
+		   <select id="selectNewCustomerSalesVolume1" parameterType="java.util.Map" resultType="java.util.HashMap">  
+		        select sum(a.receiptAmount) as newCustomerSalesVolume from receiptInfo a,orderInfo b 
+		        <trim prefix="WHERE" prefixOverrides="and |or">				
+				<if test="salesDepartmentID != null" >
+				and a.salesDepartmentID = #{salesDepartmentID}
+				and b.salesDepartmentID = #{salesDepartmentID}
+				</if>
+				<if test="salesDate!=null and startDate!='' ">
+				and year(a.receiptDate) = year(#{salesDate})				
+				</if>
+				and a.isDelete=0
+				and b.isDelete=0
+				and a.orderID=b.id
+				and b.customerType=1
+				</trim>
+		   </select>
+		   
+		   
+		   <!-- 查询（模糊查询，参数） -->  
+		   <select id="selectByOrderID" parameterType="java.util.Map" resultType="receiptInfo">  
+		        select * from receiptInfo
+				<trim prefix="WHERE" prefixOverrides="and |or">
+				<if test="orderInfoList !=null">
+				and orderID IN
+				<foreach collection="orderInfoList" item="orderInfo"  open="(" separator="," close=")">
+				#{orderInfo.id}
+				</foreach>
+				</if>
+				and isDelete=0				
+				ORDER BY receiptDate ASC
+				</trim>
+			</select>
+		   
     </mapper>

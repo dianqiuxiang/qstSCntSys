@@ -9,7 +9,7 @@
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../locale/easyui-lang-zh_CN.js"></script>
-	<script type="text/javascript" src="../js/jexpand.js"></script>
+	<script type="text/javascript" src="../js/jAction.js"></script>
 	<style type="text/css">
 	    html,body{
 	        padding:0;
@@ -17,43 +17,155 @@
 	        width:100%;
 	        height:100%;
 	    }
+		.grid
+ 		{
+  			table-layout:fixed;
+  			border-collapse: collapse;
+  			border: solid 1px #cad9ea;
+ 		}
+ 		.grid td
+ 		{
+  			height:30px;
+  			text-align:center;
+  			border: solid 1px #cad9ea;
+  			word-wrap:break-word;word-break:break-all;
+ 		}
+ 		.grid th
+ 		{
+  			height:30px;
+  			text-align:center;
+  			background-color: #f5fafe;
+  			border: solid 1px #cad9ea;
+ 		}
 	</style>
+	<script type="text/javascript">
+    
+   		/*
+     	 *初始加载,克隆table
+     	 */
+        jQuery(function() {
+        	//var cloneTable = jQuery("#table_id").clone();
+            //document.getElementById("headerDiv_id").appendChild(cloneTable[0]);
+            
+            //var headerDivWidth=jQuery("#bodyDiv_id").width()-17;
+            //jQuery("#headerDiv_id").css("width", headerDivWidth);
+            var data;
+            data = [];
+            var date=new Date();
+            var y=date.getFullYear();
+            for(var i=2017;i<=y+3;i++){
+            	data.push({ "text": i, "id": i });
+            }            
+            $("#salesYear").combobox("loadData", data);
+            $("#salesYear").combobox("setValue", y);
+        });
+        
+        /*
+         *浏览器窗口的缩放监听:
+         */
+        jQuery(window).resize(function() {
+        	var headerDivWidth=jQuery("#bodyDiv_id").width()-17;
+            jQuery("#headerDiv_id").css("width", headerDivWidth);
+        });
+   		
+   		function doSearch(){
+   			if($("#salesDept").combotree("getText")=="")
+   			{
+   				parent.$.messager.alert("消息提示","请选择部门信息","info");
+   				return false;
+   			}
+   			$("#monthAndMinister").html("月份/"+$("#salesDept").combotree("getText"));
+   			
+   			$.ajax({
+	    		type:"post",
+	    		url :"/qstSCntSys/reportExport/getSMinisterReport.do",
+	    		data:{salesDepartmentID:$("#salesDept").combotree("getValue"),salesYear:$("#salesYear").combotree("getValue")},
+	    		dataType:"json",
+	    		error: function(){
+	    			
+	    		},
+	    		success: function(json){
+	    			
+	    			if(json.result=="NoProfit")
+	    			{
+	    				parent.$.messager.alert("消息提示","没有换算费用的参数","info");
+	    				return false;
+	    			}
+	    			else if(json.result=="NoMilkPrice"){
+	    				parent.$.messager.alert("消息提示","没有牛初乳的价格（注：产品名称为“牛初乳”）","info");
+	    				return false;
+	    			}
+	    			else{
+	    				$("#tbody_id").html("");
+	    				var str_html="";
+	    				var k=json.length;
+	    				for(var i=0;i<28;i++){
+	    					var txt1=document.createElement("tr");  // 以 DOM 创建新元素
+	    					
+	    					str_html+="<tr>";
+	    					for(var j=0;j<14;j++){
+	    						//var txt2=document.createElement("td");  // 以 DOM 创建新元素
+	    						//txt2.innerHTML=json[j].content[i].name2;
+	    						//txt1.append(txt2);
+	    						str_html+="<td scope=\"col\" >"+json[j].content[i].name2+"</td>";
+	    					}
+	    					str_html+="</tr>";
+	    					//$("#table_id").append(txt1);
+	    				}
+	    				//alert(str_html);
+	    				//document.getElementById("tbody_id").append(str_html);
+	    				$("#tbody_id").append(str_html);
+	    				//var cloneTable = jQuery("#table_id").clone();
+			            //document.getElementById("headerDiv_id").appendChild(cloneTable[0]);
+			            
+			            //var headerDivWidth=jQuery("#bodyDiv_id").width()-17;
+			            //jQuery("#headerDiv_id").css("width", headerDivWidth);
+	    			}
+	    		}
+	    	});
+   		}
+    </script>
 </head>
 <body>
-	 <div id="tb" style="padding:5px">
-        <span>订单编号：</span><input id="orderNa" class='easyui-textbox'></input>
-        <span>顾客姓名：</span><input id="customerNa" class='easyui-textbox'></input>
-        <span>订单时间：</span><input id="orderdate" class="easyui-datebox"></input>
-        <span>至：</span><input id="orderEdate" class="easyui-datebox"></input>
-        <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">查询</a>
-        <a href="#" class="easyui-linkbutton" plain="true" onclick="openOrderDialog()">新增</a>  
+	<div id=salesDeptTb style="padding:5px">        
+        <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/order/getSalesDept.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',onBeforeSelect:function(node){
+                     if ($(this).tree('getLevel',node.target)!=3) {  
+		                return false;  
+		            }  
+                }" style="width:160px;"></select>
+        <span>年份：</span><input id="salesYear" class="easyui-combobox" name="salesYear" data-options="valueField:'id', textField:'text', panelHeight:'auto',editable:false"></input>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">查询</a>        
     </div>
-    <table id="signReportTable">
-		<!-- ><thead>
-			<tr>
-			    <th data-options="field:'id',width:120,hidden:true"></th>
-				<th data-options="field:'orderCode',width:150">订单编号</th>
-				<th data-options="field:'customerType',width:80,align:'right',formatter:formateCType">会员类型</th>
-				<th data-options="field:'customerName',width:80,align:'right'">顾客姓名</th>
-				<th data-options="field:'customerPhone',width:100">联系电话</th>
-				<th data-options="field:'customerAddress',width:240,align:'center'">地址</th>
-			    <th data-options="field:'orderAmount',width:80">订单金额</th>
-				<th data-options="field:'orderDate',width:120">订单时间</th>
-				<th data-options="field:'healthMember',width:80,align:'right'">健康代表</th>
-				<th data-options="field:'customerSign',width:80,align:'right'">顾客签收</th>
-				<th data-options="field:'salesDepartmentID',width:120">部门编号</th>
-				<th data-options="field:'operation',formatter:getOrderOperation">操作</th>
-			</tr>
-		</thead><-->
-		<tr>
-		<td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td>
-		</tr>
-			<tr>
-		<td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td>
-		</tr>
-			<tr>
-		<td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td><td>123</td>
-		</tr>
-	</table>
+    <div id="p" class="easyui-panel" style="width:100%;height:90%;padding:0px;">
+		<div id="headerDiv_id" style="position:relative; margin-bottom:-35px;height:35px; overflow:hidden;" ></div>
+	    <div id="bodyDiv_id" style="width:100%; height:100%; overflow:scroll-y;" onscroll="headerDiv_id.scrollLeft=this.scrollLeft;">
+	        <table id="table_id" class="grid" style="width:100%;">
+	             <thead>
+	             	<tr>	            	
+						<th scope="col" width="15%" id="monthAndMinister" >月份/***</th>
+						<th scope="col" >1月</th>
+						<th scope="col" >2月</th>
+						<th scope="col" >3月</th>
+						<th scope="col" >4月</th>
+						<th scope="col" >5月</th>
+						<th scope="col" >6月</th>
+						<th scope="col" >7月</th>
+						<th scope="col" >8月</th>
+						<th scope="col" >9月</th>
+						<th scope="col" >10月</th>
+						<th scope="col" >11月</th>
+						<th scope="col" >12月</th>
+						<th scope="col" >小计</th>
+		         	</tr>
+	             </thead>   
+		        <tbody id="tbody_id">
+	             	
+	             </tbody>   
+	  
+	        </table>
+	    </div>
+		
+	</div>
 </body>
 </html>

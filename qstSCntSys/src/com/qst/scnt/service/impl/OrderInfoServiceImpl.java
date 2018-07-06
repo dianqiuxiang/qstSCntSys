@@ -63,15 +63,30 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo> implements 
 				for(SalesDepartmentInfo entity_Level2:salesDeptList_Level2){
 					salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(entity_Level2));
 				}
-				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				if(salesDeptList_Level3==null){
+					queryDate.put("salesDepartmentIDList", null);
+				}
+				else{
+					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
 			}
 			else if(salesDept.getLevel()==2){
 				salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(salesDept));
-				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				if(salesDeptList_Level3==null){
+					queryDate.put("salesDepartmentIDList", null);
+				}
+				else{
+					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
 			}
 			else{
 				salesDeptList_Level3.add(salesDept);
-				queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				if(salesDeptList_Level3==null){
+					queryDate.put("salesDepartmentIDList", null);
+				}
+				else{
+					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
 			}
 		}
 
@@ -206,6 +221,24 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo> implements 
         }  
 	        return 0;
 		
+	}
+
+	@Override
+	public HashMap selectNewCustomer(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return orderInfoDao.selectNewCustomer(params);
+	}
+
+	@Override
+	public HashMap selectNewCustomer1(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return orderInfoDao.selectNewCustomer1(params);
+	}
+
+	@Override
+	public List<OrderInfo> selectByDate(Map<String, Object> oParams) {
+		// TODO Auto-generated method stub
+		return orderInfoDao.selectByDate(oParams);
 	}
 	
 }

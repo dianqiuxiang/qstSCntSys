@@ -246,6 +246,6 @@ public class BaseDaoImpl<T> extends
         //µ√µΩsql”Ôæ‰  
         String sql = boundSql.getSql().trim();  
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-        System.out.println("info-sql: "+sdf.format(new Date())+"  "+sql);  
+        //System.out.println("info-sql: "+sdf.format(new Date())+"  "+sql);  
     }  
 }   

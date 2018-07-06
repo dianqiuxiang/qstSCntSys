@@ -47,7 +47,7 @@ public class UserController extends BaseController {
 		}
 		
 		EUDataGridResult<UserInfo> list=userInfoService.selectParamFlexible(userInfo,page,rows);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -71,7 +71,7 @@ public class UserController extends BaseController {
 			int result=userInfoService.insert(userInfo);
 			if(result>0)
 			{
-				resultStr="{\"result\":\"Success\"}";
+				resultStr="{\"result\":\"Success|888888\"}";
 			}
 			else
 			{
@@ -91,7 +91,7 @@ public class UserController extends BaseController {
 		
 		Gson gson = new Gson();		
 		UserInfo userInfo=userInfoService.selectPK(id);
-		System.out.println(gson.toJson(userInfo));
+		//System.out.println(gson.toJson(userInfo));
 		return gson.toJson(userInfo);
 	}
 	
@@ -160,7 +160,7 @@ public class UserController extends BaseController {
 		int result=userInfoService.update(userInfo);
 		if(result>0)
 		{
-			resultStr="{\"result\":\"Success|888888\"}";
+			resultStr="{\"result\":\"Success\"}";			
 		}
 		else
 		{
@@ -181,7 +181,7 @@ public class UserController extends BaseController {
 		Gson gson = new Gson();
 
 		List<SalesDepartmentInfo> list=salesDepartmentInfoService.select();
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 }

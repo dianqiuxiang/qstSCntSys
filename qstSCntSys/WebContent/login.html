@@ -37,9 +37,16 @@
 			dataType:"json",
 			contentType:"application/json;charset=utf-8",
 			success: function(result){
-				//$.messager.alert("消息提示",result.result,"info");
-				window.location.href = "pages/index.html";
-				return false;
+				if(result.result=="Success")
+				{
+					window.location.href = "pages/index.html";
+					return false;
+				}
+				else
+				{
+					$.messager.alert("消息提示","用户名或密码错误","info");
+					return;
+				}
 			},
 			error: function(){
 				$.messager.alert("消息提示","系统报错请联系管理员","info");

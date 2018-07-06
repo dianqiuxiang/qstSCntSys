@@ -284,4 +284,27 @@
 		        <![CDATA[ and DATE_FORMAT(infoDate, '%Y-%m')=  DATE_FORMAT(#{infoDate}, '%Y-%m')   ]]> 		        	       
 	             and isDelete=0
 		   </select>
+		   
+		   <select  id="selectBySDeptIdAndYM" parameterType="java.util.Map" resultType="java.util.HashMap">
+		   select sum(manageCost) as manageCost,
+			sum(earlyNumber) as earlyNumber,
+			sum(finalNumber) as finalNumber,
+			sum(singleExcessAmount) as singleExcessAmount,
+			sum(overallExcessAmount) as overallExcessAmount
+			 from everyMonthOtherInfo where month(infoDate) =
+			month(#{salesDate}) and year(infoDate) = year(#{salesDate})
+			and salesDepartmentID = #{salesDepartmentID}
+			and isDelete=0
+		   </select>
+		   
+		   <select  id="selectBySDeptIdAndY" parameterType="java.util.Map" resultType="java.util.HashMap">
+		   select sum(manageCost) as manageCost,
+			sum(earlyNumber) as earlyNumber,
+			sum(finalNumber) as finalNumber,
+			sum(singleExcessAmount) as singleExcessAmount,
+			sum(overallExcessAmount) as overallExcessAmount
+			 from everyMonthOtherInfo where year(infoDate) = year(#{salesDate})
+			and salesDepartmentID = #{salesDepartmentID}
+			and isDelete=0
+		   </select>
     </mapper>

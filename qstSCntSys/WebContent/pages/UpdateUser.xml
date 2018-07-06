@@ -25,13 +25,6 @@
 			</td>
 		</tr>
 		<tr>
-			<td>销售部名称:</td>
-			<td>
-				<input class="easyui-combobox" id="marketDep" 
-				data-options="editable:false,url:'/JQU/department',method:'get',valueField:'id',textField:'salesDepartmentName',panelHeight:'auto'"></input>
-			</td>
-		</tr>
-		<tr>
 		    <td></td>
 			<td><span id='msginfo'></span></td>
 		</tr>

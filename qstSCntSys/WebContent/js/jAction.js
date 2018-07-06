@@ -1,6 +1,7 @@
 var dlg='#commonDlg';
 var buttons='#btnSave';
 var baseurl='http://localhost:8080/qstSCntSys';
+//var baseurl='http://106.14.14.121:8080/qstSCntSys';
 var msginfo={'err':'系统报错请联系管理员','loaderr':'系统加载失败,该信息可能已被删除！'};
 var productItems=0;
 var productTRCount=0;
@@ -37,7 +38,7 @@ function newCustomerDialog(callback)
 }
 function newEmployeeDialog(callback)
 {
-	var args={'url':'NewEmployee.xml','width':'400','height':'400','action':'employee','title':'新建员工信息'};
+	var args={'url':'NewEmployee.xml','width':'400','height':'450','action':'employee','title':'新建员工信息'};
 	openDialog(args,newEmployee,callback);
 }
 function newExpenseDialog(callback)
@@ -224,6 +225,10 @@ function setEmployeeModel(json)
 {
 	if(json.length!=0)
     {
+		$('#salesDept').combotree({
+		    onLoadSuccess:function(node,data){  
+		    	$('#salesDept').combotree('setValue',json.salesDepartmentID);
+		    }}); 
 		$('#employeeN').textbox('setValue',json.employeeName);
 		$('#employeeS').combobox('select',json.sex);
 		$('#employeeP').textbox('setValue',json.employeePhone);
@@ -375,7 +380,6 @@ function setUserModel(json)
 		$('#userP').textbox('setValue',json.userPhone);
 		$('#userE').textbox('setValue',json.userEmail);
 		$('#userPwd').textbox('setValue',json.pwd);
-		$('#marketDep').combobox('select',json.salesDepartmentID);
     }
 	else
 	{
@@ -417,7 +421,7 @@ function updateCustomerDialog(id,callback)
 }
 function updateEmployeeDialog(id,callback)
 {
-	var args={'actionUrl':'/qstSCntSys/employee/selectByID.do','url':'NewEmployee.xml','width':'400','height':'350','action':'employee','title':'修改员工信息'};
+	var args={'actionUrl':'/qstSCntSys/employee/selectByID.do','url':'NewEmployee.xml','width':'400','height':'450','action':'employee','title':'修改员工信息'};
 	openUpdateDialog(args,updateEmployee,callback,id,setEmployeeModel);
 }
 function updateExpenseDialog(id,callback)
@@ -777,7 +781,6 @@ function newUser(callback)
 			"userName":$('#userN').val(),
 			"userPhone":$('#userP').val(),
 			"userEmail":$('#userE').val(),
-			"salesDepartmentID":$('#marketDep').combobox('getValue')
 			};
 	setDataModel("/qstSCntSys/user/addUserInfo.do",json,callback);
 }
@@ -833,6 +836,11 @@ function newCustomer(callback)
 }
 function newEmployee(callback)
 {
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo2').html("销售部门为必选项！");
+		return;
+	}
 	if($("#employeeN").textbox('isValid')==false)
 	{
 		$('#msginfo').html("员工姓名为必输项！");
@@ -849,11 +857,13 @@ function newEmployee(callback)
 		return;
 	}
 	var json={
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"employeeName":$('#employeeN').val(),
 			"sex":$('#employeeS').combobox('getValue'),
 			"employeePhone":$('#employeeP').val(),
 			"employeeAddress":$('#employeeA').val(),
-			"employeeEmail":$('#employeeE').val()
+			"employeeEmail":$('#employeeE').val(),
+			"role":$('#role').combobox('getValue')
 			};
 	setDataModel("/qstSCntSys/employee/addEmployeeInfo.do",json,callback);
 }
@@ -1209,8 +1219,7 @@ function updateUser(callback,id)
 			"userName":$('#userN').val(),
 			"userPhone":$('#userP').val(),
 			"userEmail":$('#userE').val(),
-			"pwd":$('#userPwd').val(),
-			"salesDepartmentID":$('#marketDep').combobox('getValue')
+			"pwd":$('#userPwd').val()
 			};
 	setDataModel("/qstSCntSys/user/updateUserInfo.do",json,callback);
 }
@@ -1268,6 +1277,11 @@ function updateCustomer(callback,id)
 }
 function updateEmployee(callback,id)
 {
+	if($("#salesDept").combotree('isValid')==false)
+	{
+		$('#msginfo2').html("销售部门为必选项！");
+		return;
+	}
 	if($("#employeeN").textbox('isValid')==false)
 	{
 		$('#msginfo').html("员工姓名为必输项！");
@@ -1285,11 +1299,13 @@ function updateEmployee(callback,id)
 	}
 	var json={
 			"id":id,
+			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"employeeName":$('#employeeN').val(),
 			"sex":$('#employeeS').combobox('getValue'),
 			"employeePhone":$('#employeeP').val(),
 			"employeeAddress":$('#employeeA').val(),
-			"employeeEmail":$('#employeeE').val()
+			"employeeEmail":$('#employeeE').val(),
+			"role":$('#role').combobox('getValue')
 			};
 	setDataModel("/qstSCntSys/employee/updateEmployeeInfo.do",json,callback);
 }

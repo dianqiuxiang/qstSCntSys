@@ -19,6 +19,8 @@
 </head>
 <body>
     <div id="employeeToolbar" style="padding:5px">
+     <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/employee/getSalesDept.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>        
         <span>员工名称：</span><input id="employeeN" class='easyui-textbox'></input>
         <span>性别：</span>
         <select class="easyui-combobox" id="employeeS" style="width:100px" data-options="editable:false">
@@ -39,6 +41,20 @@
     		return "女";
     	}
     }
+    function formateRole(val){
+    	if(val==1){
+    		return "大区经理";
+    	}
+    	else if(val==2){
+    		return "签约经理";
+    	}
+    	else if(val==3){
+    		return "签约部长";
+    	}
+    	else{
+    		return "普通员工";
+    	}
+    }
 
     
     $(document).ready(function() {
@@ -49,6 +65,7 @@
     	//parent.$.messager.alert("消息提示",$('#state').combobox('getValue'));
     	//parent.$.messager.alert("消息提示",$('#state').combobox('getText'));
     	$('#employeeDg').datagrid('load',{
+    		salesDepartmentID:$('#salesDept').combotree("getValue"),
     		employeeName:$('#employeeN').val(),
     		sex:$('#employeeS').combobox("getValue")
     		});
@@ -96,6 +113,7 @@
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！","info");
     	        			$('#employeeDg').datagrid('reload',{
+    	        				salesDepartmentID:$('#salesDept').combotree("getValue"),
     	        	    		employeeName:$('#employeeN').val(),
     	        	    		sex:$('#employeeS').combobox("getValue")
     	        	    		});
@@ -117,6 +135,7 @@
     			parent.$.messager.alert("消息提示","修改成功！","info");
      			parent.closeDialog();
      			$('#employeeDg').datagrid('reload',{
+     				salesDepartmentID:$('#salesDept').combotree("getValue"),
      	    		employeeName:$('#employeeN').val(),
      	    		sex:$('#employeeS').combobox("getValue")
      	    		});
@@ -137,12 +156,14 @@
 		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/employee/selectByENameAndESex.do',method:'get'">
 		<thead>
 			<tr>
-			    <th data-options="field:'id',width:200,hidden:true"></th>
-			    <th data-options="field:'employeeName',width:200">姓名</th>
-				<th data-options="field:'sex',width:200,formatter:formateSex">性别</th>
-				<th data-options="field:'employeePhone',width:200,align:'right'">电话</th>
+			    <th data-options="field:'id',width:10,hidden:true"></th>
+			    <th data-options="field:'employeeName',width:80">姓名</th>
+				<th data-options="field:'sex',width:50,formatter:formateSex,align:'center'">性别</th>
+				<th data-options="field:'employeePhone',width:120,align:'right'">电话</th>
 				<th data-options="field:'employeeAddress',width:200">住址</th>
 				<th data-options="field:'employeeEmail',width:200,align:'right'">邮箱</th>
+				<th data-options="field:'role',width:80,formatter:formateRole">角色</th>
+				<th data-options="field:'salesDepartmentName',width:150,align:'right'">部门名称</th>
 				<th data-options="field:'employeeOperation',formatter:getEmployeeOperation">操作</th>
 			</tr>
 		</thead>

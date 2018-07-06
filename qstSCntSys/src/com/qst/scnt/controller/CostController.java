@@ -119,7 +119,7 @@ public class CostController extends BaseController {
 			}
 		}
 		returnJson+="]";
-		System.out.println(returnJson);
+		//System.out.println(returnJson);
 		return returnJson;
 	}
 	
@@ -133,7 +133,7 @@ public class CostController extends BaseController {
 		model.setId(-1);
 		model.setExpenseItem("选择所有");
 		list.add(0, model); 
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -147,7 +147,7 @@ public class CostController extends BaseController {
 //		model.setId(-1);
 //		model.setExpenseItem("选择所有");
 //		list.add(0, model); 
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 		
@@ -157,7 +157,7 @@ public class CostController extends BaseController {
 		Gson gson = new Gson();
 
 		List<Cost> list=costService.select();
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -195,7 +195,7 @@ public class CostController extends BaseController {
 		queryDate.put("salesDepartmentID",salesDepartmentID);
 				
 		EUDataGridResult<Cost> list=costService.selectByItemIdAndStartAndEndDate(queryDate,page,rows);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	

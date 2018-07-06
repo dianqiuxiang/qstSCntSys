@@ -19,15 +19,16 @@
 </head>
 <body>
     <div id="receiptToolbar" style="padding:5px">
-        <span>订单编号：</span><input id="orderN" class='easyui-textbox'></input>
+        <span>订单编号：</span><input id="orderN" class='easyui-textbox' style="width:121px;"></input>
         <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/receipt/getSalesDept.do',method:'get',valueField:'id',textField:'text',
         panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
-        <span>收款人：</span><input id="receiptM" class='easyui-textbox'></input>
+        <span>收款人：</span><input id="receiptM" class='easyui-textbox' style="width:121px;"></input>
         <span>收款时间</span><input id="receiptSD" class="easyui-datebox"></input>
         <span>至：</span><input id="receiptED" class="easyui-datebox"></input>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="doReceiptSearch()">查询</a>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="exportExcel()">导出</a> 
         <a href="#" class="easyui-linkbutton" plain="true" onclick="openDialog()">新增</a>  
-        <a href="#" class="easyui-linkbutton" plain="true" onclick="">导出</a>  
+        
     </div>
     <script type="text/javascript">
 	$(document).ready(function() {
@@ -129,16 +130,28 @@
         });
     	
     }
+    function exportExcel(){
+    	$.ajax({
+            url: "/qstSCntSys/receipt/exportExcel.do",
+            method: "post",
+            /**重点在于这一行，设置返回类型，否则浏览器将会以奇怪的方式解析zi'ji**/
+            dataType: 'blob',
+            success: function(data){
+                var blob = new Blob([data], {type: "application/vnd.ms-excel"});
+                saveAs(blob, "file.xlsx");
+            }
+        });
+    }
     </script>
    <table id="receiptDg"  toolbar="#receiptToolbar" class="easyui-datagrid" style="height:100%"
 		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/receipt/selectByCodeAndRMemberAndDate.do',method:'get'">
 		<thead>
 			<tr>
 			    <th data-options="field:'id',width:200,hidden:true"></th>
-			    <th data-options="field:'orderCode',width:200">订单编号</th>
-				<th data-options="field:'receiptAmount',width:200">收款金额</th>
-				<th data-options="field:'receiptMember',width:200,align:'right'">收款人</th>
-				<th data-options="field:'receiptDate',width:200,align:'right'">收款时间</th>
+			    <th data-options="field:'orderCode',width:120">订单编号</th>
+				<th data-options="field:'receiptAmount',width:80">收款金额</th>
+				<th data-options="field:'receiptMember',width:120,align:'right'">收款人</th>
+				<th data-options="field:'receiptDate',width:90,align:'right'">收款时间</th>
 				<th data-options="field:'salesDepartmentName',width:200,align:'right'">部门名称</th>
 				<th data-options="field:'remark',width:200,align:'right'">备注</th>
 				<th data-options="field:'receiptOperation',formatter:getReceiptOperation">操作</th>

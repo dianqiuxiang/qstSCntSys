@@ -1,5 +1,6 @@
 package com.qst.scnt.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,12 @@ import com.qst.scnt.model.OrderInfo;
 public interface OrderInfoDao  extends BaseDao<OrderInfo> {
 
 	List<OrderInfo> selectByOCodeandCNameAndDate(Map<String, Object> queryDate);
+
+	HashMap selectNewCustomer(Map<String, Object> params);
+
+	HashMap selectNewCustomer1(Map<String, Object> params);
+
+	List<OrderInfo> selectByDate(Map<String, Object> oParams);
 	
 }
 

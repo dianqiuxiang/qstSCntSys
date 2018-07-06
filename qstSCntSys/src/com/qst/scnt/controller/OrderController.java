@@ -129,7 +129,7 @@ public class OrderController extends BaseController {
 			}
 		}
 		returnJson+="]";
-		System.out.println(returnJson);
+		//System.out.println(returnJson);
 		return returnJson;
 	}
 	
@@ -178,7 +178,7 @@ public class OrderController extends BaseController {
 		orderInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
 		
 		EUDataGridResult<OrderInfo> list=orderInfoService.selectParamFlexible(orderInfo,page,rows);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -196,7 +196,7 @@ public class OrderController extends BaseController {
 		orderInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
 		
 		EUDataGridResult<OrderInfo> list=orderInfoService.selectParamFlexible(orderInfo,page,rows);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -224,7 +224,7 @@ public class OrderController extends BaseController {
 		//productInfo.setProductName(productName);
 		
 		EUDataGridResult<ProductInfo> list=productInfoService.selectParamFlexible(productInfo,page,rows);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -243,7 +243,7 @@ public class OrderController extends BaseController {
 		
 		//EUDataGridResult<ProductInfo> list=
 		List<ProductInfo> list=productInfoService.select();
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -306,7 +306,7 @@ public class OrderController extends BaseController {
 		queryDate.put("salesDepartmentID",salesDepartmentID);
 				
 		EUDataGridResult<OrderInfo> list=orderInfoService.selectByOCodeandCNameAndDate(queryDate,page,rows);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -325,7 +325,7 @@ public class OrderController extends BaseController {
 		List<OrderProductInfo> list=orderProductInfoService.selectOProductByOrderID(orderProductInfo);
 		OrderInfo orderInfo=new OrderInfo();
 		orderInfo.setProducts(list);
-		System.out.println(gson.toJson(orderInfo));
+		//System.out.println(gson.toJson(orderInfo));
 		return gson.toJson(orderInfo);
 	}
 	
@@ -353,7 +353,7 @@ public class OrderController extends BaseController {
 		customerInfo.setSalesDepartmentID(salesDepartmentID);
 		
 		EUDataGridResult<CustomerInfo> list=customerInfoService.selectParamFlexible(customerInfo,page,rows);
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	
@@ -411,8 +411,8 @@ public class OrderController extends BaseController {
 		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
 		List<OrderInfo> list=orderInfoService.selectParam(params);
 		String resultStr="";
-		//System.out.println(orderInfo.getProducts());
-		System.out.println(orderInfo.getUpdateProducts());
+		////System.out.println(orderInfo.getProducts());
+		//System.out.println(orderInfo.getUpdateProducts());
 		
 		if(list.size()==0||old_orderInfo.getOrderCode().equals(orderInfo.getOrderCode())) {
 			

@@ -17,7 +17,7 @@ import com.qst.scnt.service.MenuService;
 
 @Controller
 @RequestMapping(value="/menu")
-public class menuController extends BaseController {
+public class MenuController extends BaseController {
 
 	@Resource
 	private MenuService menuService;
@@ -75,7 +75,7 @@ public class menuController extends BaseController {
 			}
 		}
 		returnJson+="]";
-		System.out.println(returnJson);
+		//System.out.println(returnJson);
 		return returnJson;
 	}
 	

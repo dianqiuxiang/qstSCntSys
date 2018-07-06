@@ -34,8 +34,8 @@ public class LoginController extends BaseController {
 //		UserInfo userInfo=new UserInfo();
 //		userInfo.setUserName(userName);
 //		userInfo.setPwd(pwd);
-		System.out.println(userInfo.getUserName());
-		System.out.println(userInfo.getPwd());
+		//System.out.println(userInfo.getUserName());
+		//System.out.println(userInfo.getPwd());
 
 		UserInfo currentUser=userInfoService.login(userInfo);
 		

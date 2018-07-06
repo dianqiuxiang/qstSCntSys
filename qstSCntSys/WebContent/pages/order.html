@@ -22,13 +22,14 @@
 <body>
    
     <div id="tb" style="padding:5px">
-        <span>订单编号：</span><input id="orderNa" class='easyui-textbox'></input>
+        <span>订单编号：</span><input id="orderNa" class='easyui-textbox' style="width:121px;"></input>
         <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/order/getSalesDept.do',method:'get',valueField:'id',textField:'text',
         panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
-        <span>顾客姓名：</span><input id="customerNa" class='easyui-textbox'></input>
+        <span>顾客姓名：</span><input id="customerNa" class='easyui-textbox' style="width:121px;"></input>
         <span>订单时间：</span><input id="orderdate" class="easyui-datebox"></input>
         <span>至：</span><input id="orderEdate" class="easyui-datebox"></input>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">查询</a>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="">导出</a>  
         <a href="#" class="easyui-linkbutton" plain="true" onclick="openOrderDialog()">新增</a>  
     </div>
     <script type="text/javascript">
@@ -153,16 +154,16 @@
 		<thead>
 			<tr>
 			    <th data-options="field:'id',width:120,hidden:true"></th>
-				<th data-options="field:'orderCode',width:150">订单编号</th>
+				<th data-options="field:'orderCode',width:120">订单编号</th>
 				<th data-options="field:'customerType',width:80,align:'right',formatter:formateCType">会员类型</th>
 				<th data-options="field:'customerName',width:80,align:'right'">顾客姓名</th>
 				<th data-options="field:'customerPhone',width:100">联系电话</th>
-				<th data-options="field:'customerAddress',width:240,align:'center'">地址</th>
+				<th data-options="field:'customerAddress',width:160,align:'center'">地址</th>
 			    <th data-options="field:'orderAmount',width:80">订单金额</th>
-				<th data-options="field:'orderDate',width:120">订单时间</th>
+				<th data-options="field:'orderDate',width:90">订单时间</th>
 				<th data-options="field:'healthMember',width:80,align:'right'">健康代表</th>
 				<th data-options="field:'customerSign',width:80,align:'right'">顾客签收</th>
-				<th data-options="field:'salesDepartmentName',width:120">部门名称</th>
+				<th data-options="field:'salesDepartmentName',width:120,align:'right'">部门名称</th>
 				<th data-options="field:'operation',formatter:getOrderOperation">操作</th>
 			</tr>
 		</thead>

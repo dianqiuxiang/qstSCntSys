@@ -118,7 +118,7 @@ public class OtherInfoController extends BaseController {
 			}
 		}
 		returnJson+="]";
-		System.out.println(returnJson);
+		//System.out.println(returnJson);
 		return returnJson;
 	}
 	
@@ -134,7 +134,7 @@ public class OtherInfoController extends BaseController {
 	@ResponseBody
 	public Object selectByStartAndEndDate(HttpServletRequest request,HttpServletResponse response ,Integer salesDepartmentID,String startDate,String endDate,int page,int rows) {
 		response.addHeader("Access-Control-Allow-Origin", "*"); 
-		System.out.println(HttpRequestDeviceUtils.isMobileDevice(request));
+		//System.out.println(HttpRequestDeviceUtils.isMobileDevice(request));
 		Gson gson = new Gson();	
 		Map<String, Object> queryDate = new HashMap<String, Object>();
 		
@@ -167,10 +167,10 @@ public class OtherInfoController extends BaseController {
 
 		for(EveryMonthOtherInfo item : list.getRows()){
             item.setInfoDate(item.getInfoDate().substring(0, 7));
-			System.out.println(item.getInfoDate());
+			//System.out.println(item.getInfoDate());
 		}
 		
-		System.out.println(gson.toJson(list));
+		//System.out.println(gson.toJson(list));
 		return gson.toJson(list);
 	}
 	

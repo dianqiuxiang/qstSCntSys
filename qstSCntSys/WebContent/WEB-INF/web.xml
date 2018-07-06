@@ -44,16 +44,16 @@
     <servlet-name>springMvc</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
- <!--  <filter>
+ <filter>
       <filter-name>LoginFilter</filter-name>
       <filter-class>com.qst.scnt.filter.LoginFilter</filter-class>
   </filter>
-  <filter-mapping>-->
-   <!--   <filter-name>LoginFilter</filter-name>-->
+  <filter-mapping>
+  <filter-name>LoginFilter</filter-name>
 	<!--这里的/pages/* 表示是指定路径下的文件需要过滤   也可以写为 <url-pattern>/*</url-pattern> 表示所有文件都需要过滤-->
-   <!--   <url-pattern>/pages/*</url-pattern>
+<url-pattern>/pages/*</url-pattern>
       <url-pattern>*.do</url-pattern>
   </filter-mapping>
-  -->
+
    
 </web-app>

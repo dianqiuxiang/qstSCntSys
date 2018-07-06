@@ -1,5 +1,6 @@
 package com.qst.scnt.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,10 @@ import com.qst.scnt.model.Cost;
 
 public interface CostDao  extends BaseDao<Cost> {
 
-	List<Cost> selectByItemIdAndStartAndEndDate(Map<String, Object> queryDate);
+	public List<Cost> selectByItemIdAndStartAndEndDate(Map<String, Object> queryDate);
+
+	public HashMap selectBySDeptIdAndYM(Map<String, Object> params);
+
+	public HashMap selectBySDeptIdAndY(Map<String, Object> params);
 
 }

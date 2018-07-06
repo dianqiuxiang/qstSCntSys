@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <table>
+ 		<tr>
+ 			<td>销售部门：</td>
+ 			<td>
+			<select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/order/getSalesDept.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto'"></select>
+ 			</td>
+ 		</tr>
 		<tr>
 			<td>姓名:</td>
 			<td>
@@ -33,7 +40,17 @@
 				<input id="employeeE" class='easyui-textbox'  data-options="validType:'email'"></input>
 			</td>
 		</tr>
-
+		<tr>
+			<td>是否是部长:</td>
+			<td>
+				<select class="easyui-combobox" id="role"  data-options="editable:false">
+			        <option value="4">普通员工</option>
+					<option value="3">签约部长</option>
+					<option value="2">签约经理</option>
+					<option value="1">大区经理</option>
+        		</select>
+			</td>
+		</tr>
 		<tr>
 		    <td></td>
 			<td><span id='msginfo'></span></td>
