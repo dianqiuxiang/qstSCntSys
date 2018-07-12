@@ -7,18 +7,21 @@
 		      
 		   <!-- 新增expenseItem实体类 -->  
 		    <insert id="insert" parameterType="expenseItem">  
-		        insert into expenseItem (expenseItem)
-    			values (#{expenseItem,jdbcType=VARCHAR})  
+		        insert into expenseItem (expenseItem, parentID, level, isDelete)
+    			values (#{expenseItem,jdbcType=VARCHAR}, #{parentID,jdbcType=INTEGER},#{level,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER})  
 		   </insert>  		    
 		     
 		   <!-- 批量插入 -->  
 		   <insert id="insertBatch" parameterType="arraylist">  
-		        insert into expenseItem (id, expenseItem)
+		        insert into expenseItem (id, expenseItem, parentID, level, isDelete)
     			values   
 		        <!-- collection可以是List对于list,数组对于array,Map对应ids -->
 		        <foreach collection="list" item="item"  index="index" separator=",">
         			<trim prefix=" (" suffix=")" suffixOverrides=",">        			
-        			#{item.expenseItem,jdbcType=VARCHAR}
+        			#{item.expenseItem,jdbcType=VARCHAR}, 
+        			#{item.parentID,jdbcType=INTEGER},
+        			#{item.level,jdbcType=INTEGER}, 
+        			#{item.isDelete,jdbcType=INTEGER}
 		        	</trim>   
            		</foreach>		         
 		   </insert>
@@ -29,6 +32,10 @@
 			    <set>
 			      <if test="expenseItem != null">
 			        expenseItem = #{expenseItem,jdbcType=VARCHAR},
+			        parentID = #{parentID,jdbcType=INTEGER},
+			        level = #{level,jdbcType=INTEGER},
+			        isDelete = #{isDelete,jdbcType=INTEGER}
+			        
 			      </if>
 			    </set>
 			    where id = #{id,jdbcType=INTEGER}
@@ -61,6 +68,29 @@
 			                     </if>
 			                 </foreach>
 			            </trim>
+			            <trim prefix="parentID = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.parentID != null" >
+							        when id=#{item.id} then #{item.parentID,jdbcType=INTEGER}
+							      </if>
+			                 </foreach>
+			            </trim>
+			            
+			            <trim prefix="level = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.level != null" >
+							        when id=#{item.id} then #{item.level,jdbcType=INTEGER}
+							      </if>
+			                 </foreach>
+			            </trim>		
+			            
+			             <trim prefix="isDelete = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.isDelete != null" >
+							        when id=#{item.id} then #{item.isDelete,jdbcType=INTEGER}
+							      </if>
+			                 </foreach>
+			            </trim>			      
 			        </trim>
 			        where id in
 			        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
@@ -113,12 +143,13 @@
 		  
 		  <!-- 查询 -->  
 		   <select id="select" parameterType="Integer" resultType="expenseItem">  
-		        select * from expenseItem 
+		        select a.id,a.expenseItem,a.parentID as _parentId,a.level,a.isDelete,b.expenseItem as parentexpenseItem from expenseItem a left join salesdePartmentInfo b
+on a.parentID=b.ID; 
 		   </select>
 		  
 		   <!-- 查询（参数） -->  
 		   <select id="selectPk" parameterType="Integer" resultType="expenseItem">  
-		        select * from expenseItem   where id = #{id} 
+		        select * from expenseItem   where id = #{id} and isDelete=0 
 		   </select>  
 		    
 		   <!-- 查询（参数） -->  
@@ -129,6 +160,7 @@
 				        ${key} = #{value} 
 				    </foreach> 
 	           </where> 
+	           and isDelete=0
 		   </select>
 		   
 		   <!-- 查询（模糊查询，参数） -->  
@@ -137,7 +169,13 @@
 		       <where>		       
 		       		<if test="userName != null" >
 			        expenseItem like "%"#{expenseItem}"%"
-			      </if>			      
+			      </if>		
+			      <if test="parentID != null" >
+				and a.parentID = #{parentID}
+				</if>
+				<if test="level != null" >
+				and a.level = #{level}
+				</if>	      
 	           </where> 
 		   </select>
 	    

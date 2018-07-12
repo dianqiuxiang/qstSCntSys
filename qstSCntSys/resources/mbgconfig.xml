@@ -13,7 +13,7 @@
         <!-- 1.JDBC 连接信息 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/infomanagesys" userId="root"
-                        password="123456">
+                        password="123">
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -39,30 +39,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <!-- 5.设置要生成model的表，一个表对应一个table元素 -->
-        <table tableName="cost" domainObjectName="cost" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        
-        <table tableName="customerinfo" domainObjectName="customerinfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        
-        <table tableName="employeeinfo" domainObjectName="employeeinfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        
-        <table tableName="everymonthotherinfo" domainObjectName="everymonthotherinfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
+    
         
         <table tableName="expenseitem" domainObjectName="expenseitem" enableCountByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
@@ -70,65 +47,8 @@
             <property name="useActualColumnNames" value="true"/>
         </table>
         
-        <table tableName="menu" domainObjectName="menu" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        
-        <table tableName="orderinfo" domainObjectName="orderinfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        
-        <table tableName="orderproductinfo" domainObjectName="orderproductinfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        
-        <table tableName="parameterinfo" domainObjectName="parameterinfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        
-        <table tableName="productinfo" domainObjectName="productinfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        
-        <table tableName="receiptinfo" domainObjectName="receiptinfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        
-        <table tableName="salesdepartmentinfo" domainObjectName="salesdepartmentinfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        
-        <table tableName="userinfo" domainObjectName="userinfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
+    
 
-	<table tableName="expenseitem" domainObjectName="expenseitem" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
 
-	<table tableName="parameterinfo" domainObjectName="parameterinfo" enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false">
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        
     </context>
 </generatorConfiguration>  
