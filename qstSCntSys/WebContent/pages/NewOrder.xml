@@ -85,7 +85,7 @@
 			</td>
 			<td>顾客签收:</td>
 			<td colspan="4">
-                   <input id="cs" class="easyui-textbox" data-options="required:true"></input>
+                   <input id="cs" class="easyui-textbox"></input>
 			</td>
 		</tr>
 		<td></td>

@@ -705,11 +705,11 @@ function newOrder(callback)
 		$('#msginfo2').html("健康代表为必输项！");
 		return;
 	}
-	if($("#cs").textbox('isValid')==false)
-	{
-		$('#msginfo2').html("顾客签收为必输项！");
-		return;
-	}
+//	if($("#cs").textbox('isValid')==false)
+//	{
+//		$('#msginfo2').html("顾客签收为必输项！");
+//		return;
+//	}
 	var json={
 			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"orderCode":$('#orid').val(),
@@ -1093,11 +1093,11 @@ function updateOrder(callback,id)
 		$('#msginfo2').html("健康代表为必输项！");
 		return;
 	}
-	if($("#cs").textbox('isValid')==false)
-	{
-		$('#msginfo2').html("顾客签收为必输项！");
-		return;
-	}
+//	if($("#cs").textbox('isValid')==false)
+//	{
+//		$('#msginfo2').html("顾客签收为必输项！");
+//		return;
+//	}
 	var json={
 			"id":id,
 			"salesDepartmentID":$('#salesDept').combotree("getValue"),
