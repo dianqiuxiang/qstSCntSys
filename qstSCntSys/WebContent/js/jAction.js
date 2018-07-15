@@ -57,6 +57,19 @@ function newMonthReportDialog(callback)
 	openDialog(args,newMonthReport,callback,initMonthReport);
 }
 
+//费用管理
+function newExpenseItemtDialog(callback)
+{
+	var args={'url':'Newexpenseitem.xml','width':'400','height':'400','action':'department','title':'新建费用信息'};
+	openDialog(args,newDepartment,callback);
+}
+//费用管理
+function updateExpenseItemtDialog(id,callback)
+{
+	var args={'actionUrl':'/qstSCntSys/expenseItem/findByID.do','url':'NewSalesDepartment.xml','width':'400','height':'300','action':'department','title':'修改费用信息'};
+	openUpdateDialog(args,updateDepartment,callback,id,setDepartmentModel);
+}
+
 
 //set model view
 function setOrderModel(json)

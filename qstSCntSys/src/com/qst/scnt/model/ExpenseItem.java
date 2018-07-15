@@ -12,6 +12,21 @@ public class ExpenseItem {
     private String expenseItem;
 
     /**
+     *
+     */
+    private Integer parentID;
+
+    /**
+     *
+     */
+    private Integer level;
+
+    /**
+     *
+     */
+    private Integer isDelete;
+
+    /**
      *主键（自增）
      */
     public Integer getId() {
@@ -37,5 +52,47 @@ public class ExpenseItem {
      */
     public void setExpenseItem(String expenseItem) {
         this.expenseItem = expenseItem == null ? null : expenseItem.trim();
+    }
+
+    /**
+     *
+     */
+    public Integer getParentID() {
+        return parentID;
+    }
+
+    /**
+     *
+     */
+    public void setParentID(Integer parentID) {
+        this.parentID = parentID;
+    }
+
+    /**
+     *
+     */
+    public Integer getLevel() {
+        return level;
+    }
+
+    /**
+     *
+     */
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    /**
+     *
+     */
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    /**
+     *
+     */
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 }
