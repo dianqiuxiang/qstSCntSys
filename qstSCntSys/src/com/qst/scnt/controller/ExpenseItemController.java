@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -78,7 +79,7 @@ public class ExpenseItemController extends BaseController{
 	 */
 	@RequestMapping(value="/deleteExpenseItem.do")
 	@ResponseBody
-	public Object deleteSalesDepartmentInfo(int id) {
+	public Object deleteExpenseItem(int id) {
 
 		String resultStr="";
 		ExpenseItem expenseItem=new ExpenseItem();
@@ -97,5 +98,44 @@ public class ExpenseItemController extends BaseController{
 		return resultStr;
 	}
 	
+	/**
+	 * 新增--待修改
+	 */
+	@RequestMapping(value="/addExpenseItemInfo.do")
+	@ResponseBody
+	public Object addExpenseItemInfo(@RequestBody  ExpenseItem expenseItem) {
+		
+		Map<String, Object> whereMap = new HashMap<String, Object>();
+		//待修改
+//		whereMap.put("expenseItem",expenseItem.getSalesDepartmentName());//指定查询范围,此处默认查询本部门下的顾客信息	 
+		
+		Map<String, Object> params = new HashMap<String, Object>();  
+		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+		List<ExpenseItem> list=expenseItemService.selectParam(params);
+		
+		String resultStr="";
+		if(list.size()==0){
+			
+			ExpenseItem parent_expenseItem=expenseItemService.selectPK(expenseItem.getParentID());
+
+			expenseItem.setLevel(parent_expenseItem.getLevel()+1);
+			expenseItem.setIsDelete(0);
+			
+			int result=expenseItemService.insert(expenseItem);
+			if(result>0)
+			{
+				resultStr="{\"result\":\"Success\"}";
+			}
+			else
+			{
+				resultStr="{\"result\":\"Failed\"}";
+			}
+		}
+		else
+		{
+			resultStr="{\"result\":\"isExist\"}";
+		}
+		return resultStr;
+	}
 
 }

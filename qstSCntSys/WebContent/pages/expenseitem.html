@@ -32,7 +32,7 @@
     	//parent.$.messager.alert("消息提示",$('#state').combobox('getValue'));
     	//parent.$.messager.alert("消息提示",$('#state').combobox('getText'));
     	$('#expenseDg').datagrid('load',{
-    		expenseItemName:$('#expenseItemN').val()
+    		expenseItem:$('#expenseItemN').val()
     		});
     }
     function openDialog()
@@ -78,7 +78,7 @@
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！","info");
     	        			$('#expenseDg').datagrid('reload',{
-    	        				expenseItemName:$('#expenseItemN').val()
+    	        				expenseItem:$('#expenseItemN').val()
     	        	    		});
     	        		}
     	        		else
@@ -92,13 +92,13 @@
     }
     function updateExpenseItem(id)
     {
-    	parent.updateExpenseItemtDialog(id,function(v){
+    	parent.updateExpenseItemDialog(id,function(v){
     		if(v=="Success")
     		{
     			parent.$.messager.alert("消息提示","修改成功！","info");
      			parent.closeDialog();
      			$('#expenseDg').datagrid('reload',{
-     				expenseItemName:$('#expenseItemN').val()
+     				expenseItem:$('#expenseItemN').val()
  	    		});
     		}
     		else if(v=="Failed")
@@ -118,8 +118,8 @@
 		<thead>
 			<tr>
 			    <th data-options="field:'id',width:200,hidden:true"></th>
-			    <th data-options="field:'expenseItemName',width:200">费用名称</th>
-				<th data-options="field:'parentExpenseItemName',width:200,align:'right'">上一级费用名称</th>
+			    <th data-options="field:'expenseItem',width:200">费用名称</th>
+				<th data-options="field:'parentExpenseItem',width:200,align:'right'">上一级费用名称</th>
 				<th data-options="field:'expenseItemOperation',formatter:getExpenseItemOperation">操作</th>
 			</tr>
 		</thead>
