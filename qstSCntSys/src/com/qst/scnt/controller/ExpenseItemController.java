@@ -107,7 +107,7 @@ public class ExpenseItemController extends BaseController{
 		
 		Map<String, Object> whereMap = new HashMap<String, Object>();
 		//待修改
-//		whereMap.put("expenseItem",expenseItem.getSalesDepartmentName());//指定查询范围,此处默认查询本部门下的顾客信息	 
+		whereMap.put("expenseItem",expenseItem.getExpenseItem());//指定查询范围,此处默认查询本部门下的顾客信息	 
 		
 		Map<String, Object> params = new HashMap<String, Object>();  
 		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
@@ -136,6 +136,61 @@ public class ExpenseItemController extends BaseController{
 			resultStr="{\"result\":\"isExist\"}";
 		}
 		return resultStr;
+	}
+	
+	/**
+	 * 修改
+	 */
+	@RequestMapping(value="/updateExpenseItemInfo.do")
+	@ResponseBody
+	public Object updateSalesDepartmentInfo(@RequestBody  ExpenseItem expenseItem) {
+		
+		ExpenseItem old_expenseItem=expenseItemService.selectPK(expenseItem.getId());
+		
+		Map<String, Object> whereMap = new HashMap<String, Object>();
+		whereMap.put("expenseItem",expenseItem.getExpenseItem());//指定查询范围,此处默认查询本部门下的顾客信息	 
+		
+		Map<String, Object> params = new HashMap<String, Object>();  
+		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+		List<ExpenseItem> list=expenseItemService.selectParam(params);
+		
+		String resultStr="";
+		if(list.size()==0||old_expenseItem.getExpenseItem().equals(expenseItem.getExpenseItem())){
+			
+			ExpenseItem parent_expenseItem=expenseItemService.selectPK(expenseItem.getParentID());
+
+			expenseItem.setLevel(parent_expenseItem.getLevel()+1);
+			
+			int result=expenseItemService.update(expenseItem);
+			if(result>0)
+			{
+				resultStr="{\"result\":\"Success\"}";
+			}
+			else
+			{
+				resultStr="{\"result\":\"Failed\"}";
+			}
+		}
+		else
+		{
+			resultStr="{\"result\":\"isExist\"}";
+		}
+		return resultStr;
+	}
+	
+	/**
+	 * 查询所有费用项目信息，绑定到下拉列表
+	 * @return
+	 */
+	@RequestMapping(value="/selectExpenseItem.do")
+	@ResponseBody
+	public Object selectExpenseItem() {
+
+		Gson gson = new Gson();
+
+		List<ExpenseItem> list=expenseItemService.select();
+		//System.out.println(gson.toJson(list));
+		return gson.toJson(list);
 	}
 
 }

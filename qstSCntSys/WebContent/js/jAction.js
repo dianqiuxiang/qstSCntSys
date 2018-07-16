@@ -96,6 +96,21 @@ function newExpenseItem(callback)
 			};
 	setDataModel("/qstSCntSys/expenseItem/addExpenseItemInfo.do",json,callback);
 }
+//修改费用项目管理
+function updateExpenseItem(callback,id)
+{
+	if($("#expenseItem").combotree('isValid')==false)
+	{
+		$('#msginfo2').html("费用项目为必选项！");
+		return;
+	}
+	var json={
+			"id":id,
+			"expenseItem":$('#expenseItem').combotree("getValue"),
+			"parentID":$('#parentExpenseItem').combobox('getValue')
+			};
+	setDataModel("/qstSCntSys/cost/updateExpenseItemInfo.do",json,callback);
+}
 
 
 //set model view
