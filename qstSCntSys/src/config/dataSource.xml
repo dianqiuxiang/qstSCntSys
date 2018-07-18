@@ -36,7 +36,7 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd
 			value="jdbc:mysql://localhost:3306/infomanagesys?useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true">
 		</property>
 		<property name="username" value="root"></property>
-		<property name="password" value="123"></property>
+		<property name="password" value="123456"></property>
 	</bean>	
 	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

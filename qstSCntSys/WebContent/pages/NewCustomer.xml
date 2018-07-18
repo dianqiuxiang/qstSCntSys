@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <table>
  		<tr>
-			<td>销售部门:</td>
+			<td>签约部门:</td>
 			<td colspan="4">
 				<select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/customer/getSalesDept.do',method:'get',valueField:'id',textField:'text',
         panelHeight:'auto',required:true,onBeforeSelect:function(node){

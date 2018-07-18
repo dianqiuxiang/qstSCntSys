@@ -185,7 +185,7 @@
 		resultType="expenseItem">
 		select * from expenseItem
 		<where>
-			<if test="userName != null">
+			<if test="expenseItem != null">
 				expenseItem like "%"#{expenseItem}"%"
 			</if>
 			<if test="parentID != null">
