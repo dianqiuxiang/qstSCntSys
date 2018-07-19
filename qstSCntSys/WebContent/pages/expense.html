@@ -21,9 +21,8 @@
     <div id="expenseToolbar" style="padding:5px">
         <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/cost/getSalesDept.do',method:'get',valueField:'id',textField:'text',
         panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
-        <span>费用项目：</span><input id="expenseN" class='easyui-combobox' 
-        data-options="editable:false,url:'/qstSCntSys/cost/getExpenseItem.do',method:'get',valueField:'id',textField:'expenseItem',panelHeight:'auto',onLoadSuccess: function(data){$('#expenseN').combobox('select', data[0].id);}">
-        </input>
+        <span>费用项目：</span><select id="expenseN" class='easyui-combotree'  data-options="editable:false,url:'/qstSCntSys/cost/getExpenseItem.do',method:'get',valueField:'id',
+        textField:'text',panelHeight:'auto',onLoadSuccess: function(node,data){$('#expenseN').combotree('setValue', data[0].id);}" style="width:160px;"></select>
         <span>费用时间：</span><input id="expenseSD" class="easyui-datebox"></input>
         <span>至：</span><input id="expenseED" class="easyui-datebox"></input>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="doExpenseSearch()">查询</a>

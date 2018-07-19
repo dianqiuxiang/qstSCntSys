@@ -57,13 +57,13 @@ function newMonthReportDialog(callback)
 	openDialog(args,newMonthReport,callback,initMonthReport);
 }
 
-//费用项目管理
+//费用项目管理新增
 function newExpenseItemtDialog(callback)
 {
 	var args={'url':'Newexpenseitem.xml','width':'400','height':'400','action':'expenseitem','title':'新建费用项目信息'};
 	openDialog(args,newExpenseItem,callback);
 }
-//费用项目管理
+//费用项目管理修改
 function updateExpenseItemDialog(id,callback)
 {
 	var args={'actionUrl':'/qstSCntSys/expenseItem/findByID.do','url':'Newexpenseitem.xml','width':'400','height':'300','action':'expenseitem','title':'修改费用项目信息'};
@@ -109,7 +109,7 @@ function updateExpenseItem(callback,id)
 			"expenseItem":$('#expenseItem').combotree("getValue"),
 			"parentID":$('#parentExpenseItem').combobox('getValue')
 			};
-	setDataModel("/qstSCntSys/cost/updateExpenseItemInfo.do",json,callback);
+	setDataModel("/qstSCntSys/expenseItem/updateExpenseItemInfo.do",json,callback);
 }
 
 
