@@ -105,9 +105,9 @@ public class ExpenseItemController extends BaseController{
 	@ResponseBody
 	public Object addExpenseItemInfo(@RequestBody  ExpenseItem expenseItem) {
 		
-		Map<String, Object> whereMap = new HashMap<String, Object>();
+		Map<String, Object> whereMap = new HashMap<String, Object>();	
 		//待修改
-		whereMap.put("expenseItem",expenseItem.getExpenseItem());//指定查询范围,此处默认查询本部门下的顾客信息	 
+		whereMap.put("expenseItem",expenseItem.getExpenseItem());//指定查询范围,此处默认查询本部门下的费用项目信息	 
 		
 		Map<String, Object> params = new HashMap<String, Object>();  
 		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
