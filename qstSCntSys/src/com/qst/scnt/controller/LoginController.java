@@ -75,7 +75,7 @@ public class LoginController extends BaseController {
         }else{  
         	resultStr="{\"result\":\"Failed\"}";  
         }  
-		return resultStr;
+		return resultStr;  
 	}
 	
 //	UserInfo userInfo=new UserInfo();
