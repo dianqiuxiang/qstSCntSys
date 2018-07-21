@@ -46,8 +46,6 @@
 				<select class="easyui-combobox" id="role"  data-options="editable:false">
 			        <option value="4">普通员工</option>
 					<option value="3">签约部长</option>
-					<option value="2">签约经理</option>
-					<option value="1">大区经理</option>
         		</select>
 			</td>
 		</tr>
