@@ -1,1 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+ <table>
+		<tr>
+			<td>费用项目名称:</td>
+			<td>
+				<input id="expenseItem" class='easyui-textbox' data-options="required:true"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>上一级费用项目名称:</td>
+			<td>
+				<input class="easyui-combobox" id="parentExpenseItem"
+				data-options="editable:false,url:'/qstSCntSys/expenseItem/expenseItemService.do',method:'get',valueField:'id',textField:'expenseItem',panelHeight:'auto'"></input>
+			</td>
+		</tr>
+		<tr>
+		    <td></td>
+			<td><span id='msginfo'></span></td>
+		</tr>
+</table>

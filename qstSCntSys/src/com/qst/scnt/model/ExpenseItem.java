@@ -25,6 +25,11 @@ public class ExpenseItem {
      *
      */
     private Integer isDelete;
+    
+    /**
+     *上一级销售部名称
+     */
+    private String parentExpenseItem;
 
     /**
      *主键（自增）
@@ -95,4 +100,14 @@ public class ExpenseItem {
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
+
+	public String getParentExpenseItem() {
+		return parentExpenseItem;
+	}
+
+	public void setParentExpenseItem(String parentExpenseItem) {
+		this.parentExpenseItem = parentExpenseItem;
+	}
+    
+    
 }

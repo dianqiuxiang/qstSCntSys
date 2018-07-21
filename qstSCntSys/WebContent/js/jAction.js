@@ -57,17 +57,59 @@ function newMonthReportDialog(callback)
 	openDialog(args,newMonthReport,callback,initMonthReport);
 }
 
-//费用管理
+//费用项目管理新增
 function newExpenseItemtDialog(callback)
 {
-	var args={'url':'Newexpenseitem.xml','width':'400','height':'400','action':'department','title':'新建费用信息'};
-	openDialog(args,newDepartment,callback);
+	var args={'url':'Newexpenseitem.xml','width':'400','height':'400','action':'expenseitem','title':'新建费用项目信息'};
+	openDialog(args,newExpenseItem,callback);
 }
-//费用管理
-function updateExpenseItemtDialog(id,callback)
+//费用项目管理修改
+function updateExpenseItemDialog(id,callback)
 {
-	var args={'actionUrl':'/qstSCntSys/expenseItem/findByID.do','url':'NewSalesDepartment.xml','width':'400','height':'300','action':'department','title':'修改费用信息'};
-	openUpdateDialog(args,updateDepartment,callback,id,setDepartmentModel);
+	var args={'actionUrl':'/qstSCntSys/expenseItem/findByID.do','url':'Newexpenseitem.xml','width':'400','height':'300','action':'expenseitem','title':'修改费用项目信息'};
+	openUpdateDialog(args,updateExpenseItem,callback,id,setExpenseItem);
+}
+//费用项目管理
+function setExpenseItem(json)
+{
+	if(json.length!=0)
+    {
+		$('#expenseItem').textbox('setValue',json.expenseItem);
+		$('#parentExpenseItem').combobox('select',json.parentID);
+	}
+	else
+	{
+		$('#msginfo').html(msginfo.loaderr);
+	}
+}
+//新增费用项目管理
+function newExpenseItem(callback)
+{
+	if($("#expenseItem").textbox('isValid')==false)
+	{
+		$('#msginfo').html("费用项目名称为必输项！");
+		return;
+	}
+	var json={
+			"expenseItem":$('#expenseItem').val(),
+			"parentID":$('#parentExpenseItem').combobox('getValue')
+			};
+	setDataModel("/qstSCntSys/expenseItem/addExpenseItemInfo.do",json,callback);
+}
+//修改费用项目管理
+function updateExpenseItem(callback,id)
+{
+	if($("#expenseItem").combotree('isValid')==false)
+	{
+		$('#msginfo2').html("费用项目为必选项！");
+		return;
+	}
+	var json={
+			"id":id,
+			"expenseItem":$('#expenseItem').combotree("getValue"),
+			"parentID":$('#parentExpenseItem').combobox('getValue')
+			};
+	setDataModel("/qstSCntSys/expenseItem/updateExpenseItemInfo.do",json,callback);
 }
 
 

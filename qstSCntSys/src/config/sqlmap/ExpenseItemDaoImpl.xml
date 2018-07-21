@@ -30,7 +30,7 @@
 
 	<!-- 更新对象 -->
 	<update id="update" parameterType="expenseItem">
-		update expenseItem
+		<!-- update expenseItem
 		<set>
 			<if test="expenseItem != null">
 				expenseItem = #{expenseItem,jdbcType=VARCHAR},
@@ -40,7 +40,23 @@
 
 			</if>
 		</set>
-		where id = #{id,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER} -->
+		update expenseItem
+				    <set >
+				      <if test="expenseItem != null" >
+				        expenseItem = #{expenseItem,jdbcType=VARCHAR},
+				      </if>
+				      <if test="parentID != null" >
+				        parentID = #{parentID,jdbcType=INTEGER},
+				      </if>
+				      <if test="level != null" >
+				        level = #{level,jdbcType=INTEGER},
+				      </if>
+				      <if test="isDelete != null" >
+				        isDelete = #{isDelete,jdbcType=INTEGER},
+				      </if>
+				    </set>
+				    where id = #{id,jdbcType=INTEGER}
 	</update>
 
 	<!-- 更新对象（自定义范围） -->
@@ -183,7 +199,13 @@
 	<!-- 查询（模糊查询，参数） -->
 	<select id="selectParamFlexible" parameterType="expenseItem"
 		resultType="expenseItem">
-		select * from expenseItem
+		SELECT a.id,a.expenseItem,a.parentID as _parentId,a.level,a.isDelete,b.expenseItem as parentExpenseItem 
+		FROM expenseitem a 
+		left join expenseitem b
+		on a.parentID=b.ID 
+		where a.isDelete=0 
+		and (b.isDelete=0 or b.isDelete is null)
+		<trim prefix="WHERE" prefixOverrides="and |or">
 		<where>
 			<if test="expenseItem != null">
 				expenseItem like "%"#{expenseItem}"%"
@@ -195,6 +217,7 @@
 				and a.level = #{level}
 			</if>
 		</where>
+		</trim> 
 	</select>
 
 </mapper>

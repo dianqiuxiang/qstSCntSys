@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>JK财务管理系统</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../locale/easyui-lang-zh_CN.js"></script>
+	<style type="text/css">
+	    html,body{
+	        padding:0;
+	        margin:0;
+	        width:100%;
+	        height:100%;
+	    }
+	</style>
+</head>
+<body>
+    <div id="expenseItemToolbar" style="padding:5px">
+        <span>费用名称：</span><input id="expenseItemN" class='easyui-textbox'></input>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="doExpenseItemSearch()">查询</a>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="openDialog()">新增</a>  
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function() {
+		$("#expenseDg").datagrid('getPager').pagination({showPageList:false});
+	});
+    function doExpenseItemSearch(){
+    	//parent.$.messager.alert("消息提示",$("#odate").datebox("getValue"));
+    	//parent.$.messager.alert("消息提示",$('#state').combobox('getValue'));
+    	//parent.$.messager.alert("消息提示",$('#state').combobox('getText'));
+    	$('#expenseDg').datagrid('load',{
+    		expenseItem:$('#expenseItemN').val()
+    		});
+    }
+    function openDialog()
+    {
+    
+    	parent.newExpenseItemtDialog(function(v){
+    		if(v=="Success")
+    		{
+    			parent.$.messager.alert("消息提示","新增成功！","info");
+     			parent.closeDialog();
+     			doExpenseItemSearch();
+    		}
+    		else if(v=="Failed")
+    		{
+    			parent.$.messager.alert("消息提示","新增失败！","info");
+    		}
+    		else
+    		{
+    			parent.$.messager.alert("消息提示","费用信息已存在！","info");
+    		}
+    		  
+        });
+    }
+    function getExpenseItemOperation(value,row,index)
+    {
+    	
+    	return "<a href='#' onclick=\"deleteExpenseItem('"+row.id+"')\">删除</a>&ensp;<a href='#' onclick=\"updateExpenseItem('"+row.id+"')\">修改</a>";
+    }
+    function deleteExpenseItem(id)
+    {
+    	parent.$.messager.confirm('确认提示','确认要删除此费用信息？删除此费用信息，此费用信息所有的子费用信息也将会被删除！',function(r){
+    	    if (r){
+    	    	$.ajax({
+    	    		type:"post",
+    	    		url :"/qstSCntSys/expenseItem/deleteExpenseItem.do",
+    	    		data:{id:id},
+    	    		dataType:"json",
+    	    		error: function(){
+    	    			
+    	    		},
+    	    		success: function(json){
+    	    			if(json.result=="Success")
+    	        		{
+    	        			parent.$.messager.alert("消息提示","删除成功！","info");
+    	        			$('#expenseDg').datagrid('reload',{
+    	        				expenseItem:$('#expenseItemN').val()
+    	        	    		});
+    	        		}
+    	        		else
+    	        		{
+    	        			parent.$.messager.alert("消息提示","删除失败！","info");
+    	        		}
+    	    		}
+    	    	});
+    	    }
+    	});
+    }
+    function updateExpenseItem(id)
+    {
+    	parent.updateExpenseItemDialog(id,function(v){
+    		if(v=="Success")
+    		{
+    			parent.$.messager.alert("消息提示","修改成功！","info");
+     			parent.closeDialog();
+     			$('#expenseDg').datagrid('reload',{
+     				expenseItem:$('#expenseItemN').val()
+ 	    		});
+    		}
+    		else if(v=="Failed")
+    		{
+    			parent.$.messager.alert("消息提示","修改失败！","info");
+    		}
+    		else
+    		{
+    			parent.$.messager.alert("消息提示","费用信息已存在！","info");
+    		}
+        });
+    	
+    }
+    </script>
+   <table id="expenseDg"  toolbar="#expenseItemToolbar" class="easyui-datagrid" style="height:100%"
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/expenseItem/list.do',method:'get'">
+		<thead>
+			<tr>
+			    <th data-options="field:'id',width:200,hidden:true"></th>
+			    <th data-options="field:'expenseItem',width:200">费用名称</th>
+				<th data-options="field:'parentExpenseItem',width:200,align:'right'">上一级费用名称</th>
+				<th data-options="field:'expenseItemOperation',formatter:getExpenseItemOperation">操作</th>
+			</tr>
+		</thead>
+	</table>
+</body>
+</html>
