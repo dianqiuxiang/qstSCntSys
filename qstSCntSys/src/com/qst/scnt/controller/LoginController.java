@@ -33,12 +33,7 @@ public class LoginController extends BaseController {
 	@RequestMapping(value="/login.do")
 	@ResponseBody // String userName,String pwd,
 	public Object login(HttpServletRequest request,HttpServletResponse response,@RequestBody UserInfo userInfo,HttpSession httpSession) {
-		response.addHeader("Access-Control-Allow-Origin", "*"); 
-//		UserInfo userInfo=new UserInfo();
-//		userInfo.setUserName(userName);
-//		userInfo.setPwd(pwd);
-		//System.out.println(userInfo.getUserName());
-		//System.out.println(userInfo.getPwd());
+
 
 		UserInfo currentUser=userInfoService.login(userInfo);
 		
@@ -52,7 +47,14 @@ public class LoginController extends BaseController {
         }  
 		return resultStr;
 	}
-	
+	/**
+	 * 上面的login.do中的参数@RequestBody UserInfo userInfo，手机登录会报空指针异常（除非在LoginFilter中加入resp.setHeader5行代码）
+	 * 不然，使用下面这个方法登录
+	 * @param request
+	 * @param response
+	 * @param httpSession
+	 * @return
+	 */
 	@RequestMapping(value="/loginPhone.do")
 	@ResponseBody // String userName,String pwd,
 	public Object phoneLogin(HttpServletRequest request,HttpServletResponse response,HttpSession httpSession) {

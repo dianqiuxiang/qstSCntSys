@@ -49,10 +49,11 @@ public class LoginFilter implements Filter {
         
         if(HttpRequestDeviceUtils.isMobileDevice(req))//如果是手机App访问，则不拦截
         {
-        	resp.setHeader("Access-Control-Allow-Origin", "*");  
-        	resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");  
-        	resp.setHeader("Access-Control-Max-Age", "3600");  
-        	resp.setHeader("Access-Control-Allow-Headers", "Origin,Content-Type, Authorization, Accept,X-Requested-With");  
+        	resp.setHeader("Access-Control-Allow-Origin", "*");
+        	resp.setHeader("Access-Control-Allow-Credentials", "true");
+        	resp.setHeader("Access-Control-Allow-Methods", "*");
+        	resp.setHeader("Access-Control-Allow-Headers", "Content-Type,Access-Token");
+        	resp.setHeader("Access-Control-Expose-Headers", "*");
         	chain.doFilter(req, resp);
         }
         else //pc端访问，拦截
