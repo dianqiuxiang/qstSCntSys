@@ -24,6 +24,7 @@ import com.qst.scnt.utils.HttpRequestDeviceUtils;
 @WebFilter("/LoginFilter")
 public class LoginFilter implements Filter {
 
+	
     /**
      * Default constructor. 
      */
@@ -48,6 +49,10 @@ public class LoginFilter implements Filter {
         
         if(HttpRequestDeviceUtils.isMobileDevice(req))//如果是手机App访问，则不拦截
         {
+        	resp.setHeader("Access-Control-Allow-Origin", "*");  
+        	resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");  
+        	resp.setHeader("Access-Control-Max-Age", "3600");  
+        	resp.setHeader("Access-Control-Allow-Headers", "Origin,Content-Type, Authorization, Accept,X-Requested-With");  
         	chain.doFilter(req, resp);
         }
         else //pc端访问，拦截
