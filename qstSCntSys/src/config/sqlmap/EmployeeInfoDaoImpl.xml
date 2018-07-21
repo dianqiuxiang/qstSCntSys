@@ -12,7 +12,7 @@
 			      salesDepartmentID,role, isDelete)
 			    values (#{employeeName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
 			      #{employeePhone,jdbcType=VARCHAR}, #{employeeAddress,jdbcType=VARCHAR}, #{employeeEmail,jdbcType=VARCHAR}, 
-			      #{salesDepartmentID,jdbcType=INTEGER}, #{role,jdbcType=INTEGER}),#{isDelete,jdbcType=INTEGER})
+			      #{salesDepartmentID,jdbcType=INTEGER}, #{role,jdbcType=INTEGER},#{isDelete,jdbcType=INTEGER})
 		   </insert>  		    
 		     
 		   <!-- 批量插入 -->  
