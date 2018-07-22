@@ -6,11 +6,16 @@
 				<input id="expenseItem" class='easyui-textbox' data-options="required:true"></input>
 			</td>
 		</tr>
-		<tr>
+		<tr id="expenseItemParentInfo">
 			<td>上一级费用项目名称:</td>
 			<td>
-				<input class="easyui-combobox" id="parentExpenseItem"
-				data-options="editable:false,url:'/qstSCntSys/expenseItem/expenseItemService.do',method:'get',valueField:'id',textField:'expenseItem',panelHeight:'auto'"></input>
+				<input class="easyui-combotree" id="parentExpenseItem"
+				data-options="editable:false,url:'/qstSCntSys/expenseItem/selectExpenseItem.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',onBeforeSelect:function(node){
+                     if ($(this).tree('getLevel',node.target)==3) {  
+		                return false;  
+		            }  
+                }"></input>
 			</td>
 		</tr>
 		<tr>

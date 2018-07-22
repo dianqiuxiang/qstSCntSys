@@ -185,9 +185,8 @@
 		   
 		   <!-- 查询 -->  
 		   <select id="selectAll" resultType="salesDepartmentInfo">  
-		        SELECT a.id,a.salesDepartmentName,a.salesDepartmentPhone,a.salesDepartmentAddress
-,a.parentID as _parentId,a.level,a.isDelete,b.salesDepartmentName as parentSalesDepartmentName FROM salesdePartmentInfo a left join salesdePartmentInfo b
-on A.parentID=b.ID;
+		        SELECT a.id,a.salesDepartmentName,a.salesDepartmentPhone,a.salesDepartmentAddress,
+		        a.parentID as _parentId,a.level,a.isDelete FROM salesdePartmentInfo a where a.isDelete=0;
 		   </select>
 		  
 		   <!-- 查询（参数） -->  
@@ -233,8 +232,7 @@ on A.parentID=b.ID where a.isDelete=0 and (b.isDelete=0 or b.isDelete is null)
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectByParentID" parameterType="salesDepartmentInfo" resultType="salesDepartmentInfo">  
 		        SELECT a.id,a.salesDepartmentName,a.salesDepartmentPhone,a.salesDepartmentAddress
-,a.parentID as _parentId,a.level,a.isDelete,b.salesDepartmentName as parentSalesDepartmentName FROM salesdePartmentInfo a left join salesdePartmentInfo b
-on A.parentID=b.ID where a.isDelete=0 and (b.isDelete=0 or b.isDelete is null) and a.parentID = #{id}				
+,a.parentID as _parentId,a.level,a.isDelete FROM salesdePartmentInfo a where a.isDelete=0 and a.parentID = #{id}				
 					       
 		   </select>
 		   

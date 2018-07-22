@@ -19,22 +19,29 @@
 </head>
 <body>
     <div id="expenseItemToolbar" style="padding:5px">
-        <span>费用名称：</span><input id="expenseItemN" class='easyui-textbox'></input>
-        <a href="#" class="easyui-linkbutton" plain="true" onclick="doExpenseItemSearch()">查询</a>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="openDialog()">新增</a>  
     </div>
     <script type="text/javascript">
     $(document).ready(function() {
-		$("#expenseDg").datagrid('getPager').pagination({showPageList:false});
+    	$('#expenseDg').treegrid({
+            url:'/qstSCntSys/expenseItem/getInfo.do',
+            method:'post',          //请求方式
+            idField:'id',           //定义标识树节点的键名字段
+            treeField:'expenseItem',       //定义树节点的字段
+            fit:true,               //网格自动撑满
+            fitColumns:true,        //设置为 true，则会自动扩大或缩小列的尺寸以适应网格的宽度并且防止水平滚动。
+            columns:[[
+				{field:'id',title:'名称',width:100,hidden:true},
+				{field:'expenseItem',title:'费用名称',width:100},
+                {field:'xx',title:'操作',width:100,
+                    formatter: function(value,row,index){
+                    	return "<a href='#' onclick=\"deleteExpenseItem('"+row.id+"')\">删除</a>&ensp;<a href='#' onclick=\"updateExpenseItem('"+row.id+"')\">修改</a>";
+                    }
+                }
+            ]]
+        });
 	});
-    function doExpenseItemSearch(){
-    	//parent.$.messager.alert("消息提示",$("#odate").datebox("getValue"));
-    	//parent.$.messager.alert("消息提示",$('#state').combobox('getValue'));
-    	//parent.$.messager.alert("消息提示",$('#state').combobox('getText'));
-    	$('#expenseDg').datagrid('load',{
-    		expenseItem:$('#expenseItemN').val()
-    		});
-    }
+    
     function openDialog()
     {
     
@@ -43,7 +50,7 @@
     		{
     			parent.$.messager.alert("消息提示","新增成功！","info");
      			parent.closeDialog();
-     			doExpenseItemSearch();
+     			$('#expenseDg').treegrid('reload');
     		}
     		else if(v=="Failed")
     		{
@@ -77,9 +84,7 @@
     	    			if(json.result=="Success")
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！","info");
-    	        			$('#expenseDg').datagrid('reload',{
-    	        				expenseItem:$('#expenseItemN').val()
-    	        	    		});
+    	        			$('#expenseDg').treegrid('reload');
     	        		}
     	        		else
     	        		{
@@ -97,9 +102,7 @@
     		{
     			parent.$.messager.alert("消息提示","修改成功！","info");
      			parent.closeDialog();
-     			$('#expenseDg').datagrid('reload',{
-     				expenseItem:$('#expenseItemN').val()
- 	    		});
+     			$('#expenseDg').treegrid('reload');
     		}
     		else if(v=="Failed")
     		{
@@ -113,16 +116,8 @@
     	
     }
     </script>
-   <table id="expenseDg"  toolbar="#expenseItemToolbar" class="easyui-datagrid" style="height:100%"
-		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/expenseItem/list.do',method:'get'">
-		<thead>
-			<tr>
-			    <th data-options="field:'id',width:200,hidden:true"></th>
-			    <th data-options="field:'expenseItem',width:200">费用名称</th>
-				<th data-options="field:'parentExpenseItem',width:200,align:'right'">上一级费用名称</th>
-				<th data-options="field:'expenseItemOperation',formatter:getExpenseItemOperation">操作</th>
-			</tr>
-		</thead>
+
+	<table id="expenseDg"  toolbar="#expenseItemToolbar" class="easyui-treegrid" style="height:100%" data-options="rownumbers:true,singleSelect:true">
 	</table>
 </body>
 </html>

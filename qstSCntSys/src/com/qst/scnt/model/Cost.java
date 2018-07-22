@@ -44,6 +44,11 @@ public class Cost {
     private Integer isDelete;
 
     /**
+     * 备注
+     */
+    private String remark;
+    
+    /**
      *主键（自增）
      */
     public Integer getId() {
@@ -155,4 +160,22 @@ public class Cost {
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
+    
+    /**
+     * 备注
+     */
+	public String getRemark() {
+		return remark;
+	}
+	
+	 /**
+     * 备注
+     */
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+    
+   
+    
+    
 }

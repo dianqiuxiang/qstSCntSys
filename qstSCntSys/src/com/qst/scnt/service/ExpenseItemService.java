@@ -6,4 +6,6 @@ import com.qst.scnt.model.ExpenseItem;
 
 public interface ExpenseItemService extends BaseService<ExpenseItem>  {
 	public List<ExpenseItem> selectAll();
+
+	public int deleteItselfAndItsChildren(ExpenseItem expenseItem);
 }

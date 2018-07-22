@@ -35,6 +35,12 @@ public class UserInfo {
      *是否删除：0 没删除，1 删除
      */
     private Integer isDelete;
+    
+    /**
+     *用户类型，大区总部用户  or 市场部用户
+     */
+    private Integer userType;
+
 
     /**
      *主键（自增）
@@ -132,5 +138,21 @@ public class UserInfo {
      */
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
-    }
+    } 
+    
+    /**
+     *用户类型，大区总部用户  or 市场部用户
+     */
+	public Integer getUserType() {
+		return userType;
+	}
+    
+    /**
+     *用户类型，大区总部用户  or 市场部用户
+     */
+	public void setUserType(Integer userType) {
+		this.userType = userType;
+	}
+
+    
 }

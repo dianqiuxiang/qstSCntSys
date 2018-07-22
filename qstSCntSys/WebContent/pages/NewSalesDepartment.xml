@@ -18,11 +18,15 @@
 				<input id="marketAddress" class='easyui-textbox' data-options="required:true"></input>
 			</td>
 		</tr>
-		<tr>
+		<tr id="parentInfo">
 			<td>上一级部门:</td>
 			<td>
-				<input class="easyui-combobox" id="parentMarketName"
-				data-options="editable:false,url:'/qstSCntSys/salesDepartment/selectSalesDepartment.do',method:'get',valueField:'id',textField:'salesDepartmentName',panelHeight:'auto'"></input>
+				<select class="easyui-combotree" id="parentMarketName" data-options="editable:false,url:'/qstSCntSys/salesDepartment/selectSalesDepartment.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',required:true,onBeforeSelect:function(node){
+                     if ($(this).tree('getLevel',node.target)==3) {  
+		                return false;  
+		            }  
+                },onLoadSuccess: function(node,data){$('#parentMarketName').combotree('setValue', data[0].id);}"></select><!--  -->
 			</td>
 		</tr>
 		<tr>

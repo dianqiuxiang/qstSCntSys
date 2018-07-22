@@ -30,6 +30,11 @@ public class ExpenseItem {
      *上一级销售部名称
      */
     private String parentExpenseItem;
+    
+    /**
+     *父节点
+     */
+    private Integer _parentId;
 
     /**
      *主键（自增）
@@ -107,6 +112,14 @@ public class ExpenseItem {
 
 	public void setParentExpenseItem(String parentExpenseItem) {
 		this.parentExpenseItem = parentExpenseItem;
+	}
+
+	public Integer get_parentId() {
+		return _parentId;
+	}
+
+	public void set_parentId(Integer _parentId) {
+		this._parentId = _parentId;
 	}
     
     

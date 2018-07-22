@@ -60,58 +60,9 @@ function newMonthReportDialog(callback)
 //费用项目管理新增
 function newExpenseItemtDialog(callback)
 {
-	var args={'url':'Newexpenseitem.xml','width':'400','height':'400','action':'expenseitem','title':'新建费用项目信息'};
+	var args={'url':'NewExpenseItem.xml','width':'400','height':'400','action':'expenseitem','title':'新建费用项目信息'};
 	openDialog(args,newExpenseItem,callback);
 }
-//费用项目管理修改
-function updateExpenseItemDialog(id,callback)
-{
-	var args={'actionUrl':'/qstSCntSys/expenseItem/findByID.do','url':'Newexpenseitem.xml','width':'400','height':'300','action':'expenseitem','title':'修改费用项目信息'};
-	openUpdateDialog(args,updateExpenseItem,callback,id,setExpenseItem);
-}
-//费用项目管理
-function setExpenseItem(json)
-{
-	if(json.length!=0)
-    {
-		$('#expenseItem').textbox('setValue',json.expenseItem);
-		$('#parentExpenseItem').combobox('select',json.parentID);
-	}
-	else
-	{
-		$('#msginfo').html(msginfo.loaderr);
-	}
-}
-//新增费用项目管理
-function newExpenseItem(callback)
-{
-	if($("#expenseItem").textbox('isValid')==false)
-	{
-		$('#msginfo').html("费用项目名称为必输项！");
-		return;
-	}
-	var json={
-			"expenseItem":$('#expenseItem').val(),
-			"parentID":$('#parentExpenseItem').combobox('getValue')
-			};
-	setDataModel("/qstSCntSys/expenseItem/addExpenseItemInfo.do",json,callback);
-}
-//修改费用项目管理
-function updateExpenseItem(callback,id)
-{
-	if($("#expenseItem").combotree('isValid')==false)
-	{
-		$('#msginfo2').html("费用项目为必选项！");
-		return;
-	}
-	var json={
-			"id":id,
-			"expenseItem":$('#expenseItem').combotree("getValue"),
-			"parentID":$('#parentExpenseItem').combobox('getValue')
-			};
-	setDataModel("/qstSCntSys/expenseItem/updateExpenseItemInfo.do",json,callback);
-}
-
 
 //set model view
 function setOrderModel(json)
@@ -247,12 +198,12 @@ function setProductModel(json)
 }
 function setDepartmentModel(json)
 {
+	$('#parentInfo').hide();
 	if(json.length!=0)
     {
 		$('#marketName').textbox('setValue',json.salesDepartmentName);
 		$('#marketPhone').textbox('setValue',json.salesDepartmentPhone);
-		$('#marketAddress').textbox('setValue',json.salesDepartmentAddress);
-		$('#parentMarketName').combobox('select',json.parentID);
+		$('#marketAddress').textbox('setValue',json.salesDepartmentAddress);		
 	}
 	else
 	{
@@ -441,6 +392,19 @@ function setUserModel(json)
 		$('#msginfo').html(msginfo.loaderr);
 	}
 }
+//费用项目管理
+function setExpenseItem(json)
+{
+	$('#expenseItemParentInfo').hide();
+	if(json.length!=0)
+    {
+		$('#expenseItem').textbox('setValue',json.expenseItem);
+	}
+	else
+	{
+		$('#msginfo').html(msginfo.loaderr);
+	}
+}
 
 //update dialog
 function updateOrderDialog(id,callback)
@@ -494,7 +458,12 @@ function updateMonthReportDialog(id,callback)
 	var args={'actionUrl':'/qstSCntSys/otherInfo/selectByID.do','url':'NewMonthReport.xml','width':'450','height':'450','action':'monthReport','title':'修改月报其他信息'};
 	openUpdateDialog(args,updateMonthReport,callback,id,setMonthReportModel);
 }
-
+//费用项目管理修改
+function updateExpenseItemDialog(id,callback)
+{
+	var args={'actionUrl':'/qstSCntSys/expenseItem/findByID.do','url':'NewExpenseItem.xml','width':'400','height':'300','action':'expenseitem','title':'修改费用项目信息'};
+	openUpdateDialog(args,updateExpenseItem,callback,id,setExpenseItem);
+}
 function getDataModel(url,id,callback)
 {
 	$.ajax({
@@ -856,11 +825,21 @@ function newDepartment(callback)
 		$('#msginfo').html("销售部地址为必输项！");
 		return;
 	}
+	
+	var parentID;
+	if($('#parentMarketName').combotree('getValue')==""||$('#parentMarketName').combotree('getValue')=="undefined")
+	{
+		parentID=0;
+	}
+	else{
+		parentID=$('#parentMarketName').combotree('getValue');
+	}
+	//alert(parentID);
 	var json={
 			"salesDepartmentName":$('#marketName').val(),
-			"salesDepartmentAddress":$('#marketPhone').val(),
-			"salesDepartmentPhone":$('#marketAddress').val(),
-			"parentID":$('#parentMarketName').combobox('getValue')
+			"salesDepartmentAddress":$('#marketAddress').val(),
+			"salesDepartmentPhone":$('#marketPhone').val(),
+			"parentID":parentID
 			};
 	setDataModel("/qstSCntSys/salesDepartment/addSalesDepartmentInfo.do",json,callback);
 }
@@ -1052,6 +1031,30 @@ function newMonthReport(callback)
 	setDataModel("/qstSCntSys/otherInfo/addEveryMonthOtherInfo.do",json,callback);
 }
 
+//新增费用项目管理
+function newExpenseItem(callback)
+{
+	if($("#expenseItem").textbox('isValid')==false)
+	{
+		$('#msginfo').html("费用项目名称为必输项！");
+		return;
+	}
+	var expenseItemParentID;
+	if($('#parentExpenseItem').combotree('getValue')==""||$('#parentExpenseItem').combotree('getValue')=="undefined")
+	{
+		expenseItemParentID=0;
+	}
+	else
+	{
+		expenseItemParentID=$('#parentExpenseItem').combotree('getValue');
+	}
+	//alert(expenseItemParentID);
+	var json={
+			"expenseItem":$('#expenseItem').val(),
+			"parentID":expenseItemParentID
+			};
+	setDataModel("/qstSCntSys/expenseItem/addExpenseItemInfo.do",json,callback);
+}
 
 
 
@@ -1295,12 +1298,12 @@ function updateDepartment(callback,id)
 		$('#msginfo').html("销售部地址为必输项！");
 		return;
 	}
+	
 	var json={
 			"id":id,
 			"salesDepartmentName":$('#marketName').val(),
-			"salesDepartmentAddress":$('#marketPhone').val(),
-			"salesDepartmentPhone":$('#marketAddress').val(),
-			"parentID":$('#parentMarketName').combobox('getValue')
+			"salesDepartmentAddress":$('#marketAddress').val(),
+			"salesDepartmentPhone":$('#marketPhone').val()
 			};
 	setDataModel("/qstSCntSys/salesDepartment/updateSalesDepartmentInfo.do",json,callback);
 }
@@ -1390,6 +1393,22 @@ function updateExpense(callback,id)
 			};
 	setDataModel("/qstSCntSys/cost/updateCostInfo.do",json,callback);
 }
+
+//修改费用项目管理
+function updateExpenseItem(callback,id)
+{
+	if($("#expenseItem").combotree('isValid')==false)
+	{
+		$('#msginfo2').html("费用项目为必选项！");
+		return;
+	}
+	var json={
+			"id":id,
+			"expenseItem":$('#expenseItem').val()
+			};
+	setDataModel("/qstSCntSys/expenseItem/updateExpenseItemInfo.do",json,callback);
+}
+
 function updateReceipt(callback,id)
 {
 	if($("#salesDept").combotree('isValid')==false)

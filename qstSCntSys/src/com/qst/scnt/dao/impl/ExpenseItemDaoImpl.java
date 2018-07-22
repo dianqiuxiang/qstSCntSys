@@ -28,4 +28,14 @@ public class ExpenseItemDaoImpl extends BaseDaoImpl<ExpenseItem> implements Expe
             return null;  
         }  
 	}
+
+	@Override
+	public List<ExpenseItem> selectByParentID(ExpenseItem entity) {
+		try {  
+            return this.getSqlSession().selectList(namespace + "." + "selectByParentID",entity);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return null;  
+        }  
+	}
 }

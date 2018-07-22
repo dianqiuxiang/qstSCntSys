@@ -9,24 +9,24 @@
 		   <!-- 新增Cost实体类 -->  
 		    <insert id="insert" parameterType="cost">  
 		        insert into cost (expenseItemID, expenseAmount, 
-			      expenseDate, salesDepartmentID, isDelete
+			      expenseDate, salesDepartmentID, isDelete,remark
 			      )
 			    values (#{expenseItemID,jdbcType=INTEGER}, #{expenseAmount,jdbcType=DECIMAL}, 
-			      #{expenseDate,jdbcType=DATE}, #{salesDepartmentID,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
+			      #{expenseDate,jdbcType=DATE}, #{salesDepartmentID,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
 			      )
 		   </insert>  		    
 		     
 		   <!-- 批量插入 -->  
 		   <insert id="insertBatch" parameterType="arraylist">  
 		        insert into cost (expenseItemID, expenseAmount, 
-			      expenseDate, salesDepartmentID, isDelete
+			      expenseDate, salesDepartmentID, isDelete,remark
 			      )
 			    values 
 		        <!-- collection可以是List对于list,数组对于array,Map对应ids -->
 		        <foreach collection="list" item="item"  index="index" separator=",">
         			<trim prefix=" (" suffix=")" suffixOverrides=",">
         			#{item.expenseItemID,jdbcType=INTEGER}, #{item.expenseAmount,jdbcType=DECIMAL}, 
-			        #{item.expenseDate,jdbcType=DATE}, #{item.salesDepartmentID,jdbcType=INTEGER}, #{item.isDelete,jdbcType=INTEGER}    
+			        #{item.expenseDate,jdbcType=DATE}, #{item.salesDepartmentID,jdbcType=INTEGER}, #{item.isDelete,jdbcType=INTEGER}, #{item.remark,jdbcType=VARCHAR}  
 		        	</trim>   
            		</foreach>  
 		   </insert>
@@ -49,6 +49,9 @@
 				      </if>
 				      <if test="isDelete != null" >
 				        isDelete = #{isDelete,jdbcType=INTEGER},
+				      </if>
+				      <if test="remark != null" >
+				        remark = #{remark,jdbcType=VARCHAR},
 				      </if>
 				    </set>
 				    where id = #{id,jdbcType=INTEGER}
@@ -110,6 +113,14 @@
 			                 <foreach collection="list" item="item" index="index">
 			                     <if test="item.isDelete !=null">
 			                         when id=#{item.id} then #{item.isDelete,jdbcType=INTEGER}
+			                     </if>
+			                 </foreach>
+			            </trim>
+			            
+			            <trim prefix="remark = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.remark !=null">
+			                         when id=#{item.id} then #{item.remark,jdbcType=VARCHAR}
 			                     </if>
 			                 </foreach>
 			            </trim>

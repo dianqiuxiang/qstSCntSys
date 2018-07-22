@@ -24,28 +24,11 @@ public class ExpenseItemController extends BaseController{
 	@Resource
 	private ExpenseItemService expenseItemService;
 	
-	@RequestMapping(value="/list.do")
-	@ResponseBody
-	public Object getList(String expenseItemName,int page,int rows) {
-		Gson gson = new Gson();
-		ExpenseItem expenseIteminfo=new ExpenseItem();
-		if(expenseItemName==null||expenseItemName.equals("")){
-			expenseIteminfo.setExpenseItem(null);
-		}
-		else{
-			expenseIteminfo.setExpenseItem(expenseItemName);
-		}
-		//salesDepartmentInfo.setSalesDepartmentName(salesDepartmentName);
-		EUDataGridResult<ExpenseItem> list=expenseItemService.selectParamFlexible(expenseIteminfo,page,rows);
-		//System.out.println(gson.toJson(list));expenseItemService
-		return gson.toJson(list);
-	}
-	
 	/**
-	 * 查询所有信息，绑定到下拉列表
+	 * 查询所有销售部门信息
 	 * @return
 	 */
-	@RequestMapping(value="/listAll.do")
+	@RequestMapping(value="/getInfo.do")
 	@ResponseBody
 	public Map<String,Object> getInfo() {
 
@@ -53,10 +36,111 @@ public class ExpenseItemController extends BaseController{
 
 		List<ExpenseItem> list=expenseItemService.selectAll();
 		Map<String,Object> map=new HashMap<String,Object>();
+		for(ExpenseItem item : list){
+			if(item.getLevel()==1)
+			{
+				item.set_parentId(null);
+			}
+		}
 		map.put("rows", list);
 		//System.out.println(gson.toJson(list));
 		return map;
 	}
+	
+	/**
+	 * 查询所有销售部门信息，绑定到下拉列表
+	 * @return
+	 */
+	@RequestMapping(value="/selectExpenseItem.do")
+	@ResponseBody
+	public Object selectSalesDepartment() {
+
+//		Gson gson = new Gson();
+//
+//		List<SalesDepartmentInfo> list=salesDepartmentInfoService.select();
+//		//System.out.println(gson.toJson(list));
+//		return gson.toJson(list);
+		
+		Map<String, Object> whereMap = new HashMap<String, Object>();
+		whereMap.put("parentID",0);//指定查询范围,此处默认查询本部门下的顾客信息	 
+		
+		Map<String, Object> params = new HashMap<String, Object>();  
+		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+		
+		List<ExpenseItem> list=expenseItemService.selectParam(params);
+		
+		String returnJson="[";
+		int i=0;
+		for(ExpenseItem item:list){
+			i++;
+			returnJson+="{";
+			returnJson+="\"id\":"+ item.getId() +",";
+			returnJson+="\"text\":\""+ item.getExpenseItem() +"\",";
+			returnJson+="\"children\":[";
+			Map<String, Object> fieldMap = new HashMap<String, Object>();
+			fieldMap.put("parentID",item.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
+			
+			Map<String, Object> queryParams = new HashMap<String, Object>();  
+			queryParams.put("where", fieldMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+			
+			List<ExpenseItem> childrenList=expenseItemService.selectParam(queryParams);
+			
+			int j=0;
+			for(ExpenseItem childNode:childrenList){
+				j++;
+				returnJson+="{";
+				returnJson+="\"id\":"+ childNode.getId() +",";
+				//returnJson+="\"text\":\""+ childNode.getSalesDepartmentName()+"\"";
+				returnJson+="\"text\":\""+ childNode.getExpenseItem() +"\",";
+				returnJson+="\"children\":[";
+				
+				Map<String, Object> fieldMap2 = new HashMap<String, Object>();
+				fieldMap2.put("parentID",childNode.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
+				
+				Map<String, Object> queryParams2 = new HashMap<String, Object>();  
+				queryParams2.put("where", fieldMap2); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+				
+				List<ExpenseItem> childrenList2=expenseItemService.selectParam(queryParams2);
+				
+				int k=0;
+				for(ExpenseItem childNode2:childrenList2){
+					k++;
+					returnJson+="{";
+					returnJson+="\"id\":"+ childNode2.getId() +",";
+					returnJson+="\"text\":\""+ childNode2.getExpenseItem() +"\"";
+					
+					
+					if(k==childrenList2.size()){
+						returnJson+="}";
+					}
+					else{
+						returnJson+="},";
+					}
+				}
+				returnJson+="]";
+				
+				if(j==childrenList.size()){
+					returnJson+="}";
+				}
+				else{
+					returnJson+="},";
+				}
+			}
+			returnJson+="]";
+			
+			if(i==list.size()){
+				returnJson+="}";
+			}
+			else{
+				returnJson+="},";
+			}
+		}
+		returnJson+="]";
+		//System.out.println(returnJson);
+		return returnJson;
+	}
+	
+	
 	
 	
 	/**
@@ -84,8 +168,8 @@ public class ExpenseItemController extends BaseController{
 		String resultStr="";
 		ExpenseItem expenseItem=new ExpenseItem();
 		expenseItem.setId(id);		
-		expenseItem.setIsDelete(1);//"1"代表删除，"0"代表未删除
-		int result=expenseItemService.update(expenseItem);
+		//expenseItem.setIsDelete(1);//"1"代表删除，"0"代表未删除
+		int result=expenseItemService.deleteItselfAndItsChildren(expenseItem);
 		if(result>0)
 		{
 			resultStr="{\"result\":\"Success\"}";
@@ -116,9 +200,13 @@ public class ExpenseItemController extends BaseController{
 		String resultStr="";
 		if(list.size()==0){
 			
-			ExpenseItem parent_expenseItem=expenseItemService.selectPK(expenseItem.getParentID());
-
-			expenseItem.setLevel(parent_expenseItem.getLevel()+1);
+			if(expenseItem.getParentID()==0){
+				expenseItem.setLevel(1);
+			}
+			else{
+				ExpenseItem parent_expenseItem=expenseItemService.selectPK(expenseItem.getParentID());
+				expenseItem.setLevel(parent_expenseItem.getLevel()+1);
+			}
 			expenseItem.setIsDelete(0);
 			
 			int result=expenseItemService.insert(expenseItem);
@@ -157,9 +245,8 @@ public class ExpenseItemController extends BaseController{
 		String resultStr="";
 		if(list.size()==0||old_expenseItem.getExpenseItem().equals(expenseItem.getExpenseItem())){
 			
-			ExpenseItem parent_expenseItem=expenseItemService.selectPK(expenseItem.getParentID());
-
-			expenseItem.setLevel(parent_expenseItem.getLevel()+1);
+//			ExpenseItem parent_expenseItem=expenseItemService.selectPK(expenseItem.getParentID());
+//			expenseItem.setLevel(parent_expenseItem.getLevel()+1);
 			
 			int result=expenseItemService.update(expenseItem);
 			if(result>0)
@@ -178,19 +265,19 @@ public class ExpenseItemController extends BaseController{
 		return resultStr;
 	}
 	
-	/**
-	 * 查询所有费用项目信息，绑定到下拉列表
-	 * @return
-	 */
-	@RequestMapping(value="/selectExpenseItem.do")
-	@ResponseBody
-	public Object selectExpenseItem() {
-
-		Gson gson = new Gson();
-
-		List<ExpenseItem> list=expenseItemService.select();
-		//System.out.println(gson.toJson(list));
-		return gson.toJson(list);
-	}
+//	/**
+//	 * 查询所有费用项目信息，绑定到下拉列表
+//	 * @return
+//	 */
+//	@RequestMapping(value="/selectExpenseItem.do")
+//	@ResponseBody
+//	public Object selectExpenseItem() {
+//
+//		Gson gson = new Gson();
+//
+//		List<ExpenseItem> list=expenseItemService.select();
+//		//System.out.println(gson.toJson(list));
+//		return gson.toJson(list);
+//	}
 
 }
