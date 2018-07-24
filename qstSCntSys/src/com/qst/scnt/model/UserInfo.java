@@ -30,14 +30,19 @@ public class UserInfo {
      *部门编号（外键）
      */
     private Integer salesDepartmentID;
-
+    
+    /**
+     *部门名称
+     */
+    private String salesDepartmentName;
+    
     /**
      *是否删除：0 没删除，1 删除
      */
     private Integer isDelete;
     
     /**
-     *用户类型，大区总部用户  or 市场部用户
+     *用户类型，大区总部用户  or 市场部用户(和部门的level一致，1代表大区总部用户，2代表市场部用户)
      */
     private Integer userType;
 
@@ -127,6 +132,20 @@ public class UserInfo {
     }
 
     /**
+     *部门名称
+     */    
+    public String getSalesDepartmentName() {
+		return salesDepartmentName;
+	}
+
+    /**
+     *部门名称
+     */ 
+	public void setSalesDepartmentName(String salesDepartmentName) {
+		this.salesDepartmentName = salesDepartmentName;
+	}
+
+    /**
      *是否删除：0 没删除，1 删除
      */
     public Integer getIsDelete() {
@@ -141,14 +160,14 @@ public class UserInfo {
     } 
     
     /**
-     *用户类型，大区总部用户  or 市场部用户
+     *用户类型，大区总部用户  or 市场部用户(和部门的level一致，1代表大区总部用户，2代表市场部用户)
      */
 	public Integer getUserType() {
 		return userType;
 	}
     
     /**
-     *用户类型，大区总部用户  or 市场部用户
+     *用户类型，大区总部用户  or 市场部用户(和部门的level一致，1代表大区总部用户，2代表市场部用户)
      */
 	public void setUserType(Integer userType) {
 		this.userType = userType;

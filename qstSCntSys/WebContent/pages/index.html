@@ -19,10 +19,30 @@
 	    html,body{
 	        body{overflow:hidden;}
 	    }
-	    
+	    .logo {display:block;}
+		.top-btns {position:absolute;top:60px;right:15px;}
+		.top-btns span {vertical-align:middle;}
 	</style>
 	<script type="text/javascript" >
 	$(document).ready(function() {
+		
+		$.ajax({
+			type:"post",
+			async: true, 
+			url:"/qstSCntSys/menu/getCUser.do",			
+			success: function(result){
+				
+				var strJson=eval("("+result+")");
+				
+				$('#currentUser').html("欢迎您,"+strJson.userName);
+				$('#currentUserDeptID').val(strJson.salesDepartmentID);
+			},
+			error: function(){
+				$.messager.alert("消息提示","系统报错请联系管理员","info");
+				return false;
+			}			
+		});		
+		
 		$('#menuTree').tree({
 			//url:'tree_data1.json',
 			url:'/qstSCntSys/menu/getMenuInfo.do',
@@ -58,13 +78,19 @@
 </head>
 <body class="easyui-layout">
 	<div data-options="region:'north',border:false" style="height:100px;background:#E3F0F8">
-	<img src="../themes/default/images/top.jpg" height="98px" alt="jk财务"/>
+		<img src="../themes/default/images/top.jpg" height="98px" alt="jk财务"  class="logo" />
+		<div class="top-btns">
+				<span id="currentUser">未登录</span>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-lock'">修改密码</a>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-clear'">退出系统</a>	
+				<input type="hidden" id="currentUserDeptID"/>			
+			</div>
 	</div>
 	<div id="tw" data-options="region:'west',split:true,title:'菜单导航'" style="width:200px;padding:10px;">
 		 <ul id="menuTree" class="easyui-tree" data-options="animate:true"></ul>
 	</div>
 	<!--<div data-options="region:'east',split:true,collapsed:true,title:'East'" style="width:100px;padding:10px;">east region</div>-->
-	<div data-options="region:'south',border:false" style="height:30px;padding:5px;text-align:center">虎琚管理总部</div>
+	<div data-options="region:'south',border:false" style="height:30px;padding:5px;text-align:center">JK财务管理系统</div>
 	
 	<div data-options="region:'center',title:'工作区'">
 		<div id="workArea" class="easyui-tabs" style="height:100%">

@@ -231,10 +231,13 @@
 		        </if>  
 		        <if test="endDate!=null and endDate!=''">  
 		        <![CDATA[and c.expenseDate <=  #{endDate}    ]]>
-		        </if> 
-	        	<if test="expenseItemID!=null and expenseItemID!='' ">  
-		        and c.expenseItemID =  #{expenseItemID}
 		        </if>
+		        <if test="expenseItemIDList !=null">
+				and c.expenseItemID IN
+				<foreach collection="expenseItemIDList" item="expenseItemID"  open="(" separator="," close=")">
+				#{expenseItemID.id}
+				</foreach>
+				</if>
 		        and c.isDelete=0
 	            and c.expenseItemID=e.id
 	            and c.salesDepartmentID=s.id

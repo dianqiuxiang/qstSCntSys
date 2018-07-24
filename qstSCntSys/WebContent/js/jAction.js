@@ -229,12 +229,13 @@ function setCustomerModel(json)
 }
 function setEmployeeModel(json)
 {
+	$('#employeeDept').hide();
 	if(json.length!=0)
     {
-		$('#salesDept').combotree({
-		    onLoadSuccess:function(node,data){  
-		    	$('#salesDept').combotree('setValue',json.salesDepartmentID);
-		    }}); 
+		//$('#salesDept').combotree({
+		//    onLoadSuccess:function(node,data){  
+		//    	$('#salesDept').combotree('setValue',json.salesDepartmentID);
+		//    }}); 
 		$('#employeeN').textbox('setValue',json.employeeName);
 		$('#employeeS').combobox('select',json.sex);
 		$('#employeeP').textbox('setValue',json.employeePhone);
@@ -255,7 +256,7 @@ function setExpenseModel(json)
 		    onLoadSuccess:function(node,data){  
 		    	$('#salesDept').combotree('setValue',json.salesDepartmentID);
 		    }}); 
-	    $('#expenseN').combobox('setValue',json.expenseItemID);
+	    $('#expenseN').combotree('setValue',json.expenseItemID);
 		$('#expenseA').numberbox('setValue',json.expenseAmount);
 		$('#expenseD').datebox("setValue",json.expenseDate);
 	}
@@ -385,7 +386,7 @@ function setUserModel(json)
 		$('#userN').textbox('setValue',json.userName);
 		$('#userP').textbox('setValue',json.userPhone);
 		$('#userE').textbox('setValue',json.userEmail);
-		$('#userPwd').textbox('setValue',json.pwd);
+		$('#userDept').combotree('setValue',json.salesDepartmentID);
     }
 	else
 	{
@@ -805,6 +806,7 @@ function newUser(callback)
 			"userName":$('#userN').val(),
 			"userPhone":$('#userP').val(),
 			"userEmail":$('#userE').val(),
+			"salesDepartmentID":$('#userDept').combotree("getValue")
 			};
 	setDataModel("/qstSCntSys/user/addUserInfo.do",json,callback);
 }
@@ -920,7 +922,7 @@ function newExpense(callback)
 	}
 	var json={
 			"salesDepartmentID":$('#salesDept').combotree("getValue"),
-			"expenseItemID":$('#expenseN').combobox('getValue'),
+			"expenseItemID":$('#expenseN').combotree('getValue'),
 			"expenseAmount":$('#expenseA').numberbox('getValue'),
 			"expenseDate":$('#expenseD').datebox("getValue")
 			};
@@ -1256,11 +1258,6 @@ function updateUser(callback,id)
 		$('#msginfo').html("用户姓名为必输项！");
 		return;
 	}
-	if($("#userPwd").textbox('isValid')==false)
-	{
-		$('#msginfo').html("用户密码为必输项！");
-		return;
-	}
 	if($("#userP").textbox('isValid')==false)
 	{
 		$('#msginfo').html("用户联系电话为必输项！");
@@ -1271,13 +1268,12 @@ function updateUser(callback,id)
 		$('#msginfo').html("用户电子邮件格式不符！");
 		return;
 	}
-	
 	var json={
 			"id":id,
 			"userName":$('#userN').val(),
 			"userPhone":$('#userP').val(),
 			"userEmail":$('#userE').val(),
-			"pwd":$('#userPwd').val()
+			"salesDepartmentID":$('#userDept').combotree("getValue")
 			};
 	setDataModel("/qstSCntSys/user/updateUserInfo.do",json,callback);
 }
@@ -1335,11 +1331,11 @@ function updateCustomer(callback,id)
 }
 function updateEmployee(callback,id)
 {
-	if($("#salesDept").combotree('isValid')==false)
-	{
-		$('#msginfo2').html("销售部门为必选项！");
-		return;
-	}
+	//if($("#salesDept").combotree('isValid')==false)
+	//{
+	//	$('#msginfo2').html("销售部门为必选项！");
+	//	return;
+	//}
 	if($("#employeeN").textbox('isValid')==false)
 	{
 		$('#msginfo').html("员工姓名为必输项！");
@@ -1357,7 +1353,7 @@ function updateEmployee(callback,id)
 	}
 	var json={
 			"id":id,
-			"salesDepartmentID":$('#salesDept').combotree("getValue"),
+			//"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"employeeName":$('#employeeN').val(),
 			"sex":$('#employeeS').combobox('getValue'),
 			"employeePhone":$('#employeeP').val(),
@@ -1387,7 +1383,7 @@ function updateExpense(callback,id)
 	var json={
 			"id":id,
 			"salesDepartmentID":$('#salesDept').combotree("getValue"),
-			"expenseItemID":$('#expenseN').combobox('getValue'),
+			"expenseItemID":$('#expenseN').combotree('getValue'),
 			"expenseAmount":$('#expenseA').numberbox('getValue'),
 			"expenseDate":$('#expenseD').datebox("getValue")
 			};

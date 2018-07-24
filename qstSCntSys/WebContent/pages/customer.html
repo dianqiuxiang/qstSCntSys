@@ -23,13 +23,32 @@
 <body>
     <div id="customerToolbar" style="padding:5px">
         <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/customer/getSalesDept.do',method:'get',valueField:'id',textField:'text',
-        panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
+        panelHeight:'auto'" style="width:160px;"></select>
         <span>客户名称：</span><input id="customerN" class='easyui-textbox'></input>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="doCustomerSearch()">查询</a>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="openDialog()">新增</a>  
     </div>
     <script type="text/javascript">
     $(document).ready(function() {
+    	$('#salesDept').combotree({
+			onBeforeSelect:function(node){
+                if ($(this).tree('getLevel',node.target)==1) {  
+	                return false;  
+	            }
+	           },
+			onLoadSuccess:function(node,data){  
+				$('#salesDept').combotree('setValue', parent.$('#currentUserDeptID').val());
+		    }
+		});
+		
+		$('#customerDg').datagrid({
+				url:'/qstSCntSys/customer/selectByCNameAndCPhone.do',//需要立即查询时开启url 
+				queryParams: {
+	    		    salesDepartmentID:parent.$('#currentUserDeptID').val(),
+	        		customerName:$('#customerN').val()
+			    }
+			});
+    	
 		$("#customerDg").datagrid('getPager').pagination({showPageList:false});
 	});
     function doCustomerSearch(){
@@ -123,7 +142,7 @@
     
     </script>
    <table id="customerDg"  toolbar="#customerToolbar" class="easyui-datagrid" style="height:100%"
-		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/customer/selectByCNameAndCPhone.do',method:'get'">
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20">
 		<thead>
 			<tr>
 			    <th data-options="field:'id',width:200,hidden:true"></th>

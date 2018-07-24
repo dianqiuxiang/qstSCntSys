@@ -23,7 +23,7 @@
 <body>
     <div id="monthReportToolbar" style="padding:5px">
     <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/otherInfo/getSalesDept.do',method:'get',valueField:'id',textField:'text',
-        panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
+        panelHeight:'auto'" style="width:160px;"></select>
         <span>查询时间：</span><input id="monthReportD" class="easyui-datebox"></input>
         <span>至：</span><input id="monthReportED" class="easyui-datebox"></input>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="doMonthReportSearch()">查询</a>
@@ -32,14 +32,34 @@
     <script type="text/javascript">
     $(document).ready(function() {
     	
+    	$('#salesDept').combotree({
+			onBeforeSelect:function(node){
+                if ($(this).tree('getLevel',node.target)==1) {  
+	                return false;  
+	            }
+	           },
+			onLoadSuccess:function(node,data){  
+				$('#salesDept').combotree('setValue', parent.$('#currentUserDeptID').val());
+		    }
+		});
+    	
 		dateformateFirst("#monthReportD");
 		dateformate("#monthReportED");
 		
-		var opts=$("#monthReportDg").datagrid("options");    
-        if(null==opts.url||""==opts.url){    
-            opts.url="/qstSCntSys/otherInfo/selectByStartAndEndDate.do";    
-        }
-        doMonthReportSearch();
+		//var opts=$("#monthReportDg").datagrid("options");    
+        //if(null==opts.url||""==opts.url){    
+        //    opts.url="/qstSCntSys/otherInfo/selectByStartAndEndDate.do";    
+        //}
+        //doMonthReportSearch();        
+        $('#monthReportDg').datagrid({
+				url:'/qstSCntSys/otherInfo/selectByStartAndEndDate.do',//需要立即查询时开启url 
+				queryParams: {
+					salesDepartmentID:parent.$('#currentUserDeptID').val(),
+	    	    	startDate:$('#monthReportD').datebox("getValue"),
+	    	    	endDate:$('#monthReportED').datebox("getValue")
+			    }
+			});
+		
 		$("#monthReportDg").datagrid('getPager').pagination({showPageList:false});
 	});
     function dateformate(id) {
@@ -246,7 +266,7 @@
     }
     </script>
    <table id="monthReportDg"  toolbar="#monthReportToolbar" class="easyui-datagrid" style="height:100%"
-		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,method:'get'">
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20">
 		<thead>
 			<tr>
 			    <th data-options="field:'id',width:200,hidden:true"></th>

@@ -39,9 +39,13 @@ public class LoginController extends BaseController {
 		
 		String resultStr="";
 		if(currentUser!=null){ 
-			httpSession.setAttribute("currentUser", currentUser);  
-            resultStr="{\"result\":\"Success\"}";  
-             
+			httpSession.setAttribute("currentUser", currentUser);
+			//currentUser.setPwd(null);
+			UserInfo returnCurrentUser=currentUser;
+			returnCurrentUser.setPwd(null);
+			Gson gson = new Gson();	
+            resultStr="{\"result\":\"Success\",\"currentUser\":"+gson.toJson(returnCurrentUser)+"}";  
+            //System.out.println(resultStr); 
         }else{  
         	resultStr="{\"result\":\"Failed\"}";  
         }  
@@ -70,7 +74,10 @@ public class LoginController extends BaseController {
 		String resultStr="";
 		if(currentUser!=null){ 
 			httpSession.setAttribute("currentUser", currentUser);  
-            resultStr="{\"result\":\"Success\"}";  
+			UserInfo returnCurrentUser=currentUser;
+			returnCurrentUser.setPwd(null);
+			Gson gson = new Gson();	
+            resultStr="{\"result\":\"Success\",\"currentUser\":"+gson.toJson(returnCurrentUser)+"}";   
              
         }else{  
         	resultStr="{\"result\":\"Failed\"}";  

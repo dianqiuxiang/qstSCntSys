@@ -15,8 +15,13 @@
 		<tr>
 			<td>费用项目名称:</td>
 			<td>
-				<input class="easyui-combobox" id="expenseN"
-				data-options="editable:false,url:'/qstSCntSys/cost/getAllExpenseItem.do',method:'get',valueField:'id',textField:'expenseItem',panelHeight:'auto',required:true"></input>
+				<select class="easyui-combotree" id="expenseN"
+				data-options="editable:false,url:'/qstSCntSys/cost/getExpenseItem.do',method:'get',valueField:'id',textField:'text',
+				panelHeight:'300px',required:true,onBeforeSelect:function(node){
+                     if ($(this).tree('getLevel',node.target)!=3) {  
+		                return false;  
+		            }  
+                }"></select>               
 			</td>
 		</tr>
 		<tr>

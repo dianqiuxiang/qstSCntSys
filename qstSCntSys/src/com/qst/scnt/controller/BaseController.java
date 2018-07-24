@@ -2,12 +2,15 @@ package com.qst.scnt.controller;
 
 import java.util.ResourceBundle;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.qst.scnt.model.SalesDepartmentInfo;
 import com.qst.scnt.model.UserInfo;
+import com.qst.scnt.service.SalesDepartmentInfoService;
 
 public class BaseController   {
 
@@ -18,6 +21,9 @@ public class BaseController   {
       
     @Autowired  
     private HttpServletRequest request; 
+    
+    @Resource
+	private SalesDepartmentInfoService salesDepartmentInfoService;
     
     public UserInfo getCurrentUser() {
 		//HttpSession httpSession= request.getSession();
@@ -39,6 +45,8 @@ public class BaseController   {
     	
 	    //System.out.println((UserInfo)session.getAttribute("currentUser"));
 	    UserInfo CurrentUser=(UserInfo) session.getAttribute("currentUser");
+	    SalesDepartmentInfo SalesDeptInfoModel=salesDepartmentInfoService.selectPK(CurrentUser.getSalesDepartmentID());
+	    CurrentUser.setUserType(SalesDeptInfoModel.getLevel());
 		return CurrentUser;
 	}
     public void setCurrentUser(UserInfo currentUser) {

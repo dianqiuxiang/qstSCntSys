@@ -27,7 +27,7 @@
     <div id="tb" style="padding:5px">
         <span>订单编号：</span><input id="orderNa" class='easyui-textbox' style="width:121px;"></input>
         <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/order/getSalesDept.do',method:'get',valueField:'id',textField:'text',
-        panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
+        panelHeight:'auto'" style="width:160px;"></select>
         <span>顾客姓名：</span><input id="customerNa" class='easyui-textbox' style="width:121px;"></input>
         <span>订单时间：</span><input id="orderdate" class="easyui-datebox"></input>
         <span>至：</span><input id="orderEdate" class="easyui-datebox"></input>
@@ -209,8 +209,26 @@
 	    	return content;
 	    }
 		$(function(){
+			$('#salesDept').combotree({
+				onBeforeSelect:function(node){
+                    if ($(this).tree('getLevel',node.target)==1) {  
+		                return false;  
+		            }
+		           },
+				onLoadSuccess:function(node,data){  
+					$('#salesDept').combotree('setValue', parent.$('#currentUserDeptID').val());
+			    }
+			});
+			
 			$('#dg').datagrid({
 				url:'/qstSCntSys/order/selectByOCodeandCNameAndDate.do',//需要立即查询时开启url 
+				queryParams: {
+					orderCode:$('#orderNa').val(),
+		    		salesDepartmentID:parent.$('#currentUserDeptID').val(),
+		    		customerName:$('#customerNa').val(),
+		    		startDate:$('#orderdate').datebox("getValue"),
+		    		endDate:$('#orderEdate').datebox("getValue")
+			    },
 				view: detailview,
 				detailFormatter:function(index,row){
 					return '<div id="ddv-' + index + '" style="padding:5px 0"></div>';

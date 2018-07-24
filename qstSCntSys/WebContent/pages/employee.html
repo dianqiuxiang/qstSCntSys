@@ -61,6 +61,28 @@
 
     
     $(document).ready(function() {
+    	
+    	$('#salesDept').combotree({
+			onBeforeSelect:function(node){
+                if ($(this).tree('getLevel',node.target)==1) {  
+	                return false;  
+	            }
+	           },
+			onLoadSuccess:function(node,data){  
+				$('#salesDept').combotree('setValue', parent.$('#currentUserDeptID').val());
+		    }
+		});
+		
+		$('#employeeDg').datagrid({
+			url:'/qstSCntSys/employee/selectByENameAndESex.do',//需要立即查询时开启url 
+				queryParams: {
+					salesDepartmentID:parent.$('#currentUserDeptID').val(),
+					employeeName:$('#employeeN').val(),
+		    		sex:$('#employeeS').combobox("getValue")
+			    }
+			});
+    	
+    	
 		$("#employeeDg").datagrid('getPager').pagination({showPageList:false});
 	});
     function doEmployeeSearch(){
@@ -115,6 +137,7 @@
     	    			if(json.result=="Success")
     	        		{
     	        			parent.$.messager.alert("消息提示","删除成功！","info");
+    	        			parent.closeDialog();
     	        			$('#employeeDg').datagrid('reload',{
     	        				salesDepartmentID:$('#salesDept').combotree("getValue"),
     	        	    		employeeName:$('#employeeN').val(),
@@ -156,7 +179,7 @@
     }
     </script>
    <table id="employeeDg"  toolbar="#employeeToolbar" class="easyui-datagrid" style="height:100%"
-		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/employee/selectByENameAndESex.do',method:'get'">
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20">
 		<thead>
 			<tr>
 			    <th data-options="field:'id',width:10,hidden:true"></th>

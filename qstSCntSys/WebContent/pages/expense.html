@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>JK财务管理系统</title>
 	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="../css/demo.css">
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
@@ -20,9 +21,9 @@
 <body>
     <div id="expenseToolbar" style="padding:5px">
         <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/cost/getSalesDept.do',method:'get',valueField:'id',textField:'text',
-        panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
+        panelHeight:'auto'" style="width:160px;"></select>
         <span>费用项目：</span><select id="expenseN" class='easyui-combotree'  data-options="editable:false,url:'/qstSCntSys/cost/getExpenseItem.do',method:'get',valueField:'id',
-        textField:'text',panelHeight:'auto',onLoadSuccess: function(node,data){$('#expenseN').combotree('setValue', data[0].id);}" style="width:160px;"></select>
+        textField:'text',panelHeight:'300px'" style="width:160px;"></select>
         <span>费用时间：</span><input id="expenseSD" class="easyui-datebox"></input>
         <span>至：</span><input id="expenseED" class="easyui-datebox"></input>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="doExpenseSearch()">查询</a>
@@ -32,6 +33,28 @@
     </div>
     <script type="text/javascript">
     $(document).ready(function() {
+    	
+    	$('#salesDept').combotree({
+			onBeforeSelect:function(node){
+                if ($(this).tree('getLevel',node.target)==1) {  
+	                return false;  
+	            }
+	           },
+			onLoadSuccess:function(node,data){  
+				$('#salesDept').combotree('setValue', parent.$('#currentUserDeptID').val());
+		    }
+		});
+		
+		$('#expenseDg').datagrid({
+			url:'/qstSCntSys/cost/selectByItemIdAndStartAndEndDate.do',//需要立即查询时开启url 
+				queryParams: {	    		   
+	    		    expenseItemID:$('#expenseN').combobox('getValue'),
+	    		    salesDepartmentID:parent.$('#currentUserDeptID').val(),
+	    		    startDate:$('#expenseSD').datebox('getValue'),
+	    		    endDate:$('#expenseED').datebox('getValue')
+			    }
+			});
+    	
 		$("#expenseDg").datagrid('getPager').pagination({showPageList:false});
 	});
     function doExpenseSearch(){
@@ -129,7 +152,7 @@
     }
     </script>
    <table id="expenseDg"  toolbar="#expenseToolbar" class="easyui-datagrid" style="height:100%"
-		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/cost/selectByItemIdAndStartAndEndDate.do',method:'get'">
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20">
 		<thead>
 			<tr>
 			    <th data-options="field:'id',width:200,hidden:true"></th>

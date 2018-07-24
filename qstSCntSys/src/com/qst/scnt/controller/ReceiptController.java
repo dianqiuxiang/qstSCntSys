@@ -67,7 +67,7 @@ public class ReceiptController extends BaseController {
 			returnJson+="\"text\":\""+ item.getSalesDepartmentName() +"\",";
 			returnJson+="\"children\":[";
 			Map<String, Object> fieldMap = new HashMap<String, Object>();
-			fieldMap.put("parentID",item.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
+			fieldMap.put("id",this.getCurrentUser().getSalesDepartmentID());//指定查询范围,此处默认查询本部门下的顾客信息	 
 			
 			Map<String, Object> queryParams = new HashMap<String, Object>();  
 			queryParams.put("where", fieldMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
@@ -83,7 +83,7 @@ public class ReceiptController extends BaseController {
 				returnJson+="\"children\":[";
 				
 				Map<String, Object> fieldMap2 = new HashMap<String, Object>();
-				fieldMap2.put("parentID",childNode.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
+				fieldMap2.put("parentID",this.getCurrentUser().getSalesDepartmentID());//指定查询范围,此处默认查询本部门下的顾客信息	 
 				
 				Map<String, Object> queryParams2 = new HashMap<String, Object>();  
 				queryParams2.put("where", fieldMap2); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件

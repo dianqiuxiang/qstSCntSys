@@ -14,9 +14,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qst.scnt.dao.BaseDao;
 import com.qst.scnt.dao.CostDao;
+import com.qst.scnt.dao.ExpenseItemDao;
 import com.qst.scnt.dao.SalesDepartmentInfoDao;
 import com.qst.scnt.model.Cost;
 import com.qst.scnt.model.EveryMonthOtherInfo;
+import com.qst.scnt.model.ExpenseItem;
 import com.qst.scnt.model.ReceiptInfo;
 import com.qst.scnt.model.SalesDepartmentInfo;
 import com.qst.scnt.service.CostService;
@@ -31,6 +33,9 @@ public class CostServiceImpl extends BaseServiceImpl<Cost> implements CostServic
 		
 		@Resource
 		private SalesDepartmentInfoDao salesDepartmentInfoDao;
+		
+		@Resource
+		private ExpenseItemDao expenseItemDao;
 		
 			@Override
 		public BaseDao<Cost> getBaseDao() {
@@ -80,6 +85,49 @@ public class CostServiceImpl extends BaseServiceImpl<Cost> implements CostServic
 					}
 					else{
 						queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
+					}
+				}
+			}
+			
+			if(queryDate.get("expenseItemID")==null){
+				queryDate.put("expenseItemIDList", null);
+			}
+			else{
+				int salesDeptID=(int)queryDate.get("expenseItemID");
+				ExpenseItem expenseItem=new ExpenseItem();
+				expenseItem=expenseItemDao.selectPK(salesDeptID);
+				
+				List<ExpenseItem> expenseItemList_Level3 =new ArrayList();
+				if(expenseItem.getLevel()==1){
+					List<ExpenseItem> expenseItemList_Level2 =new ArrayList();
+					expenseItemList_Level2=expenseItemDao.selectByParentID(expenseItem);
+					
+					for(ExpenseItem entity_Level2:expenseItemList_Level2){
+						expenseItemList_Level3.addAll(expenseItemDao.selectByParentID(entity_Level2));
+					}
+					if(expenseItemList_Level3==null){
+						queryDate.put("expenseItemIDList", null);
+					}
+					else{
+						queryDate.put("expenseItemIDList", expenseItemList_Level3);
+					}
+				}
+				else if(expenseItem.getLevel()==2){
+					expenseItemList_Level3.addAll(expenseItemDao.selectByParentID(expenseItem));
+					if(expenseItemList_Level3==null){
+						queryDate.put("expenseItemIDList", null);
+					}
+					else{
+						queryDate.put("expenseItemIDList", expenseItemList_Level3);
+					}
+				}
+				else{
+					expenseItemList_Level3.add(expenseItem);
+					if(expenseItemList_Level3==null){
+						queryDate.put("expenseItemIDList", null);
+					}
+					else{
+						queryDate.put("expenseItemIDList", expenseItemList_Level3);
 					}
 				}
 			}

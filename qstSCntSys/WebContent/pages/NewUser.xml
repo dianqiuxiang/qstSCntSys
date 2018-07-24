@@ -18,6 +18,17 @@
 				<input id="userE" class='easyui-textbox' data-options="validType:'email'"></input>
 			</td>
 		</tr>
+		<tr id="userDeptInfo">
+			<td>部门信息:</td>
+			<td>
+				<select class="easyui-combotree" id="userDept" data-options="editable:false,url:'/qstSCntSys/user/selectSalesDepartment.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',required:true,onBeforeSelect:function(node){
+                     if ($(this).tree('getLevel',node.target)==3) {  
+		                return false;  
+		            }  
+                },onLoadSuccess: function(node,data){$('#userDept').combotree('setValue', data[0].id);}"></select><!--  -->
+			</td>
+		</tr>
 		<tr>
 			<td></td>
 			<td><span id='msginfo'></span></td>

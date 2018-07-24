@@ -1,5 +1,6 @@
 package com.qst.scnt.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.qst.scnt.model.ExpenseItem;
 import com.qst.scnt.model.Menu;
+import com.qst.scnt.model.UserInfo;
 import com.qst.scnt.service.MenuService;
 
 @Controller
@@ -37,42 +39,60 @@ public class MenuController extends BaseController {
 		String returnJson="[";
 		int i=0;
 		for(Menu item:list){
-			i++;
-			returnJson+="{";
-			returnJson+="\"id\":"+ item.getId() +",";
-			returnJson+="\"text\":\""+ item.getMenuName() +"\",";
-			returnJson+="\"children\":[";
-			Map<String, Object> fieldMap = new HashMap<String, Object>();
-			fieldMap.put("parentID",item.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
 			
-			Map<String, Object> queryParams = new HashMap<String, Object>();  
-			queryParams.put("where", fieldMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
-			
-			List<Menu> childrenList=menuService.selectParam(queryParams);
-			
-			int j=0;
-			for(Menu childNode:childrenList){
-				j++;
-				returnJson+="{";
-				returnJson+="\"id\":"+ childNode.getId() +",";
-				returnJson+="\"text\":\""+ childNode.getMenuName() +"\",";
-				returnJson+="\"attributes\":{\"url\":\""+ childNode.getMenuUrl() +"\"}";
-				
-				if(j==childrenList.size()){
-					returnJson+="}";
+			if(item.getRoleType().contains(this.getCurrentUser().getUserType().toString())){
+				i++;
+				if(i==1){
+					returnJson+="{";
 				}
 				else{
-					returnJson+="},";
+					returnJson+=",{";
 				}
-			}
-			returnJson+="]";
-			
-			if(i==list.size()){
+				//returnJson+="{";
+				returnJson+="\"id\":"+ item.getId() +",";
+				returnJson+="\"text\":\""+ item.getMenuName() +"\",";
+				returnJson+="\"children\":[";
+				Map<String, Object> fieldMap = new HashMap<String, Object>();
+				fieldMap.put("parentID",item.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
+				
+				Map<String, Object> queryParams = new HashMap<String, Object>();  
+				queryParams.put("where", fieldMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+				
+				List<Menu> childrenList=menuService.selectParam(queryParams);
+				
+				int j=0;
+				for(Menu childNode:childrenList){
+					
+					if(childNode.getRoleType().contains(this.getCurrentUser().getUserType().toString())){
+						j++;
+						if(j==1){
+							returnJson+="{";
+						}
+						else{
+							returnJson+=",{";
+						}
+						returnJson+="\"id\":"+ childNode.getId() +",";
+						returnJson+="\"text\":\""+ childNode.getMenuName() +"\",";
+						returnJson+="\"attributes\":{\"url\":\""+ childNode.getMenuUrl() +"\"}";
+						returnJson+="}";
+//						if(j==childrenList.size()){
+//							returnJson+="}";
+//						}
+//						else{
+//							returnJson+="},";
+//						}
+					}
+					
+				}
+				returnJson+="]";
 				returnJson+="}";
-			}
-			else{
-				returnJson+="},";
-			}
+//				if(i==list.size()){
+//					returnJson+="}";
+//				}
+//				else{
+//					returnJson+="},";
+//				}
+			}			
 		}
 		returnJson+="]";
 		//System.out.println(returnJson);
@@ -139,5 +159,16 @@ public class MenuController extends BaseController {
 //		}]
 //	}]
 
-	
+	/**
+	 * index.html页面获取当前用户
+	 * @return
+	 */
+	@RequestMapping(value="/getCUser.do")
+	@ResponseBody
+	public Object getCUser() {
+		
+		UserInfo cUser=this.getCurrentUser();
+		Gson gson=new Gson();
+		return gson.toJson(cUser);
+	}
 }

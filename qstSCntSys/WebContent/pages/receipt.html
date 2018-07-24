@@ -24,7 +24,7 @@
     <div id="receiptToolbar" style="padding:5px">
         <span>订单编号：</span><input id="orderN" class='easyui-textbox' style="width:121px;"></input>
         <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/receipt/getSalesDept.do',method:'get',valueField:'id',textField:'text',
-        panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
+        panelHeight:'auto'" style="width:160px;"></select>
         <span>收款人：</span><input id="receiptM" class='easyui-textbox' style="width:121px;"></input>
         <span>收款时间</span><input id="receiptSD" class="easyui-datebox"></input>
         <span>至：</span><input id="receiptED" class="easyui-datebox"></input>
@@ -35,6 +35,28 @@
     </div>
     <script type="text/javascript">
 	$(document).ready(function() {
+		$('#salesDept').combotree({
+			onBeforeSelect:function(node){
+                if ($(this).tree('getLevel',node.target)==1) {  
+	                return false;  
+	            }
+	           },
+			onLoadSuccess:function(node,data){  
+				$('#salesDept').combotree('setValue', parent.$('#currentUserDeptID').val());
+		    }
+		});
+		
+		$('#receiptDg').datagrid({
+				url:'/qstSCntSys/receipt/selectByCodeAndRMemberAndDate.do',//需要立即查询时开启url 
+				queryParams: {
+					orderCode:$('#orderN').val(),
+	    		    salesDepartmentID:parent.$('#currentUserDeptID').val(),
+	    		    receiptMember:$('#receiptM').val(),
+	    		    startDate:$('#receiptSD').datebox("getValue"),
+	    		    endDate:$('#receiptED').datebox("getValue")
+			    }
+			});
+		
 		$("#receiptDg").datagrid('getPager').pagination({showPageList:false});
 	});
     function doReceiptSearch(){
@@ -147,7 +169,7 @@
     }
     </script>
    <table id="receiptDg"  toolbar="#receiptToolbar" class="easyui-datagrid" style="height:100%"
-		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/receipt/selectByCodeAndRMemberAndDate.do',method:'get'">
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20">
 		<thead>
 			<tr>
 			    <th data-options="field:'id',width:200,hidden:true"></th>

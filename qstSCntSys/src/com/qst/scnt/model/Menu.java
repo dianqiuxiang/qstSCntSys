@@ -31,7 +31,12 @@ public class Menu {
      *父节点
      */
     private Integer parentID;
-        
+    
+    /**
+     *角色配置
+     */
+    private String roleType;
+    
     /**
      *主键（自增）
      */
@@ -101,6 +106,21 @@ public class Menu {
     public void setParentID(Integer parentID) {
         this.parentID = parentID;
     }
+
+    /**
+     *角色配置
+     */
+	public String getRoleType() {
+		return roleType;
+	}
+
+	/**
+     *角色配置
+     */
+	public void setRoleType(String roleType) {
+		this.roleType = roleType;
+	}
    
+    
     
 }

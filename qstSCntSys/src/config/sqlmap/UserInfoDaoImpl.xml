@@ -199,23 +199,24 @@
 		   
 		   <!-- 查询（模糊查询，参数） -->  
 		   <select id="selectParamFlexible" parameterType="userInfo" resultType="userInfo">  
-		        select * from userInfo  
+		        select a.*,b.salesDepartmentName from userInfo a,salesDepartmentInfo b 
 		        <trim prefix="WHERE" prefixOverrides="and |or">
 					<if test="userName != null" >
-						and userName like "%"#{userName}"%"</if>
+						and a.userName like "%"#{userName}"%"</if>
 					<if test="pwd != null" >
-						and pwd = #{pwd}
+						and a.pwd = #{pwd}
 					</if>
 					<if test="userPhone != null" >
-						and userPhone like "%"#{userPhone}"%"
+						and a.userPhone like "%"#{userPhone}"%"
 					</if>
 					<if test="userEmail != null" >
-						and userEmail like "%"#{userEmail}"%"
+						and a.userEmail like "%"#{userEmail}"%"
 					</if>
 					<if test="salesDepartmentID != null" >
-						and salesDepartmentID = #{salesDepartmentID}
+						and a.salesDepartmentID = #{salesDepartmentID}
 					</if>
-						and isDelete=0
+						and a.isDelete=0
+						and a.salesDepartmentID=b.id
 				</trim> 
 		   </select>
 	    

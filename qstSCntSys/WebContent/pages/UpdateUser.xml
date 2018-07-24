@@ -5,13 +5,7 @@
 			<td>
 				<input id="userN" class='easyui-textbox' data-options="required:true"></input>
 			</td>
-		</tr>
-		<tr>
-			<td>用户密码:</td>
-			<td>
-				<input id="userPwd" type="password" class='easyui-textbox' data-options="required:true"></input>
-			</td>
-		</tr>
+		</tr>		
 		<tr>
 			<td>用户电话:</td>
 			<td>
@@ -22,6 +16,17 @@
 			<td>用户邮箱:</td>
 			<td>
 				<input id="userE" class='easyui-textbox'  data-options="validType:'email'"></input>
+			</td>
+		</tr>
+		<tr id="userDeptInfo">
+			<td>部门信息:</td>
+			<td>
+				<select class="easyui-combotree" id="userDept" data-options="editable:false,url:'/qstSCntSys/user/selectSalesDepartment.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',required:true,onBeforeSelect:function(node){
+                     if ($(this).tree('getLevel',node.target)==3) {  
+		                return false;  
+		            }  
+                }"></select><!--  -->
 			</td>
 		</tr>
 		<tr>
