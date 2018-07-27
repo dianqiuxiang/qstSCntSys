@@ -749,7 +749,12 @@ public class ReportExportController extends BaseController {
 	} 
 	
 	private List<ExpenseItem> getExpenseItem(){
-		return expenseItemService.select();
+		Map<String, Object> whereMap = new HashMap<String, Object>();
+		whereMap.put("level", 2);		
+		
+		Map<String, Object> params = new HashMap<String, Object>();  
+		params.put("where", whereMap);
+		return expenseItemService.selectParam(params);
 	}
 	
 	private List<ResultReportModel> getResultReportItem(List<ExpenseItem> expenseItemList,BigDecimal profit){

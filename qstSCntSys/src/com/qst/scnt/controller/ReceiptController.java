@@ -282,7 +282,7 @@ public class ReceiptController extends BaseController {
 	@ResponseBody
 	public Object addReceiptInfo(@RequestBody  ReceiptInfo receiptInfo) {
 		
-		receiptInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
+		//receiptInfo.setSalesDepartmentID(this.getCurrentUser().getSalesDepartmentID());
 		receiptInfo.setIsDelete(0);
 		int result=receiptInfoServicce.insert(receiptInfo);
 		String resultStr="";
