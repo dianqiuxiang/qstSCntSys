@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+-->
+    <mapper namespace="com.qst.scnt.dao.impl.SorcReciPayExesDetailDaoImpl">
+		<select id="countParam" parameterType="java.util.Map" resultType="int">  
+		        select count(*) from salesDepartmentInfo e   
+		        where 1 = 1
+	              and isDelete=0
+	              and e.level = #{level}
+		  </select>  
+		  <!-- 签约部门新资源排名 -->  
+		  <select id="countNewResour" parameterType="java.util.Map" resultType="java.util.HashMap">
+		    select (@j :=@j + 1) AS No,f.number,f.package,f.pname,f.salesDepartmentName from
+			(
+		      select 
+					a.orderCode,
+					a.customerType,
+					a.customerPhone,
+					a.customerName,
+					d.salesDepartmentName as pname,
+					a.customerAddress,
+					a.orderDate,
+					CONCAT(YEAR(a.orderDate),'-',DATE_FORMAT(a.orderDate,'%m')) as months ,
+					a.orderAmount,
+					a.healthMember,
+					a.customerSign,
+					a.salesDepartmentID,
+					a.isDelete,
+					b.level,
+					b.salesDepartmentName,
+					b.salesDepartmentPhone,
+					COUNT(a.customerPhone) as number,
+					cast((c.receiptAmount/249) as decimal(18,0)) as package,
+					(@i :=@i + 1) AS No			
+			from  orderinfo a
+			left join salesdepartmentInfo b
+				on a.salesDepartmentID = b.id
+			left join receiptinfo  c
+				on a.salesDepartmentID = c.salesDepartmentID
+			left join salesdepartmentInfo d
+				on d.id = b.parentID,
+			(SELECT @i := 0) AS it
+			where 1 = 1
+					   and a.isDelete=0
+			<if test="level!='' and level!=null">
+					   and b.level = #{level}
+			</if>
+			<if test="salesDepartmentID!='' and salesDepartmentID!=null">
+					   and a.salesDepartmentID = #{salesDepartmentID}     
+			</if> 
+			<if test="yearmonth!=null and yearmonth!=''">
+			    and a.orderDate like concat(#{yearmonth},'%')
+			</if>
+			GROUP BY 
+					b.salesDepartmentPhone,
+					b.salesDepartmentName,
+					months
+			order BY
+					number desc,package desc
+			) f,
+                    (SELECT @j := 0) AS its 
+                    order BY
+					number desc,package desc
+			
+		  </select>
+		  <!-- 签约部门回款盒数排名 -->
+    </mapper>

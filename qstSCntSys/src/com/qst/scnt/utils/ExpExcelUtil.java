@@ -54,6 +54,7 @@ public class ExpExcelUtil {
         for (Map mapRow : varList) {
         	HSSFRow userRow = sheet.createRow(rowCount++);
             for(short i=0;i<mapRow.size();i++) {
+            	sheet.setColumnWidth(i, 5000);//±í¸ñ¿í¶È
             	String varstr = mapRow.get("var"+(i+1)) != null ? mapRow.get("var"+(i+1)).toString() : "";
             	userRow.createCell(i).setCellValue(varstr);
             }
