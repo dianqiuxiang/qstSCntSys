@@ -35,7 +35,7 @@ public class ExpExcelUtil {
         HSSFRow row = sheet.createRow(0);
         HSSFCellStyle style = workbook.createCellStyle();
         HSSFCell cell = null;
-        String excelName = map.get("name").toString() + ".xls";
+        String excelName = map.get("name").toString();
         List<Map> varList = (List<Map>) map.get("varList");
         List<String> titles = (List<String>) map.get("titles");
         String sFontname = "ËÎÌו";

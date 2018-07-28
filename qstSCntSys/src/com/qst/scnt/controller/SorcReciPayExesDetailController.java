@@ -70,11 +70,11 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	 * µ¼³öµ½excel
 	 * @return
 	 */
-	@RequestMapping(value="/excel")
+	@RequestMapping(value="/excel.do")
 	public void exportExcel(HttpServletRequest request,HttpServletResponse response) throws IOException{
 			Map<String ,Object > param = new HashMap<String,Object>();
 			String yearmonth = request.getParameter("yearmonth").toString();
-			String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
+			//String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
 			if(yearmonth==null) {
 				Date date = new Date();
 				SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM");
@@ -84,7 +84,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 			}else {
 				param.put("yearmonth", yearmonth);
 			}
-			param.put("salesDepartmentID", salesDepartmentID);
+			//param.put("salesDepartmentID", salesDepartmentID);
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			List<Map> listSorcReci = sorcReciPayExesDetailService.countNewResour(param);
 			List<Map> varList = new ArrayList<Map>();
