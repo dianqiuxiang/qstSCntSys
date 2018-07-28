@@ -44,5 +44,10 @@ public class SorcReciPayExesDetailDaoImpl extends BaseDaoImpl<Object> implements
 		// TODO Auto-generated method stub
 		return this.getSqlSession().selectList(namespace + "." + "countProductNum", params);
 	}
+	@Override
+	public List<Map> exesDetailExcelAll(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectList(namespace + "." + "exesDetail", params);
+	}
 }
 

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">  
+	<title>JK财务管理系统</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../locale/easyui-lang-zh_CN.js"></script>
+	<style type="text/css">
+	    html,body{
+	        padding:0;
+	        margin:0;
+	        width:100%;
+	        height:100%;
+	    }
+	</style>
+	<script type="text/javascript">
+    $(document).ready(function() {
+    	
+	});
+    
+    function exportExcel(){
+    	
+    	var salesDepartmentID = $('#salesDept').combotree("getValue");
+		var startDate = $('#startDate').datebox("getValue");
+		var endDate = $('#endDate').datebox("getValue");
+		var expenseItemId = $('#expenseitemId').datebox("getValue");
+    	location.href="/qstSCntSys/sorcReciPayExesDetail/exesDetailExcel.do?salesDepartmentID="+salesDepartmentID
+    			+"&startDate="+startDate+"&endDate="+endDate+"&expenseItemId="+expenseItemId;
+    }
+    
+    function doSearch1(){
+    	
+		console.log($('#expenseitemId').datebox("getValue"));
+		if($('#startDate').datebox("getValue")==""||$('#endDate').datebox("getValue")=="")
+		{
+				parent.$.messager.alert("消息提示","请选择时间区间","info");
+				return false;
+			}
+		
+    	$('#sorc').datagrid('load',{
+    		salesDepartmentID:$('#salesDept').combotree("getValue"),
+    		startDate:$('#startDate').datebox("getValue"),
+    		endDate:$('#endDate').datebox("getValue"),
+    		expenseItemId:$('#expenseitemId').datebox("getValue")
+    		});
+    }
+    
+    function dateformateFirst(id) {
+   	   $(id).datebox({
+   	       //显示日趋选择对象后再触发弹出月份层的事件，初始化时没有生成月份层
+   	       onShowPanel: function () {
+   	          //触发click事件弹出月份层
+   	          span.trigger('click'); 
+   	          if (!tds)
+   	            //延时触发获取月份对象，因为上面的事件触发和对象生成有时间间隔
+   	            setTimeout(function() { 
+   	                tds = p.find('div.calendar-menu-month-inner td');
+   	                tds.click(function(e) {
+   	                   //禁止冒泡执行easyui给月份绑定的事件
+   	                   e.stopPropagation(); 
+   	                   //得到年份
+   	                   var year = /\d{4}/.exec(span.html())[0] ,
+   	                   //月份
+   	                   //之前是这样的month = parseInt($(this).attr('abbr'), 10) + 1; 
+   	                   month = parseInt($(this).attr('abbr'), 10);  
+
+   	         //隐藏日期对象                     
+   	         $(id).datebox('hidePanel') 
+   	           //设置日期的值
+   	           .datebox('setValue', year + '-' + month); 
+   	                        });
+   	                    }, 0);
+   	            },
+   	            //配置parser，返回选择的日期
+   	            parser: function (s) {
+   	                if (!s) return new Date();
+   	                var arr = s.split('-');
+   	                return new Date(parseInt(arr[0], 10), parseInt(arr[1], 10) - 1, 1);
+   	            },
+   	            //配置formatter，只返回年月 之前是这样的d.getFullYear() + '-' +(d.getMonth()); 
+   	            formatter: function (d) { 
+   	                var currentMonth = (d.getMonth()+1);
+   	                var currentMonthStr = currentMonth < 10 ? ('0' + currentMonth) : (currentMonth + '');
+   	                return d.getFullYear() + '-' + currentMonthStr; 
+   	            }
+   	        });
+
+   	        //日期选择对象
+   	        var p = $(id).datebox('panel'), 
+   	        //日期选择对象中月份
+   	        tds = false, 
+   	        //显示月份层的触发控件
+   	        span = p.find('span.calendar-text'); 
+   	        var curr_time = new Date();
+   	      	var y = curr_time.getFullYear();
+   	        //设置前当月
+   	        $(id).datebox("setValue", y + '-01');
+   	}
+   
+    </script> 
+</head>
+<body>
+   <div id="customerToolbar" style="padding:5px">
+        <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/customer/getSalesDept.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
+        <span>费用项目：</span><select id="expenseitemId" class='easyui-combotree'  data-options="editable:false,url:'/qstSCntSys/cost/getExpenseItem.do',method:'get',valueField:'id',
+        textField:'text',panelHeight:'auto',onLoadSuccess: function(node,data){$('#expenseN').combotree('setValue', data[0].id);}" style="width:160px;"></select>
+         <span>时间：</span><input id="startDate" class="easyui-datebox"></input>
+       	<span>至：</span><input id="endDate" class="easyui-datebox"></input>
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch1()">查询</a>
+        <a href="#" onclick="exportExcel()" class="easyui-linkbutton" plain="true" >导出</a> 
+    </div>
+    
+   <table id="sorc"  toolbar="#customerToolbar" class="easyui-datagrid" style="height:100%"
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/sorcReciPayExesDetail/getExesDetail.do',method:'get'">
+		<thead>
+			<tr>
+			    <th data-options="field:'id',width:200,hidden:true"></th>
+			    <th data-options="field:'expenseDate',width:100">日期</th>
+			    <th data-options="field:'deptName',width:200">市场部</th>
+			    <th data-options="field:'pName',width:200">签约部门</th>
+			    <th data-options="field:'certificateId',width:200">凭证号</th>
+			    <th data-options="field:'remark',width:200">摘要</th>
+			    <th data-options="field:'pettycash',width:100">备用金</th>
+				<th data-options="field:'ffItemName',width:200">一级费用项目</th>
+				<th data-options="field:'pItemName',width:200,align:'right'">二级费用项目</th>
+				<th data-options="field:'expenseItem',width:200,align:'right'">三级费用项目</th>
+				<th data-options="field:'expenseAmount',width:200,align:'right'">费用金额</th>
+			</tr>
+		</thead>
+	</table>
+</body>
+</html>

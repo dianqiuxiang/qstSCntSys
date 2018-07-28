@@ -101,6 +101,36 @@ public class SorcReciPayExesDetailServiceImpl extends BaseServiceImpl<Object> im
 //	
 //    //创建一个返回值对象
 //    EUDataGridResult<EmployeeInfo> result = new EUDataGridResult<EmployeeInfo>();
+	
+	@Override
+	public List<Map> exesDetailExcelAll(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		List<Map> exesDetailList = sorcReciPayExesDetailDao.exesDetailExcelAll(params);
+		List<Map> exesDetailListTemp = new LinkedList<Map>();
+		for(Map exesDetil:exesDetailList) {
+			exesDetil.put("certificateId", "");//凭证号
+			exesDetil.put("pettycash", "");//备用金
+			exesDetailListTemp.add(exesDetil);
+		}
+		return exesDetailListTemp;
+	}
+	
+	@Override
+	public EUDataGridResult<Map> exesDetailExcel(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+				int pageNum = (int)params.get("pageNum");
+				int pageSize = (int)params.get("pageSize");
+				PageHelper.startPage(pageNum, pageSize);
+				List<Map> list = sorcReciPayExesDetailDao.exesDetailExcelAll(params);
+				
+		        //创建一个返回值对象
+		        EUDataGridResult<Map> result = new EUDataGridResult<Map>();
+		        result.setRows(list);
+		        //取记录总条数
+		        PageInfo<Map> pageInfo = new PageInfo<Map>(list);
+		        result.setTotal(pageInfo.getTotal());
+		        return result;
+	}
 
 }
 

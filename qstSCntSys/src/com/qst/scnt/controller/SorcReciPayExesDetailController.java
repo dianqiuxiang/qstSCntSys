@@ -192,6 +192,87 @@ public class SorcReciPayExesDetailController  extends BaseController {
 			exutil.getHSSFWorkbook(dataMap,request, response);
 	}
 	
+	/**
+	 * 市场部费用明细表
+	 * @param params
+	 * @return
+	 */
+	@RequestMapping(value="/getExesDetail.do")
+	@ResponseBody
+	public Object getExesDetail(String salesDepartmentID,String startDate,String endDate,String expenseItemId,Integer page,Integer rows) {
+		Gson gson = new Gson();
+		
+		Map<String ,Object > param = new HashMap<String,Object>();
+		//查询参数
+		param.put("startDate", startDate);
+		param.put("endDate", endDate);
+		param.put("salesDepartmentID", salesDepartmentID);
+		param.put("expenseItemId", expenseItemId);
+		//分页
+		param.put("pageNum", page);
+		param.put("pageSize", rows);
+		
+		EUDataGridResult<Map> newResourList = sorcReciPayExesDetailService.exesDetailExcel(param);
+		return gson.toJson(newResourList);
+	}
+	
+	/*
+	 * 导出"市场部费用明细表"
+	 * @return
+	 */
+	@RequestMapping(value="/exesDetailExcel")
+	public void exesDetailExcel(HttpServletRequest request,HttpServletResponse response) throws IOException{
+			Map<String ,Object > param = new HashMap<String,Object>();
+			
+			String startDate = request.getParameter("startDate").toString();
+			String endDate = request.getParameter("endDate").toString();
+			String expenseItemId = request.getParameter("expenseItemId").toString();
+			String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
+			param.put("startDate", startDate);
+			param.put("endDate", endDate);
+			param.put("salesDepartmentID", salesDepartmentID);
+			param.put("expenseItemId", expenseItemId);
+			
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			List<Map> listSorcReci = sorcReciPayExesDetailService.exesDetailExcelAll(param);
+			List<Map> varList = new ArrayList<Map>();
+			for(int i=0;i<listSorcReci.size();i++){//十个字段
+				Map vpd = new HashMap();
+					vpd.put("var1", listSorcReci.get(i).get("expenseDate"));	//日期
+					vpd.put("var2", listSorcReci.get(i).get("deptName"));	//市场部门
+					vpd.put("var3", listSorcReci.get(i).get("pName"));	//签约部门
+					vpd.put("var4", listSorcReci.get(i).get("certificateId"));	//凭证号
+					vpd.put("var5", listSorcReci.get(i).get("remark"));	//摘要
+					vpd.put("var6", listSorcReci.get(i).get("pettycash"));	//备用金
+					vpd.put("var7", listSorcReci.get(i).get("ffItemName"));	//一级费用项目
+					vpd.put("var8", listSorcReci.get(i).get("pItemName"));	//二级费用项目
+					vpd.put("var9", listSorcReci.get(i).get("expenseItem"));	//三级费用项目
+					vpd.put("var10", listSorcReci.get(i).get("expenseAmount"));	//费用金额
+					
+				varList.add(vpd);
+			}
+			Map dataMap = new HashMap();
+			List<String> titles = new LinkedList<String>();
+			titles.add("日期");
+			titles.add("市场部门");
+			titles.add("签约部门");
+			titles.add("凭证号");
+			titles.add("摘要");
+			titles.add("备用金");
+			titles.add("一级费用项目");
+			titles.add("二级费用项目");
+			titles.add("三级费用项目");
+			titles.add("费用金额");
+			
+			dataMap.put("varList", varList);
+			dataMap.put("titles", titles);
+			dataMap.put("name", System.currentTimeMillis());
+			dataMap.put("sheetName", "sheet1");
+			
+			ExpExcelUtil exutil = new ExpExcelUtil();
+			exutil.getHSSFWorkbook(dataMap,request, response);
+	}
+	
 	@RequestMapping(value="/dowloadResultByFtl")
 	public void dowloadResultByFtl(String yearmonth,Integer page,Integer rows,HttpServletResponse response) throws Exception{
 		Map<String ,Object > param = new HashMap<String,Object>();

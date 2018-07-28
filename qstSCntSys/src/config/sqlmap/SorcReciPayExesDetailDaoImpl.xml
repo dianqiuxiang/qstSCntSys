@@ -121,4 +121,56 @@
 					number desc,package desc
 			
 		  </select>
+		  
+		  <!-- 市场部明细表 -->
+		  <select id="exesDetail" parameterType="map" resultType="java.util.HashMap">
+		      SELECT 
+				a.expenseAmount,
+				a.expenseDate,
+				a.remark,
+				b.expenseItem,
+				b.id,
+				c.salesDepartmentName as deptName,
+				d.id as levelTwoDeptId,
+				d.salesDepartmentName as pName,
+				e.salesDepartmentName as ffName,
+				f.expenseItem as pItemName,
+				g.expenseItem as ffItemName
+			from 
+					cost as a
+				left JOIN
+					expenseitem as b
+				on a.expenseItemID = b.id
+				left JOIN
+					salesdepartmentinfo as c
+				on a.salesDepartmentID = c.id
+				left JOIN
+					salesdepartmentinfo as d
+				on d.id = c.parentID
+				left JOIN
+					salesdepartmentinfo as e
+				on d.parentID = e.id
+				left JOIN
+					expenseitem as f
+				on b.parentID = f.id
+				left JOIN
+					expenseitem as g
+				on f.parentID = g.id
+			WHERE
+				a.isDelete = '0'
+			<if test="salesDepartmentID !=null and salesDepartmentID !=''">
+			    and a.salesDepartmentID =#{salesDepartmentID}
+			</if>
+			<if test="startDate!=null and startDate!='' ">  
+			    <![CDATA[ and DATE_FORMAT(a.expenseDate, '%Y-%m')>=  DATE_FORMAT(#{startDate}, '%Y-%m')   ]]> 
+			</if>
+			<if test="endDate!=null and endDate!=''">  
+			    <![CDATA[  and DATE_FORMAT(a.expenseDate, '%Y-%m') <= DATE_FORMAT(#{endDate}, '%Y-%m')    ]]>
+			</if>
+			<if test="expenseItemId !='' and expenseItemId !=null">  
+			     and a.expenseItemID = #{expenseItemId}
+			</if>
+		    ORDER BY
+				a.expenseDate DESC  
+		  </select>
     </mapper>

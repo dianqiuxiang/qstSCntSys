@@ -21,10 +21,23 @@ public interface SorcReciPayExesDetailService extends BaseService<Object> {
 	 */
 	EUDataGridResult<Map> countNewResourec(Map<String,Object> params);
 	/**
-	 * 签约部门新资源排名
+	 * 签约部门回盒数排名
 	 * @param params
 	 * @return
 	 */
 	EUDataGridResult<Map> countProductNum(Map<String,Object> params);
+	
+	/**
+	 * 市场部费用明细表
+	 * @param params
+	 * @return
+	 */
+	EUDataGridResult<Map> exesDetailExcel(Map<String,Object> params);
+	/**
+	 * 市场部费用明细表
+	 * @param params
+	 * @return
+	 */
+	List<Map> exesDetailExcelAll(Map<String,Object> params);
 }
 
