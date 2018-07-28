@@ -40,7 +40,7 @@
     	
     	var salesDepartmentID = $('#salesDept').combotree("getValue");
     	var yearmonth = $('#yearmonth').datebox("getValue");	
-    	location.href="/qstSCntSys/sorcReciPayExesDetail/excelNewSorcInfo.do?salesDepartmentID="+salesDepartmentID+"&yearmonth="+yearmonth;
+    	location.href="/qstSCntSys/sorcReciPayExesDetail/excelProductNumInfo.do?salesDepartmentID="+salesDepartmentID+"&yearmonth="+yearmonth;
     	/* $.ajax({
 			type:"post",
 			async: true, 
@@ -151,13 +151,13 @@
     
     </script> 
    <table id="sorc"  toolbar="#customerToolbar" class="easyui-datagrid" style="height:100%"
-		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/sorcReciPayExesDetail/getNewSorcInfo.do',method:'get'">
+		data-options="rownumbers:true,singleSelect:true,pagination:true,pageSize:20,url:'/qstSCntSys/sorcReciPayExesDetail/getProductNumInfo.do',method:'get'">
 		<thead>
 			<tr>
 			    <th data-options="field:'id',width:200,hidden:true"></th>
 			    <th data-options="field:'pname',width:200">市场部</th>
 				<th data-options="field:'salesDepartmentName',width:200">签约部门</th>
-				<th data-options="field:'number',width:200,align:'right'">户数</th>
+				<!-- <th data-options="field:'number',width:200,align:'right'">户数</th> -->
 				<th data-options="field:'package',width:200,align:'right'">盒数</th>
 				<th data-options="field:'No',width:200,align:'right'">排名</th>
 			</tr>

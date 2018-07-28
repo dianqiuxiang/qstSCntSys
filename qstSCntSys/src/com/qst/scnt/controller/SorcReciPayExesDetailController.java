@@ -39,7 +39,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	private SorcReciPayExesDetailService sorcReciPayExesDetailService;
 	
 	/**
-	 * 签约部门回款盒数排名
+	 * 签约部门新资源排名
 	 * @param params
 	 * @return
 	 */
@@ -66,15 +66,43 @@ public class SorcReciPayExesDetailController  extends BaseController {
 		return gson.toJson(newResourList);
 	}
 	
-	/*
-	 * 导出到excel
+	/**
+	 * 签约部门回款盒数排名getProductNumInfo
+	 * @param params
 	 * @return
 	 */
-	@RequestMapping(value="/excel.do")
-	public void exportExcel(HttpServletRequest request,HttpServletResponse response) throws IOException{
+	@RequestMapping(value="/getProductNumInfo.do")
+	@ResponseBody
+	public Object getProductNumInfo(String salesDepartmentID,String yearmonth,Integer page,Integer rows) {
+		Gson gson = new Gson();
+		
+		Map<String ,Object > param = new HashMap<String,Object>();
+		if(yearmonth==null) {
+			Date date = new Date();
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM");
+			String sdate = sf.format(date);
+			//略去
+			param.put("yearmonth", "");//当前时间
+		}else {
+			param.put("yearmonth", yearmonth);
+		}
+		param.put("salesDepartmentID", salesDepartmentID);
+		param.put("pageNum", page);
+		param.put("pageSize", rows);
+		
+		EUDataGridResult<Map> newResourList = sorcReciPayExesDetailService.countProductNum(param);
+		return gson.toJson(newResourList);
+	}
+	
+	/*
+	 * 导出到excelNewSorcInfo
+	 * @return
+	 */
+	@RequestMapping(value="/excelNewSorcInfo")
+	public void excelNewSorcInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
 			Map<String ,Object > param = new HashMap<String,Object>();
 			String yearmonth = request.getParameter("yearmonth").toString();
-			//String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
+			String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
 			if(yearmonth==null) {
 				Date date = new Date();
 				SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM");
@@ -84,7 +112,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 			}else {
 				param.put("yearmonth", yearmonth);
 			}
-			//param.put("salesDepartmentID", salesDepartmentID);
+			param.put("salesDepartmentID", salesDepartmentID);
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			List<Map> listSorcReci = sorcReciPayExesDetailService.countNewResour(param);
 			List<Map> varList = new ArrayList<Map>();
@@ -103,6 +131,55 @@ public class SorcReciPayExesDetailController  extends BaseController {
 			titles.add("市场部");
 			titles.add("签约部门");
 			titles.add("户数");
+			titles.add("盒数");
+			titles.add("排名");
+			
+			dataMap.put("varList", varList);
+			dataMap.put("titles", titles);
+			dataMap.put("name", System.currentTimeMillis());
+			dataMap.put("sheetName", "sheet1");
+			
+			ExpExcelUtil exutil = new ExpExcelUtil();
+			exutil.getHSSFWorkbook(dataMap,request, response);
+	}
+	
+	/*
+	 * 导出到excelProductNumInfo
+	 * @return
+	 */
+	@RequestMapping(value="/excelProductNumInfo")
+	public void excelProductNumInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
+			Map<String ,Object > param = new HashMap<String,Object>();
+			String yearmonth = request.getParameter("yearmonth").toString();
+			String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
+			if(yearmonth==null) {
+				Date date = new Date();
+				SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM");
+				String sdate = sf.format(date);
+				//略去
+				param.put("yearmonth", "");//当前时间
+			}else {
+				param.put("yearmonth", yearmonth);
+			}
+			param.put("salesDepartmentID", salesDepartmentID);
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			List<Map> listSorcReci = sorcReciPayExesDetailService.countProductNumexcel(param);
+			List<Map> varList = new ArrayList<Map>();
+			for(int i=0;i<listSorcReci.size();i++){
+				Map vpd = new HashMap();
+					vpd.put("var1", listSorcReci.get(i).get("pname"));	//1
+					vpd.put("var2", listSorcReci.get(i).get("salesDepartmentName"));	//2
+//					vpd.put("var3", listSorcReci.get(i).get("number"));	//3
+					vpd.put("var4", listSorcReci.get(i).get("package"));	//4
+					vpd.put("var5", listSorcReci.get(i).get("No"));	//5
+					
+				varList.add(vpd);
+			}
+			Map dataMap = new HashMap();
+			List<String> titles = new LinkedList<String>();
+			titles.add("市场部");
+			titles.add("签约部门");
+//			titles.add("户数");
 			titles.add("盒数");
 			titles.add("排名");
 			
