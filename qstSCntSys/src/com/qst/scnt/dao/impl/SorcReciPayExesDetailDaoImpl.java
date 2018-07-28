@@ -23,7 +23,7 @@ public class SorcReciPayExesDetailDaoImpl extends BaseDaoImpl<Object> implements
 	}
 
 	/**
-	 * 签约部门回款盒数排名
+	 * 签约部门新资源排名
 	 * @param params
 	 * @return
 	 */
@@ -33,5 +33,16 @@ public class SorcReciPayExesDetailDaoImpl extends BaseDaoImpl<Object> implements
 		return this.getSqlSession().selectList(namespace + "." + "countNewResour", params);
 	}
 	
+	
+	/**
+	 * 签约部门回款盒数排名
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public List<Map> countProductNum(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectList(namespace + "." + "countProductNum", params);
+	}
 }
 
