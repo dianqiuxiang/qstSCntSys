@@ -13,11 +13,18 @@ import com.qst.scnt.utils.EUDataGridResult;
 public interface SorcReciPayExesDetailService extends BaseService<Object> {
 	
 	List countNewResour(Map<String,Object> params);
+	List countProductNumexcel(Map<String,Object> params);
 	/**
-	 * 签约部门回款盒数排名
+	 * 签约部门新资源排名
 	 * @param params
 	 * @return
 	 */
 	EUDataGridResult<Map> countNewResourec(Map<String,Object> params);
+	/**
+	 * 签约部门新资源排名
+	 * @param params
+	 * @return
+	 */
+	EUDataGridResult<Map> countProductNum(Map<String,Object> params);
 }
 
