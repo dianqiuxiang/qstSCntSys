@@ -45,7 +45,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	 */
 	@RequestMapping(value="/getNewSorcInfo.do")
 	@ResponseBody
-	public Object getNewSorcInfo(String salesDepartmentID,String yearmonth,Integer page,Integer rows) {
+	public Object getNewSorcInfo(String yearmonth,Integer page,Integer rows) {
 		Gson gson = new Gson();
 		
 		Map<String ,Object > param = new HashMap<String,Object>();
@@ -58,7 +58,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 		}else {
 			param.put("yearmonth", yearmonth);
 		}
-		param.put("salesDepartmentID", salesDepartmentID);
+		
 		param.put("pageNum", page);
 		param.put("pageSize", rows);
 		
@@ -73,7 +73,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	 */
 	@RequestMapping(value="/getProductNumInfo.do")
 	@ResponseBody
-	public Object getProductNumInfo(String salesDepartmentID,String yearmonth,Integer page,Integer rows) {
+	public Object getProductNumInfo(String yearmonth,Integer page,Integer rows) {
 		Gson gson = new Gson();
 		
 		Map<String ,Object > param = new HashMap<String,Object>();
@@ -86,7 +86,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 		}else {
 			param.put("yearmonth", yearmonth);
 		}
-		param.put("salesDepartmentID", salesDepartmentID);
+		
 		param.put("pageNum", page);
 		param.put("pageSize", rows);
 		
@@ -102,7 +102,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	public void excelNewSorcInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
 			Map<String ,Object > param = new HashMap<String,Object>();
 			String yearmonth = request.getParameter("yearmonth").toString();
-			String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
+			//String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
 			if(yearmonth==null) {
 				Date date = new Date();
 				SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM");
@@ -112,7 +112,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 			}else {
 				param.put("yearmonth", yearmonth);
 			}
-			param.put("salesDepartmentID", salesDepartmentID);
+			//param.put("salesDepartmentID", salesDepartmentID);
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			List<Map> listSorcReci = sorcReciPayExesDetailService.countNewResour(param);
 			List<Map> varList = new ArrayList<Map>();
@@ -151,7 +151,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	public void excelProductNumInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
 			Map<String ,Object > param = new HashMap<String,Object>();
 			String yearmonth = request.getParameter("yearmonth").toString();
-			String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
+			//String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
 			if(yearmonth==null) {
 				Date date = new Date();
 				SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM");
@@ -161,7 +161,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 			}else {
 				param.put("yearmonth", yearmonth);
 			}
-			param.put("salesDepartmentID", salesDepartmentID);
+			//param.put("salesDepartmentID", salesDepartmentID);
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			List<Map> listSorcReci = sorcReciPayExesDetailService.countProductNumexcel(param);
 			List<Map> varList = new ArrayList<Map>();
@@ -193,7 +193,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	}
 	
 	@RequestMapping(value="/dowloadResultByFtl")
-	public void dowloadResultByFtl(String salesDepartmentID,String yearmonth,Integer page,Integer rows,HttpServletResponse response) throws Exception{
+	public void dowloadResultByFtl(String yearmonth,Integer page,Integer rows,HttpServletResponse response) throws Exception{
 		Map<String ,Object > param = new HashMap<String,Object>();
 		if(yearmonth==null) {
 			Date date = new Date();
@@ -204,7 +204,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 		}else {
 			param.put("yearmonth", yearmonth);
 		}
-		param.put("salesDepartmentID", salesDepartmentID);
+		
 		param.put("pageNum", page);
 		param.put("pageSize", rows);
 		List<Map> listSorcReci = sorcReciPayExesDetailService.countNewResour(param);
@@ -224,7 +224,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	public void getDataForExport(HttpServletRequest request,HttpServletResponse response) {
 		Map<String ,Object > param = new HashMap<String,Object>();
 		String yearmonth = request.getParameter("yearmonth").toString();
-		String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
+		
 		if(yearmonth==null) {
 			Date date = new Date();
 			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM");
@@ -234,7 +234,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 		}else {
 			param.put("yearmonth", yearmonth);
 		}
-		param.put("salesDepartmentID", salesDepartmentID);
+		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		List<Map> listSorcReci = sorcReciPayExesDetailService.countNewResour(param);
 		
