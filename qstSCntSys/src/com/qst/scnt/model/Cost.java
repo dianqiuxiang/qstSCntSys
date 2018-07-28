@@ -49,6 +49,11 @@ public class Cost {
     private String remark;
     
     /**
+     * 凭证号
+     */
+    private String voucherNo;
+    
+    /**
      *主键（自增）
      */
     public Integer getId() {
@@ -174,7 +179,22 @@ public class Cost {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	
+    /**
+     * 凭证号
+     */
+	public String getVoucherNo() {
+		return voucherNo;
+	}
+	
+    /**
+     * 凭证号
+     */
+	public void setVoucherNo(String voucherNo) {
+		this.voucherNo = voucherNo;
+	}
     
+	
    
     
     

@@ -251,13 +251,14 @@ function setExpenseModel(json)
 {
 	if(json.length!=0)
     {
-
+		$('#voucherNoA').textbox('setValue',json.voucherNo);
 		$('#salesDept').combotree({
 		    onLoadSuccess:function(node,data){  
 		    	$('#salesDept').combotree('setValue',json.salesDepartmentID);
 		    }}); 
 	    $('#expenseN').combotree('setValue',json.expenseItemID);
 		$('#expenseA').numberbox('setValue',json.expenseAmount);
+		$('#remarkA').textbox('setValue',json.remark);
 		$('#expenseD').datebox("setValue",json.expenseDate);
 	}
 	else
@@ -905,6 +906,11 @@ function newEmployee(callback)
 }
 function newExpense(callback)
 {
+	if($("#voucherNoA").textbox('isValid')==false)
+	{
+		$('#msginfo').html("凭证号为必填项！");
+		return;
+	}
 	if($("#salesDept").combotree('isValid')==false)
 	{
 		$('#msginfo2').html("销售部门为必选项！");
@@ -921,9 +927,11 @@ function newExpense(callback)
 		return;
 	}
 	var json={
+			"voucherNo":$('#voucherNoA').val(),
 			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"expenseItemID":$('#expenseN').combotree('getValue'),
 			"expenseAmount":$('#expenseA').numberbox('getValue'),
+			"remark":$('#remarkA').val(),
 			"expenseDate":$('#expenseD').datebox("getValue")
 			};
 	setDataModel("/qstSCntSys/cost/addCostInfo.do",json,callback);
@@ -1365,6 +1373,11 @@ function updateEmployee(callback,id)
 }
 function updateExpense(callback,id)
 {
+	if($("#voucherNoA").textbox('isValid')==false)
+	{
+		$('#msginfo').html("凭证号为必填项！");
+		return;
+	}
 	if($("#salesDept").combotree('isValid')==false)
 	{
 		$('#msginfo2').html("销售部门为必选项！");
@@ -1382,9 +1395,11 @@ function updateExpense(callback,id)
 	}
 	var json={
 			"id":id,
+			"voucherNo":$('#voucherNoA').val(),
 			"salesDepartmentID":$('#salesDept').combotree("getValue"),
 			"expenseItemID":$('#expenseN').combotree('getValue'),
 			"expenseAmount":$('#expenseA').numberbox('getValue'),
+			"remark":$('#remarkA').val(),
 			"expenseDate":$('#expenseD').datebox("getValue")
 			};
 	setDataModel("/qstSCntSys/cost/updateCostInfo.do",json,callback);

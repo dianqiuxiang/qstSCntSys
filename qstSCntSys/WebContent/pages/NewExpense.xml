@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <table>
  		<tr>
+			<td>凭证号:</td>
+			<td>
+				<input id="voucherNoA" class="easyui-numberbox" data-options="min:0,precision:0,required:true"></input>
+			</td>
+		</tr>
+ 		<tr>
 			<td>签约部门:</td>
 			<td colspan="4">
 				<select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/receipt/getSalesDept.do',method:'get',valueField:'id',textField:'text',
@@ -28,6 +34,12 @@
 			<td>费用金额:</td>
 			<td>
 				<input id="expenseA" class='easyui-numberbox' data-options="required:true,precision:2,groupSeparator:',',decimalSeparator:'.',prefix:'￥'"></input>
+			</td>
+		</tr>
+		<tr>
+			<td>摘要:</td>
+			<td>
+                     <input id="remarkA" class='easyui-textbox'></input>
 			</td>
 		</tr>
 		<tr>

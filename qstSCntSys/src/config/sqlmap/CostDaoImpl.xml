@@ -9,24 +9,26 @@
 		   <!-- 新增Cost实体类 -->  
 		    <insert id="insert" parameterType="cost">  
 		        insert into cost (expenseItemID, expenseAmount, 
-			      expenseDate, salesDepartmentID, isDelete,remark
+			      expenseDate, salesDepartmentID, isDelete,remark,voucherNo
 			      )
 			    values (#{expenseItemID,jdbcType=INTEGER}, #{expenseAmount,jdbcType=DECIMAL}, 
 			      #{expenseDate,jdbcType=DATE}, #{salesDepartmentID,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+			      , #{voucherNo,jdbcType=VARCHAR}
 			      )
 		   </insert>  		    
 		     
 		   <!-- 批量插入 -->  
 		   <insert id="insertBatch" parameterType="arraylist">  
 		        insert into cost (expenseItemID, expenseAmount, 
-			      expenseDate, salesDepartmentID, isDelete,remark
+			      expenseDate, salesDepartmentID, isDelete,remark,voucherNo
 			      )
 			    values 
 		        <!-- collection可以是List对于list,数组对于array,Map对应ids -->
 		        <foreach collection="list" item="item"  index="index" separator=",">
         			<trim prefix=" (" suffix=")" suffixOverrides=",">
         			#{item.expenseItemID,jdbcType=INTEGER}, #{item.expenseAmount,jdbcType=DECIMAL}, 
-			        #{item.expenseDate,jdbcType=DATE}, #{item.salesDepartmentID,jdbcType=INTEGER}, #{item.isDelete,jdbcType=INTEGER}, #{item.remark,jdbcType=VARCHAR}  
+			        #{item.expenseDate,jdbcType=DATE}, #{item.salesDepartmentID,jdbcType=INTEGER}, #{item.isDelete,jdbcType=INTEGER},
+			         #{item.remark,jdbcType=VARCHAR},#{item.voucherNo,jdbcType=VARCHAR}  
 		        	</trim>   
            		</foreach>  
 		   </insert>
@@ -52,6 +54,9 @@
 				      </if>
 				      <if test="remark != null" >
 				        remark = #{remark,jdbcType=VARCHAR},
+				      </if>
+				      <if test="voucherNo != null" >
+				        voucherNo = #{voucherNo,jdbcType=VARCHAR},
 				      </if>
 				    </set>
 				    where id = #{id,jdbcType=INTEGER}
@@ -121,6 +126,14 @@
 			                 <foreach collection="list" item="item" index="index">
 			                     <if test="item.remark !=null">
 			                         when id=#{item.id} then #{item.remark,jdbcType=VARCHAR}
+			                     </if>
+			                 </foreach>
+			            </trim>
+			            
+			            <trim prefix="voucherNo = case" suffix="end,">
+			                 <foreach collection="list" item="item" index="index">
+			                     <if test="item.voucherNo !=null">
+			                         when id=#{item.id} then #{item.voucherNo,jdbcType=VARCHAR}
 			                     </if>
 			                 </foreach>
 			            </trim>
