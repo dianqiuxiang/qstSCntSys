@@ -10,6 +10,7 @@ import com.qst.scnt.dao.OrderInfoDao;
 import com.qst.scnt.dao.SorcReciPayExesDetailDao;
 import com.qst.scnt.model.Cost;
 import com.qst.scnt.model.OrderInfo;
+import com.qst.scnt.model.exesDetail;
 
 @Repository("sorcReciPayExesDetailDao")
 public class SorcReciPayExesDetailDaoImpl extends BaseDaoImpl<Object> implements SorcReciPayExesDetailDao {
@@ -45,7 +46,7 @@ public class SorcReciPayExesDetailDaoImpl extends BaseDaoImpl<Object> implements
 		return this.getSqlSession().selectList(namespace + "." + "countProductNum", params);
 	}
 	@Override
-	public List<Map> exesDetailExcelAll(Map<String, Object> params) {
+	public List<exesDetail> exesDetailExcelAll(Map<String, Object> params) {
 		// TODO Auto-generated method stub
 		return this.getSqlSession().selectList(namespace + "." + "exesDetail", params);
 	}

@@ -23,6 +23,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import com.google.gson.Gson;
+import com.qst.scnt.model.ExpenseItem;
+import com.qst.scnt.model.SalesDepartmentInfo;
+import com.qst.scnt.model.exesDetail;
+import com.qst.scnt.service.ExpenseItemService;
+import com.qst.scnt.service.SalesDepartmentInfoService;
 import com.qst.scnt.service.SorcReciPayExesDetailService;
 import com.qst.scnt.utils.EUDataGridResult;
 import com.qst.scnt.utils.ExpExcelUtil;
@@ -38,6 +43,190 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	@Resource
 	private SorcReciPayExesDetailService sorcReciPayExesDetailService;
 	
+	@Resource
+	private ExpenseItemService expenseItemService;
+	
+	@Resource
+	private SalesDepartmentInfoService salesDepartmentInfoService;
+	
+	/**
+	 * 查询所有部门信息
+	 * @return
+	 */
+	@RequestMapping(value="/getSalesDept.do")
+	@ResponseBody
+	public Object getSalesDept(){
+		Map<String, Object> whereMap = new HashMap<String, Object>();
+		whereMap.put("parentID",0);//指定查询范围,此处默认查询本部门下的顾客信息	 
+		
+		Map<String, Object> params = new HashMap<String, Object>();  
+		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+		
+		List<SalesDepartmentInfo> list=salesDepartmentInfoService.selectParam(params);
+		
+		String returnJson="[";
+		int i=0;
+		for(SalesDepartmentInfo item:list){
+			i++;
+			returnJson+="{";
+			returnJson+="\"id\":"+ item.getId() +",";
+			returnJson+="\"text\":\""+ item.getSalesDepartmentName() +"\",";
+			returnJson+="\"children\":[";
+			Map<String, Object> fieldMap = new HashMap<String, Object>();
+			fieldMap.put("parentID",item.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
+			
+			Map<String, Object> queryParams = new HashMap<String, Object>();  
+			queryParams.put("where", fieldMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+			
+			List<SalesDepartmentInfo> childrenList=salesDepartmentInfoService.selectParam(queryParams);
+			
+			int j=0;
+			for(SalesDepartmentInfo childNode:childrenList){
+				j++;
+				returnJson+="{";
+				returnJson+="\"id\":"+ childNode.getId() +",";
+				returnJson+="\"text\":\""+ childNode.getSalesDepartmentName() +"\",";
+				returnJson+="\"children\":[";
+				
+				Map<String, Object> fieldMap2 = new HashMap<String, Object>();
+				fieldMap2.put("parentID",childNode.getId());//指定查询范围,此处默认查询本部门下的顾客信息	 
+				
+				Map<String, Object> queryParams2 = new HashMap<String, Object>();  
+				queryParams2.put("where", fieldMap2); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+				
+				List<SalesDepartmentInfo> childrenList2=salesDepartmentInfoService.selectParam(queryParams2);
+				
+				int k=0;
+				for(SalesDepartmentInfo childNode2:childrenList2){
+					k++;
+					returnJson+="{";
+					returnJson+="\"id\":"+ childNode2.getId() +",";
+					returnJson+="\"text\":\""+ childNode2.getSalesDepartmentName() +"\"";
+					
+					
+					if(k==childrenList2.size()){
+						returnJson+="}";
+					}
+					else{
+						returnJson+="},";
+					}
+				}
+				returnJson+="]";
+				
+				if(j==childrenList.size()){
+					returnJson+="}";
+				}
+				else{
+					returnJson+="},";
+				}
+			}
+			returnJson+="]";
+			
+			if(i==list.size()){
+				returnJson+="}";
+			}
+			else{
+				returnJson+="},";
+			}
+		}
+		returnJson+="]";
+		//System.out.println(returnJson);
+		return returnJson;
+	}
+	/**
+	 * 查询所有项目信息
+	 * @return
+	 */
+	@RequestMapping(value="/getExpenseItem.do")
+	@ResponseBody
+	public Object getExpenseItem() {		
+		/*Gson gson = new Gson();
+
+		List<ExpenseItem> list=expenseItemService.select();
+		ExpenseItem model=new ExpenseItem();
+		model.setId(-1);
+		model.setExpenseItem("选择所有");
+		list.add(0, model); 
+		//System.out.println(gson.toJson(list));
+		return gson.toJson(list);*/
+		
+		Map<String, Object> whereMap = new HashMap<String, Object>();
+		whereMap.put("parentID",0);//指定查询范围,此处默认查询本部门下的费用项目信息	 
+		
+		Map<String, Object> params = new HashMap<String, Object>();  
+		params.put("where", whereMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+		
+		List<ExpenseItem> list=expenseItemService.selectParam(params);
+		
+		String returnJson="[";
+		int i=0;
+		for(ExpenseItem item:list){
+			i++;
+			returnJson+="{";
+			returnJson+="\"id\":"+ item.getId() +",";
+			returnJson+="\"text\":\""+ item.getExpenseItem() +"\",";
+			returnJson+="\"children\":[";
+			Map<String, Object> fieldMap = new HashMap<String, Object>();
+			fieldMap.put("parentID",item.getId());//指定查询范围,此处默认查询本部门下的费用项目信息	 
+			
+			Map<String, Object> queryParams = new HashMap<String, Object>();  
+			queryParams.put("where", fieldMap); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+			
+			List<ExpenseItem> childrenList=expenseItemService.selectParam(queryParams);
+			
+			int j=0;
+			for(ExpenseItem childNode:childrenList){
+				j++;
+				returnJson+="{";
+				returnJson+="\"id\":"+ childNode.getId() +",";
+				returnJson+="\"text\":\""+ childNode.getExpenseItem() +"\",";
+				returnJson+="\"children\":[";
+				
+				Map<String, Object> fieldMap2 = new HashMap<String, Object>();
+				fieldMap2.put("parentID",childNode.getId());//指定查询范围,此处默认查询本部门下的费用项目信息	 
+				
+				Map<String, Object> queryParams2 = new HashMap<String, Object>();  
+				queryParams2.put("where", fieldMap2); //放到Map中去，"where"是key,"whereMap"是value,代表SQL语句where后面的条件
+				
+				List<ExpenseItem> childrenList2=expenseItemService.selectParam(queryParams2);
+				
+				int k=0;
+				for(ExpenseItem childNode2:childrenList2){
+					k++;
+					returnJson+="{";
+					returnJson+="\"id\":"+ childNode2.getId() +",";
+					returnJson+="\"text\":\""+ childNode2.getExpenseItem() +"\"";
+					
+					
+					if(k==childrenList2.size()){
+						returnJson+="}";
+					}
+					else{
+						returnJson+="},";
+					}
+				}
+				returnJson+="]";
+				
+				if(j==childrenList.size()){
+					returnJson+="}";
+				}
+				else{
+					returnJson+="},";
+				}
+			}
+			returnJson+="]";
+			
+			if(i==list.size()){
+				returnJson+="}";
+			}
+			else{
+				returnJson+="},";
+			}
+		}
+		returnJson+="]";
+		//System.out.println(returnJson);
+		return returnJson;
+	}
 	/**
 	 * 签约部门新资源排名
 	 * @param params
@@ -45,7 +234,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	 */
 	@RequestMapping(value="/getNewSorcInfo.do")
 	@ResponseBody
-	public Object getNewSorcInfo(String yearmonth,Integer page,Integer rows) {
+	public Object getNewSorcInfo(String salesDepartmentID,String yearmonth,Integer page,Integer rows) {
 		Gson gson = new Gson();
 		
 		Map<String ,Object > param = new HashMap<String,Object>();
@@ -58,7 +247,11 @@ public class SorcReciPayExesDetailController  extends BaseController {
 		}else {
 			param.put("yearmonth", yearmonth);
 		}
-		
+		if(salesDepartmentID==null||salesDepartmentID.equals("")) {
+			param.put("salesDepartmentID", null);
+		}else {
+			param.put("salesDepartmentID", salesDepartmentID);
+		}
 		param.put("pageNum", page);
 		param.put("pageSize", rows);
 		
@@ -73,7 +266,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	 */
 	@RequestMapping(value="/getProductNumInfo.do")
 	@ResponseBody
-	public Object getProductNumInfo(String yearmonth,Integer page,Integer rows) {
+	public Object getProductNumInfo(String salesDepartmentID,String yearmonth,Integer page,Integer rows) {
 		Gson gson = new Gson();
 		
 		Map<String ,Object > param = new HashMap<String,Object>();
@@ -86,7 +279,11 @@ public class SorcReciPayExesDetailController  extends BaseController {
 		}else {
 			param.put("yearmonth", yearmonth);
 		}
-		
+		if(salesDepartmentID==null||salesDepartmentID.equals("")) {
+			param.put("salesDepartmentID", null);
+		}else {
+			param.put("salesDepartmentID", salesDepartmentID);
+		}
 		param.put("pageNum", page);
 		param.put("pageSize", rows);
 		
@@ -102,7 +299,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	public void excelNewSorcInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
 			Map<String ,Object > param = new HashMap<String,Object>();
 			String yearmonth = request.getParameter("yearmonth").toString();
-			//String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
+			String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
 			if(yearmonth==null) {
 				Date date = new Date();
 				SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM");
@@ -112,7 +309,12 @@ public class SorcReciPayExesDetailController  extends BaseController {
 			}else {
 				param.put("yearmonth", yearmonth);
 			}
-			//param.put("salesDepartmentID", salesDepartmentID);
+			if(salesDepartmentID==null||salesDepartmentID.equals("")) {
+				param.put("salesDepartmentID", null);
+			}else {
+				param.put("salesDepartmentID", salesDepartmentID);
+			}
+			
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			List<Map> listSorcReci = sorcReciPayExesDetailService.countNewResour(param);
 			List<Map> varList = new ArrayList<Map>();
@@ -151,7 +353,7 @@ public class SorcReciPayExesDetailController  extends BaseController {
 	public void excelProductNumInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
 			Map<String ,Object > param = new HashMap<String,Object>();
 			String yearmonth = request.getParameter("yearmonth").toString();
-			//String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
+			String salesDepartmentID = request.getParameter("salesDepartmentID").toString();
 			if(yearmonth==null) {
 				Date date = new Date();
 				SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM");
@@ -161,7 +363,11 @@ public class SorcReciPayExesDetailController  extends BaseController {
 			}else {
 				param.put("yearmonth", yearmonth);
 			}
-			//param.put("salesDepartmentID", salesDepartmentID);
+			if(salesDepartmentID==null||salesDepartmentID.equals("")) {
+				param.put("salesDepartmentID", null);
+			}else {
+				param.put("salesDepartmentID", salesDepartmentID);
+			}
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			List<Map> listSorcReci = sorcReciPayExesDetailService.countProductNumexcel(param);
 			List<Map> varList = new ArrayList<Map>();
@@ -204,15 +410,32 @@ public class SorcReciPayExesDetailController  extends BaseController {
 		
 		Map<String ,Object > param = new HashMap<String,Object>();
 		//查询参数
-		param.put("startDate", startDate);
-		param.put("endDate", endDate);
+		if(startDate==null||startDate.equals(""))
+		{
+			param.put("startDate",null);
+		}
+		else
+		{ 
+			param.put("startDate",startDate);
+		}
+		
+		if(endDate==null||endDate.equals(""))
+		{
+			param.put("endDate",null);
+		}
+		else
+		{ 
+			param.put("endDate",endDate);
+		}
+//		param.put("startDate", startDate);
+//		param.put("endDate", endDate);
 		param.put("salesDepartmentID", salesDepartmentID);
 		param.put("expenseItemId", expenseItemId);
 		//分页
 		param.put("pageNum", page);
 		param.put("pageSize", rows);
 		
-		EUDataGridResult<Map> newResourList = sorcReciPayExesDetailService.exesDetailExcel(param);
+		EUDataGridResult<exesDetail> newResourList = sorcReciPayExesDetailService.exesDetailExcel(param);
 		return gson.toJson(newResourList);
 	}
 	
@@ -234,20 +457,20 @@ public class SorcReciPayExesDetailController  extends BaseController {
 			param.put("expenseItemId", expenseItemId);
 			
 			@SuppressWarnings({ "unchecked", "rawtypes" })
-			List<Map> listSorcReci = sorcReciPayExesDetailService.exesDetailExcelAll(param);
+			List<exesDetail> listSorcReci = sorcReciPayExesDetailService.exesDetailExcelAll(param);
 			List<Map> varList = new ArrayList<Map>();
 			for(int i=0;i<listSorcReci.size();i++){//十个字段
 				Map vpd = new HashMap();
-					vpd.put("var1", listSorcReci.get(i).get("expenseDate"));	//日期
-					vpd.put("var2", listSorcReci.get(i).get("deptName"));	//市场部门
-					vpd.put("var3", listSorcReci.get(i).get("pName"));	//签约部门
-					vpd.put("var4", listSorcReci.get(i).get("certificateId"));	//凭证号
-					vpd.put("var5", listSorcReci.get(i).get("remark"));	//摘要
-					vpd.put("var6", listSorcReci.get(i).get("pettycash"));	//备用金
-					vpd.put("var7", listSorcReci.get(i).get("ffItemName"));	//一级费用项目
-					vpd.put("var8", listSorcReci.get(i).get("pItemName"));	//二级费用项目
-					vpd.put("var9", listSorcReci.get(i).get("expenseItem"));	//三级费用项目
-					vpd.put("var10", listSorcReci.get(i).get("expenseAmount"));	//费用金额
+					vpd.put("var1", listSorcReci.get(i).getExpenseDate());	//日期
+					vpd.put("var2", listSorcReci.get(i).getDeptName());	//市场部门
+					vpd.put("var3", listSorcReci.get(i).getpName());	//签约部门
+					vpd.put("var4", listSorcReci.get(i).getCertificateId());	//凭证号
+					vpd.put("var5", listSorcReci.get(i).getRemark());	//摘要
+					vpd.put("var6", listSorcReci.get(i).getPettycash());	//备用金
+					vpd.put("var7", listSorcReci.get(i).getFfItemName());	//一级费用项目
+					vpd.put("var8", listSorcReci.get(i).getpItemName());	//二级费用项目
+					vpd.put("var9", listSorcReci.get(i).getExpenseItem());	//三级费用项目
+					vpd.put("var10", listSorcReci.get(i).getExpenseAmount());	//费用金额
 					
 				varList.add(vpd);
 			}

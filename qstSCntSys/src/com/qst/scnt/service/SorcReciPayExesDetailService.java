@@ -8,6 +8,7 @@ import com.qst.scnt.model.Cost;
 import com.qst.scnt.model.EmployeeInfo;
 import com.qst.scnt.model.OrderInfo;
 import com.qst.scnt.model.OrderProductInfo;
+import com.qst.scnt.model.exesDetail;
 import com.qst.scnt.utils.EUDataGridResult;
 
 public interface SorcReciPayExesDetailService extends BaseService<Object> {
@@ -32,12 +33,12 @@ public interface SorcReciPayExesDetailService extends BaseService<Object> {
 	 * @param params
 	 * @return
 	 */
-	EUDataGridResult<Map> exesDetailExcel(Map<String,Object> params);
+	EUDataGridResult<exesDetail> exesDetailExcel(Map<String,Object> params);
 	/**
 	 * 市场部费用明细表
 	 * @param params
 	 * @return
 	 */
-	List<Map> exesDetailExcelAll(Map<String,Object> params);
+	List<exesDetail> exesDetailExcelAll(Map<String,Object> params);
 }
 

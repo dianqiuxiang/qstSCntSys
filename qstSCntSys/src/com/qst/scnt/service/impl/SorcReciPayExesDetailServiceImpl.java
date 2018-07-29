@@ -18,15 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qst.scnt.dao.BaseDao;
+import com.qst.scnt.dao.ExpenseItemDao;
 import com.qst.scnt.dao.OrderInfoDao;
 import com.qst.scnt.dao.OrderProductInfoDao;
 import com.qst.scnt.dao.SalesDepartmentInfoDao;
 import com.qst.scnt.dao.SorcReciPayExesDetailDao;
 import com.qst.scnt.model.Cost;
 import com.qst.scnt.model.EmployeeInfo;
+import com.qst.scnt.model.ExpenseItem;
 import com.qst.scnt.model.OrderInfo;
 import com.qst.scnt.model.OrderProductInfo;
 import com.qst.scnt.model.SalesDepartmentInfo;
+import com.qst.scnt.model.exesDetail;
 import com.qst.scnt.service.OrderInfoService;
 import com.qst.scnt.service.SorcReciPayExesDetailService;
 import com.qst.scnt.utils.EUDataGridResult;
@@ -38,6 +41,12 @@ public class SorcReciPayExesDetailServiceImpl extends BaseServiceImpl<Object> im
 	@Resource
 	private SorcReciPayExesDetailDao sorcReciPayExesDetailDao;
 	
+	@Resource
+	private SalesDepartmentInfoDao salesDepartmentInfoDao;
+	
+	@Resource
+	private ExpenseItemDao expenseItemDao;
+	
 	@Override
 	public BaseDao<Object> getBaseDao() {
 		// TODO Auto-generated method stub
@@ -46,12 +55,96 @@ public class SorcReciPayExesDetailServiceImpl extends BaseServiceImpl<Object> im
 
 	@Override
 	public List countNewResour(Map<String, Object> params) {
+		if(params.get("salesDepartmentID")==null){
+			params.put("salesDepartmentIDList", null);
+		}
+		else{
+			int salesDeptID=Integer.parseInt(params.get("salesDepartmentID").toString());
+			SalesDepartmentInfo salesDept=new SalesDepartmentInfo();
+			salesDept=salesDepartmentInfoDao.selectPK(salesDeptID);
+			
+			List<SalesDepartmentInfo> salesDeptList_Level3 =new ArrayList();
+			if(salesDept.getLevel()==1){
+				List<SalesDepartmentInfo> salesDeptList_Level2 =new ArrayList();
+				salesDeptList_Level2=salesDepartmentInfoDao.selectByParentID(salesDept);
+				
+				for(SalesDepartmentInfo entity_Level2:salesDeptList_Level2){
+					salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(entity_Level2));
+				}
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else if(salesDept.getLevel()==2){
+				salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(salesDept));
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else{
+				salesDeptList_Level3.add(salesDept);
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+		}
 		// TODO Auto-generated method stub
 		return sorcReciPayExesDetailDao.countNewResour(params);
 	}
 	
 	@Override
 	public List countProductNumexcel(Map<String, Object> params) {
+		if(params.get("salesDepartmentID")==null){
+			params.put("salesDepartmentIDList", null);
+		}
+		else{
+			int salesDeptID=Integer.parseInt(params.get("salesDepartmentID").toString());
+			SalesDepartmentInfo salesDept=new SalesDepartmentInfo();
+			salesDept=salesDepartmentInfoDao.selectPK(salesDeptID);
+			
+			List<SalesDepartmentInfo> salesDeptList_Level3 =new ArrayList();
+			if(salesDept.getLevel()==1){
+				List<SalesDepartmentInfo> salesDeptList_Level2 =new ArrayList();
+				salesDeptList_Level2=salesDepartmentInfoDao.selectByParentID(salesDept);
+				
+				for(SalesDepartmentInfo entity_Level2:salesDeptList_Level2){
+					salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(entity_Level2));
+				}
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else if(salesDept.getLevel()==2){
+				salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(salesDept));
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else{
+				salesDeptList_Level3.add(salesDept);
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+		}
 		// TODO Auto-generated method stub
 		return sorcReciPayExesDetailDao.countProductNum(params);
 	}
@@ -61,6 +154,49 @@ public class SorcReciPayExesDetailServiceImpl extends BaseServiceImpl<Object> im
 	 */
 	@Override
 	public EUDataGridResult<Map> countNewResourec(Map<String, Object> params) {
+		if(params.get("salesDepartmentID")==null){
+			params.put("salesDepartmentIDList", null);
+		}
+		else{
+			int salesDeptID=Integer.parseInt(params.get("salesDepartmentID").toString());
+			SalesDepartmentInfo salesDept=new SalesDepartmentInfo();
+			salesDept=salesDepartmentInfoDao.selectPK(salesDeptID);
+			
+			List<SalesDepartmentInfo> salesDeptList_Level3 =new ArrayList();
+			if(salesDept.getLevel()==1){
+				List<SalesDepartmentInfo> salesDeptList_Level2 =new ArrayList();
+				salesDeptList_Level2=salesDepartmentInfoDao.selectByParentID(salesDept);
+				
+				for(SalesDepartmentInfo entity_Level2:salesDeptList_Level2){
+					salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(entity_Level2));
+				}
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else if(salesDept.getLevel()==2){
+				salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(salesDept));
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else{
+				salesDeptList_Level3.add(salesDept);
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+		}
+		
 		// TODO Auto-generated method stub
 		int pageNum = (int)params.get("pageNum");
 		int pageSize = (int)params.get("pageSize");
@@ -81,6 +217,48 @@ public class SorcReciPayExesDetailServiceImpl extends BaseServiceImpl<Object> im
 	 */
 	@Override
 	public EUDataGridResult<Map> countProductNum(Map<String, Object> params) {
+		if(params.get("salesDepartmentID")==null){
+			params.put("salesDepartmentIDList", null);
+		}
+		else{
+			int salesDeptID=Integer.parseInt(params.get("salesDepartmentID").toString());
+			SalesDepartmentInfo salesDept=new SalesDepartmentInfo();
+			salesDept=salesDepartmentInfoDao.selectPK(salesDeptID);
+			
+			List<SalesDepartmentInfo> salesDeptList_Level3 =new ArrayList();
+			if(salesDept.getLevel()==1){
+				List<SalesDepartmentInfo> salesDeptList_Level2 =new ArrayList();
+				salesDeptList_Level2=salesDepartmentInfoDao.selectByParentID(salesDept);
+				
+				for(SalesDepartmentInfo entity_Level2:salesDeptList_Level2){
+					salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(entity_Level2));
+				}
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else if(salesDept.getLevel()==2){
+				salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(salesDept));
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else{
+				salesDeptList_Level3.add(salesDept);
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+		}
 		// TODO Auto-generated method stub
 		int pageNum = (int)params.get("pageNum");
 		int pageSize = (int)params.get("pageSize");
@@ -103,31 +281,205 @@ public class SorcReciPayExesDetailServiceImpl extends BaseServiceImpl<Object> im
 //    EUDataGridResult<EmployeeInfo> result = new EUDataGridResult<EmployeeInfo>();
 	
 	@Override
-	public List<Map> exesDetailExcelAll(Map<String, Object> params) {
+	public List<exesDetail> exesDetailExcelAll(Map<String, Object> params) {
+		
+		if(params.get("salesDepartmentID")==null){
+			params.put("salesDepartmentIDList", null);
+		}
+		else{
+			int salesDeptID=Integer.parseInt(params.get("salesDepartmentID").toString());
+			SalesDepartmentInfo salesDept=new SalesDepartmentInfo();
+			salesDept=salesDepartmentInfoDao.selectPK(salesDeptID);
+			
+			List<SalesDepartmentInfo> salesDeptList_Level3 =new ArrayList();
+			if(salesDept.getLevel()==1){
+				List<SalesDepartmentInfo> salesDeptList_Level2 =new ArrayList();
+				salesDeptList_Level2=salesDepartmentInfoDao.selectByParentID(salesDept);
+				
+				for(SalesDepartmentInfo entity_Level2:salesDeptList_Level2){
+					salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(entity_Level2));
+				}
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else if(salesDept.getLevel()==2){
+				salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(salesDept));
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else{
+				salesDeptList_Level3.add(salesDept);
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+		}
+		
+		if(params.get("expenseItemId")==null){
+			params.put("expenseItemIdList", null);
+		}
+		else{
+			int salesDeptID=Integer.parseInt(params.get("expenseItemId").toString());
+			ExpenseItem expenseItem=new ExpenseItem();
+			expenseItem=expenseItemDao.selectPK(salesDeptID);
+			
+			List<ExpenseItem> expenseItemList_Level3 =new ArrayList();
+			if(expenseItem.getLevel()==1){
+				List<ExpenseItem> expenseItemList_Level2 =new ArrayList();
+				expenseItemList_Level2=expenseItemDao.selectByParentID(expenseItem);
+				
+				for(ExpenseItem entity_Level2:expenseItemList_Level2){
+					expenseItemList_Level3.addAll(expenseItemDao.selectByParentID(entity_Level2));
+				}
+				if(expenseItemList_Level3==null){
+					params.put("expenseItemIdList", null);
+				}
+				else{
+					params.put("expenseItemIdList", expenseItemList_Level3);
+				}
+			}
+			else if(expenseItem.getLevel()==2){
+				expenseItemList_Level3.addAll(expenseItemDao.selectByParentID(expenseItem));
+				if(expenseItemList_Level3==null){
+					params.put("expenseItemIdList", null);
+				}
+				else{
+					params.put("expenseItemIdList", expenseItemList_Level3);
+				}
+			}
+			else{
+				expenseItemList_Level3.add(expenseItem);
+				if(expenseItemList_Level3==null){
+					params.put("expenseItemIdList", null);
+				}
+				else{
+					params.put("expenseItemIdList", expenseItemList_Level3);
+				}
+			}
+		}
+		
 		// TODO Auto-generated method stub
-		List<Map> exesDetailList = sorcReciPayExesDetailDao.exesDetailExcelAll(params);
-		List<Map> exesDetailListTemp = new LinkedList<Map>();
-		for(Map exesDetil:exesDetailList) {
-			exesDetil.put("certificateId", "");//凭证号
-			exesDetil.put("pettycash", "");//备用金
+		List<exesDetail> exesDetailList = sorcReciPayExesDetailDao.exesDetailExcelAll(params);
+		List<exesDetail> exesDetailListTemp = new LinkedList<exesDetail>();
+		for(exesDetail exesDetil:exesDetailList) {
+			
+			exesDetil.setPettycash("");//备用金
 			exesDetailListTemp.add(exesDetil);
 		}
 		return exesDetailListTemp;
 	}
 	
 	@Override
-	public EUDataGridResult<Map> exesDetailExcel(Map<String, Object> params) {
+	public EUDataGridResult<exesDetail> exesDetailExcel(Map<String, Object> params) {
 		// TODO Auto-generated method stub
+		
+		if(params.get("salesDepartmentID")==null){
+			params.put("salesDepartmentIDList", null);
+		}
+		else{
+			int salesDeptID=Integer.parseInt(params.get("salesDepartmentID").toString());
+			SalesDepartmentInfo salesDept=new SalesDepartmentInfo();
+			salesDept=salesDepartmentInfoDao.selectPK(salesDeptID);
+			
+			List<SalesDepartmentInfo> salesDeptList_Level3 =new ArrayList();
+			if(salesDept.getLevel()==1){
+				List<SalesDepartmentInfo> salesDeptList_Level2 =new ArrayList();
+				salesDeptList_Level2=salesDepartmentInfoDao.selectByParentID(salesDept);
+				
+				for(SalesDepartmentInfo entity_Level2:salesDeptList_Level2){
+					salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(entity_Level2));
+				}
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else if(salesDept.getLevel()==2){
+				salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(salesDept));
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+			else{
+				salesDeptList_Level3.add(salesDept);
+				if(salesDeptList_Level3==null){
+					params.put("salesDepartmentIDList", null);
+				}
+				else{
+					params.put("salesDepartmentIDList", salesDeptList_Level3);
+				}
+			}
+		}
+		
+		if(params.get("expenseItemId")==null){
+			params.put("expenseItemIdList", null);
+		}
+		else{
+			int salesDeptID=Integer.parseInt(params.get("expenseItemId").toString());
+			ExpenseItem expenseItem=new ExpenseItem();
+			expenseItem=expenseItemDao.selectPK(salesDeptID);
+			
+			List<ExpenseItem> expenseItemList_Level3 =new ArrayList();
+			if(expenseItem.getLevel()==1){
+				List<ExpenseItem> expenseItemList_Level2 =new ArrayList();
+				expenseItemList_Level2=expenseItemDao.selectByParentID(expenseItem);
+				
+				for(ExpenseItem entity_Level2:expenseItemList_Level2){
+					expenseItemList_Level3.addAll(expenseItemDao.selectByParentID(entity_Level2));
+				}
+				if(expenseItemList_Level3==null){
+					params.put("expenseItemIdList", null);
+				}
+				else{
+					params.put("expenseItemIdList", expenseItemList_Level3);
+				}
+			}
+			else if(expenseItem.getLevel()==2){
+				expenseItemList_Level3.addAll(expenseItemDao.selectByParentID(expenseItem));
+				if(expenseItemList_Level3==null){
+					params.put("expenseItemIdList", null);
+				}
+				else{
+					params.put("expenseItemIdList", expenseItemList_Level3);
+				}
+			}
+			else{
+				expenseItemList_Level3.add(expenseItem);
+				if(expenseItemList_Level3==null){
+					params.put("expenseItemIdList", null);
+				}
+				else{
+					params.put("expenseItemIdList", expenseItemList_Level3);
+				}
+			}
+		}
+		
 				int pageNum = (int)params.get("pageNum");
 				int pageSize = (int)params.get("pageSize");
 				PageHelper.startPage(pageNum, pageSize);
-				List<Map> list = sorcReciPayExesDetailDao.exesDetailExcelAll(params);
+				List<exesDetail> list = sorcReciPayExesDetailDao.exesDetailExcelAll(params);
 				
 		        //创建一个返回值对象
-		        EUDataGridResult<Map> result = new EUDataGridResult<Map>();
+		        EUDataGridResult<exesDetail> result = new EUDataGridResult<exesDetail>();
 		        result.setRows(list);
 		        //取记录总条数
-		        PageInfo<Map> pageInfo = new PageInfo<Map>(list);
+		        PageInfo<exesDetail> pageInfo = new PageInfo<exesDetail>(list);
 		        result.setTotal(pageInfo.getTotal());
 		        return result;
 	}

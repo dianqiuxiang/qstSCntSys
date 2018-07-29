@@ -36,12 +36,12 @@
     
     function doSearch1(){
     	
-		console.log($('#expenseitemId').datebox("getValue"));
-		if($('#startDate').datebox("getValue")==""||$('#endDate').datebox("getValue")=="")
-		{
-				parent.$.messager.alert("消息提示","请选择时间区间","info");
-				return false;
-			}
+		//console.log($('#expenseitemId').datebox("getValue"));
+		//if($('#startDate').datebox("getValue")==""||$('#endDate').datebox("getValue")=="")
+		//{
+			//	parent.$.messager.alert("消息提示","请选择时间区间","info");
+			//	return false;
+		//}
 		
     	$('#sorc').datagrid('load',{
     		salesDepartmentID:$('#salesDept').combotree("getValue"),
@@ -107,10 +107,10 @@
 </head>
 <body>
    <div id="customerToolbar" style="padding:5px">
-        <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/customer/getSalesDept.do',method:'get',valueField:'id',textField:'text',
+        <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/sorcReciPayExesDetail/getSalesDept.do',method:'get',valueField:'id',textField:'text',
         panelHeight:'auto',onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
-        <span>费用项目：</span><select id="expenseitemId" class='easyui-combotree'  data-options="editable:false,url:'/qstSCntSys/cost/getExpenseItem.do',method:'get',valueField:'id',
-        textField:'text',panelHeight:'auto',onLoadSuccess: function(node,data){$('#expenseN').combotree('setValue', data[0].id);}" style="width:160px;"></select>
+        <span>费用项目：</span><select id="expenseitemId" class='easyui-combotree'  data-options="editable:false,url:'/qstSCntSys/sorcReciPayExesDetail/getExpenseItem.do',method:'get',valueField:'id',
+        textField:'text',panelHeight:'300px',onLoadSuccess: function(node,data){$('#expenseN').combotree('setValue', data[0].id);}" style="width:160px;"></select>
          <span>时间：</span><input id="startDate" class="easyui-datebox"></input>
        	<span>至：</span><input id="endDate" class="easyui-datebox"></input>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch1()">查询</a>
@@ -123,8 +123,8 @@
 			<tr>
 			    <th data-options="field:'id',width:200,hidden:true"></th>
 			    <th data-options="field:'expenseDate',width:100">日期</th>
-			    <th data-options="field:'deptName',width:200">市场部</th>
-			    <th data-options="field:'pName',width:200">签约部门</th>
+			    <th data-options="field:'pName',width:200">市场部</th>
+			    <th data-options="field:'deptName',width:200">签约部门</th>
 			    <th data-options="field:'certificateId',width:200">凭证号</th>
 			    <th data-options="field:'remark',width:200">摘要</th>
 			    <th data-options="field:'pettycash',width:100">备用金</th>

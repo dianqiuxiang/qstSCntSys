@@ -22,6 +22,12 @@
 </head>
 <body>
    <div id="customerToolbar" style="padding:5px">
+    <span>部门信息：</span><select id="salesDept" class="easyui-combotree" data-options="editable:false,url:'/qstSCntSys/sorcReciPayExesDetail/getSalesDept.do',method:'get',valueField:'id',textField:'text',
+        panelHeight:'auto',onBeforeSelect:function(node){
+                    if ($(this).tree('getLevel',node.target)==3) {  
+		                return false;  
+		            }
+		           },onLoadSuccess: function(node,data){$('#salesDept').combotree('setValue', data[0].id);}" style="width:160px;"></select>
         <span>查询时间：</span><input id="yearmonth" class="easyui-datebox"></input>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">查询</a>
         <a href="#" onclick="exportExcel()" class="easyui-linkbutton" plain="true" >导出</a> 
@@ -32,7 +38,8 @@
     	dateformate("#yearmonth");
     	$('#sorc').datagrid({
     		url:'/qstSCntSys/sorcReciPayExesDetail/getProductNumInfo.do',//需要立即查询时开启url 
-				queryParams: {	    		   
+				queryParams: {	  
+					salesDepartmentID:$('#salesDept').combotree("getValue"),
 					yearmonth:$('#yearmonth').datebox("getValue")
 			    }
 			});
@@ -98,9 +105,9 @@
  	}
     function exportExcel(){
     	
-    	//var salesDepartmentID = $('#salesDept').combotree("getValue");
+    	var salesDepartmentID = $('#salesDept').combotree("getValue");
     	var yearmonth = $('#yearmonth').datebox("getValue");	
-    	location.href="/qstSCntSys/sorcReciPayExesDetail/excelProductNumInfo.do?yearmonth="+yearmonth;
+    	location.href="/qstSCntSys/sorcReciPayExesDetail/excelProductNumInfo.do?salesDepartmentID="+salesDepartmentID+"&yearmonth="+yearmonth;
     	/* $.ajax({
 			type:"post",
 			async: true, 
@@ -129,7 +136,7 @@
     		}); */
     		console.log($('#yearmonth').datebox("getValue"));
     	$('#sorc').datagrid('load',{
-    		//salesDepartmentID:$('#salesDept').combotree("getValue"),
+    		salesDepartmentID:$('#salesDept').combotree("getValue"),
     		yearmonth:$('#yearmonth').datebox("getValue")
     		});
     }

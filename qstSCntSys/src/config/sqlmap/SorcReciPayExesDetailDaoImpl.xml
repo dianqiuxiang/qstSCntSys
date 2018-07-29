@@ -47,9 +47,12 @@
 			<if test="level!='' and level!=null">
 					   and b.level = #{level}
 			</if>
-			<if test="salesDepartmentID!='' and salesDepartmentID!=null">
-					   and a.salesDepartmentID = #{salesDepartmentID}     
-			</if> 
+			<if test="salesDepartmentIDList !=null">
+			and a.salesDepartmentID IN
+			<foreach collection="salesDepartmentIDList" item="salesDepartmentID"  open="(" separator="," close=")">
+			#{salesDepartmentID.id}
+			</foreach>
+			</if>
 			<if test="yearmonth!=null and yearmonth!=''">
 			    and a.orderDate like concat(#{yearmonth},'%')
 			</if>
@@ -103,9 +106,12 @@
 			<if test="level!='' and level!=null">
 					   and b.level = #{level}
 			</if>
-			<if test="salesDepartmentID!='' and salesDepartmentID!=null">
-					   and a.salesDepartmentID = #{salesDepartmentID}     
-			</if> 
+			<if test="salesDepartmentIDList !=null">
+			and a.salesDepartmentID IN
+			<foreach collection="salesDepartmentIDList" item="salesDepartmentID"  open="(" separator="," close=")">
+			#{salesDepartmentID.id}
+			</foreach>
+			</if>
 			<if test="yearmonth!=null and yearmonth!=''">
 			    and a.orderDate like concat(#{yearmonth},'%')
 			</if>
@@ -123,7 +129,7 @@
 		  </select>
 		  
 		  <!-- 市场部明细表 -->
-		  <select id="exesDetail" parameterType="map" resultType="java.util.HashMap">
+		  <select id="exesDetail" parameterType="map" resultType="exesDetail">
 		      SELECT 
 				a.expenseAmount,
 				a.expenseDate,
@@ -157,18 +163,24 @@
 					expenseitem as g
 				on f.parentID = g.id
 			WHERE
-				a.isDelete = '0'
-			<if test="salesDepartmentID !=null and salesDepartmentID !=''">
-			    and a.salesDepartmentID =#{salesDepartmentID}
-			</if>
+				a.isDelete = '0'			
+			<if test="salesDepartmentIDList !=null">
+			and a.salesDepartmentID IN
+			<foreach collection="salesDepartmentIDList" item="salesDepartmentID"  open="(" separator="," close=")">
+			#{salesDepartmentID.id}
+			</foreach>
+			</if>	
 			<if test="startDate!=null and startDate!='' ">  
 			    <![CDATA[ and DATE_FORMAT(a.expenseDate, '%Y-%m')>=  DATE_FORMAT(#{startDate}, '%Y-%m')   ]]> 
 			</if>
 			<if test="endDate!=null and endDate!=''">  
 			    <![CDATA[  and DATE_FORMAT(a.expenseDate, '%Y-%m') <= DATE_FORMAT(#{endDate}, '%Y-%m')    ]]>
 			</if>
-			<if test="expenseItemId !='' and expenseItemId !=null">  
-			     and a.expenseItemID = #{expenseItemId}
+			<if test="expenseItemIdList !=null">
+			and a.expenseItemID IN
+			<foreach collection="expenseItemIdList" item="expenseItemID"  open="(" separator="," close=")">
+			#{expenseItemID.id}
+			</foreach>
 			</if>
 		    ORDER BY
 				a.expenseDate DESC  

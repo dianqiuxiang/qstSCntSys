@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.qst.scnt.model.Cost;
 import com.qst.scnt.model.OrderInfo;
+import com.qst.scnt.model.exesDetail;
 
 
 
@@ -18,6 +19,6 @@ public interface SorcReciPayExesDetailDao  extends BaseDao<Object> {
 	 * @param params
 	 * @return
 	 */
-	List<Map> exesDetailExcelAll(Map<String,Object> params);	
+	List<exesDetail> exesDetailExcelAll(Map<String,Object> params);	
 }
 
