@@ -23,5 +23,7 @@ public interface OrderInfoDao  extends BaseDao<OrderInfo> {
 
 	List<OrderInfo> selectByDate(Map<String, Object> oParams);
 	
+	List<Map> list(Map<String, Object> queryDate);//µ¼³ö
+	
 }
 

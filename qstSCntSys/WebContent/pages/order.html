@@ -32,7 +32,7 @@
         <span>订单时间：</span><input id="orderdate" class="easyui-datebox"></input>
         <span>至：</span><input id="orderEdate" class="easyui-datebox"></input>
         <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">查询</a>
-        <a href="#" class="easyui-linkbutton" plain="true" onclick="">导出</a>  
+        <a href="#" class="easyui-linkbutton" plain="true" onclick="excel()">导出</a>  
         <a href="#" class="easyui-linkbutton" plain="true" onclick="openOrderDialog()">新增</a>  
     </div>
     <script type="text/javascript">
@@ -65,6 +65,21 @@
     		endDate:$('#orderEdate').datebox("getValue")
     		});
     }
+    
+    function excel(){
+    	var opts=$("#dg").datagrid("options");    
+        if(null==opts.url||""==opts.url){    
+            opts.url="/qstSCntSys/order/toExcel.do";    
+        }  
+    	$('#dg').datagrid('load',{
+    		orderCode:$('#orderNa').val(),
+    		salesDepartmentID:$('#salesDept').combotree("getValue"),
+    		customerName:$('#customerNa').val(),
+    		startDate:$('#orderdate').datebox("getValue"),
+    		endDate:$('#orderEdate').datebox("getValue")
+    		});
+    }
+    
     function openOrderDialog()
     {
     
