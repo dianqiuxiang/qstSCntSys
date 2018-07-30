@@ -30,16 +30,6 @@ public class OrderInfoDaoImpl extends BaseDaoImpl<OrderInfo> implements OrderInf
             return null;  
         }  
 	}
-	//µ¼³ö
-	@Override
-	public List<Map> list(Map<String, Object> queryDate) {
-		try {  
-            return this.getSqlSession().selectList(namespace + "." + "selectByOCodeandCNameAndDate",queryDate);  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-            return null;  
-        }  
-	}
 
 	@Override
 	public HashMap selectNewCustomer(Map<String, Object> params) {

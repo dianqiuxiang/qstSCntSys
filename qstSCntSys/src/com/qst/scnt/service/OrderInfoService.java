@@ -25,7 +25,7 @@ public interface OrderInfoService extends BaseService<OrderInfo> {
 
 	public List<OrderInfo> selectByDate(Map<String, Object> oParams);
 	
-	public List<Map> toExcel(Map<String, Object> queryDate);
+	
 	
 }
 

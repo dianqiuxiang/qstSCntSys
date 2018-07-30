@@ -101,57 +101,6 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo> implements 
         result.setTotal(pageInfo.getTotal());
         return result;
 	}
-	
-	@Override
-	public List<Map> toExcel(Map<String, Object> queryDate) {
-
-		if(queryDate.get("salesDepartmentID")==null){
-			queryDate.put("salesDepartmentIDList", null);
-		}
-		else{
-			int salesDeptID=(int)queryDate.get("salesDepartmentID");
-			SalesDepartmentInfo salesDept=new SalesDepartmentInfo();
-			salesDept=salesDepartmentInfoDao.selectPK(salesDeptID);
-			
-			List<SalesDepartmentInfo> salesDeptList_Level3 =new ArrayList();
-			if(salesDept.getLevel()==1){
-				List<SalesDepartmentInfo> salesDeptList_Level2 =new ArrayList();
-				salesDeptList_Level2=salesDepartmentInfoDao.selectByParentID(salesDept);
-				
-				for(SalesDepartmentInfo entity_Level2:salesDeptList_Level2){
-					salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(entity_Level2));
-				}
-				if(salesDeptList_Level3==null){
-					queryDate.put("salesDepartmentIDList", null);
-				}
-				else{
-					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
-				}
-			}
-			else if(salesDept.getLevel()==2){
-				salesDeptList_Level3.addAll(salesDepartmentInfoDao.selectByParentID(salesDept));
-				if(salesDeptList_Level3==null){
-					queryDate.put("salesDepartmentIDList", null);
-				}
-				else{
-					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
-				}
-			}
-			else{
-				salesDeptList_Level3.add(salesDept);
-				if(salesDeptList_Level3==null){
-					queryDate.put("salesDepartmentIDList", null);
-				}
-				else{
-					queryDate.put("salesDepartmentIDList", salesDeptList_Level3);
-				}
-			}
-		}
-
-		List<Map> list = orderInfoDao.list(queryDate);
-		
-        return list;
-	}
 
 	@Override
 	@Transactional
